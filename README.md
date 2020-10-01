@@ -15,7 +15,7 @@ This project requires:
 
 2. Change into the new directory.
 
-        cd networkbuild
+        cd build
 
 3. Run CMake with the path to the source.
 
