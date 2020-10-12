@@ -1,3 +1,5 @@
+set(LLVM_ENABLE_RTTI ON)
+set(LLVM_ENABLE_EH ON)
 
 add_library(networking
   src/Server.cpp
