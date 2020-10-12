@@ -1,5 +1,6 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include "Configuration.h"
 #include <fstream>
 #include <sstream>
 
