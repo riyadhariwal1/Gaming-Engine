@@ -29,7 +29,7 @@ This project requires:
 
 5. Run the chat server
 
-    bin/chatserver 4000 ../web-socket-networking/webchat.html
+    bin/chatserver 4000 ../Social Gaming/webchat.html
 
 ## Visiting the Chat Server
 
