@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 #include "Configuration.h"
 #include "Constants.h"
+#include "Variables.h"
 #include <fstream>
 #include <sstream>
 
@@ -31,6 +32,19 @@ int main() {
         constant.addWeapon(temp);
     }
     constant.print();
+    //variable
+    json variable = j["variables"]["winners"];
+    Variables var;
+    for (const auto&element : variable)
+    {
+        string winner = element.get<string>();
+        var.addWinner(winner);
+    }
+
+    var.print();
+
+
+    
 }
 
 
