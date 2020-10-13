@@ -7,7 +7,6 @@
 
 #include <iostream>
 using namespace std;
-using json = nlohmann::json;
 
 struct PlayerCount {
     int min;
@@ -17,23 +16,13 @@ struct PlayerCount {
 class Configuration {
 private:
     string name;
-    int max;
-    int min;
+    PlayerCount playerCount;
     bool audience;
     int rounds; //have set up class instead
 
 public:
-    // Configuration(string name, int min, int max, bool audience, int rounds);
-    Configuration();
+    Configuration(string name, int min, int max, bool audience, int rounds);
     void printConfiguration();
-    void from_json(const json& j) {
-        j.at("name").get_to(this->name);
-        j.at("player count").at("min").get_to(this->min);
-        j.at("player count").at("max").get_to(this->max);
-        j.at("audience").get_to(this->audience);
-        j.at("setup").at("Rounds").get_to(this->rounds);
-    }
-    
 };
 
 
