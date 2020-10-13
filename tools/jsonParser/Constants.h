@@ -1,4 +1,3 @@
-
 //
 // Created by Hoang Minh Nguyen on 12/10/2020.
 //
@@ -18,13 +17,13 @@ private:
     
 public:
     Weapon(string name, string beats);
-    void print ();
+    void print();
 };
 
-class Constants
-{
+class Constants{
 private:
     vector<Weapon> weapons;
+
 public:
     Constants();
     void addWeapon(Weapon weapon);
