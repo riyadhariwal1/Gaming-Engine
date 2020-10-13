@@ -12,8 +12,7 @@ using json = nlohmann::json;
 int main() {
     string filePath = "rockPaperScissors.json";
     ifstream ifs(filePath);
-    if (ifs.fail())
-    {
+    if (ifs.fail()){
         throw std::runtime_error("Cannot open Json file");
     }
     json j = json::parse(ifs);
@@ -27,8 +26,7 @@ int main() {
     //constants
     json constantsArr = j["constants"]["weapons"];
     Constants constant; 
-    for (const auto &element : constantsArr)
-    {
+    for (const auto &element : constantsArr){
         auto name = element.at("name").get<string>();
         auto beats = element.at("beats").get<string>();
         Weapon temp(name, beats);
@@ -38,8 +36,7 @@ int main() {
     //variable
     json variable = j["variables"]["winners"];
     Variables var;
-    for (const auto&element : variable)
-    {
+    for (const auto &element : variable){
         string winner = element.get<string>();
         var.addWinner(winner);
     }
