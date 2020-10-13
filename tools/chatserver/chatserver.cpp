@@ -20,17 +20,19 @@ using networking::Server;
 using networking::Connection;
 using networking::Message;
 
-
+//list of client IDs
 std::vector<Connection> clients;
 
-
+//ran by Server.h every time a new connection is made.
+//adds a new connection (i.e client ID) to the clients vector.
 void
 onConnect(Connection c) {
   std::cout << "New connection found: " << c.id << "\n";
   clients.push_back(c);
 }
 
-
+//remove a given Id from the clients vector.
+//cleans up the empty space from the vector after the Id has been removed.
 void
 onDisconnect(Connection c) {
   std::cout << "Connection lost: " << c.id << "\n";
@@ -38,13 +40,19 @@ onDisconnect(Connection c) {
   clients.erase(eraseBegin, std::end(clients));
 }
 
-
+//shouldShutdown is set to true, if the message's text was "Shutdown". If shouldShutdown is true, the main function's while loop will break.
 struct MessageResult {
   std::string result;
   bool shouldShutdown;
 };
 
-
+//called by chatserver::main();
+//takes in a server (don't worry about this, theres only ever one server to consider), and a double ended queue of 'Message's (defined in Server.h)
+//Reads through the dequeue of Messages.
+//if the message's content was "quit", disconnect the user who sent the message.
+//if the message's content was "shutdown" shutdown the server.
+//else, create a new string called result that is as follows: SENDER_ID ++ ">" ++ MESSAGE_TEXT
+//refer to main() to see what happens with the return value.
 MessageResult
 processMessages(Server& server, const std::deque<Message>& incoming) {
   std::ostringstream result;
@@ -56,13 +64,19 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
       std::cout << "Shutting down.\n";
       quit = true;
     } else {
-      result << message.connection.id << "> " << message.text << "\n";
+      result << "DEBUG: This message was added in chatServer.cpp :: processMessages() \n"<< message.connection.id << "> " << message.text << "\n";
     }
   }
   return MessageResult{result.str(), quit};
 }
 
-
+//Takes in one long processed string,
+//Creates a new dequeue of 'Messages' (defined in Server.h).
+//Each Message is as follows: {
+//                              connection =RECIPIENT_ID
+//                              text = RESULT }
+//note that RESULT will be the same string of text as defined in processMessages();
+//The end result is one big list of 'Messages', with a recipient ID, and a line of text to send to that recipient's client.
 std::deque<Message>
 buildOutgoing(const std::string& log) {
   std::deque<Message> outgoing;
@@ -87,7 +101,13 @@ getHTTPMessage(const char* htmlLocation) {
   }
 }
 
+//runs indefinitely, until it receives a message where 'shouldQuit' is true. (refer to processMessages() to see when 'quit' is set to true')
 
+//for every instance of the while loop:
+//      Get a list of Message objects from the server.      (The Message contains the Id of the user who sent it, and the string of text of the message.)
+//      Processes each message                              (Converts each message to the form of "USER_ID > MESSAGE_TEXT")
+//      Builds a list of outgoing Message Objects           (Creates a new list of Message Objects, that contain the ID of the recipient, and text, converted as above.)
+//      Sends the list of Message Objects back to the server.
 int
 main(int argc, char* argv[]) {
   if (argc < 3) {
