@@ -64,7 +64,7 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
       std::cout << "Shutting down.\n";
       quit = true;
     } else {
-      result << "DEBUG: This message was added in chatServer.cpp :: processMessages() \n"<< message.connection.id << "> " << message.text << "\n";
+      result << message.connection.id << "> " << message.text << "\n";
     }
   }
   return MessageResult{result.str(), quit};
@@ -84,6 +84,26 @@ buildOutgoing(const std::string& log) {
     outgoing.push_back({client, log});
   }
   return outgoing;
+}
+
+//processes deque incoming messages.
+//returns deque of messages in the form of
+//                              Connection: Recipient ID  	(where recipient = a user who's in the same room as the sender)
+//                              Text: USER_ID> MESSAGE_TEXT
+//
+
+
+std::deque<Message> postOffice(const std::deque<Message>& incoming){
+    std::deque<Message> output;
+    for (auto& message : incoming) {
+        //extract the roomId from Message -> User
+        //for each User in that room
+            //create a new output Message for that user.
+            //add that new output Message into the output dequeue
+
+        //result << message.connection.id << "> " << message.text << "\n";
+        //return that output dequeue into server.send
+    }
 }
 
 
