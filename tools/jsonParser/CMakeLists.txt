@@ -15,3 +15,6 @@ set_target_properties(jsonparser
 
 install(TARGETS jsonparser
         RUNTIME DESTINATION bin)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
+        DESTINATION ${CMAKE_BINARY_DIR})
+

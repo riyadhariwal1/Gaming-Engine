@@ -11,8 +11,11 @@ using json = nlohmann::json;
 
 int main() {
     string filePath = "rockPaperScissors.json";
-    ifstream ifs(filePath, std::ifstream::binary);
-
+    ifstream ifs(filePath);
+    if (ifs.fail())
+    {
+        throw std::runtime_error("Cannot open Json file");
+    }
     json j = json::parse(ifs);
 
     //config
