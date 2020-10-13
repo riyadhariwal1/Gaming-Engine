@@ -10,7 +10,7 @@ using namespace std;
 using json = nlohmann::json;
 
 int main() {
-    string filePath = "rockPaperScissors.json";
+    string filePath = "./rockPaperScissors.json";
     ifstream ifs(filePath);
     if (ifs.fail()){
         throw std::runtime_error("Cannot open Json file");
@@ -33,6 +33,7 @@ int main() {
         constant.addWeapon(temp);
     }
     constant.print();
+
     //variable
     json variable = j["variables"]["winners"];
     Variables var;
@@ -42,9 +43,6 @@ int main() {
     }
 
     var.print();
-
-
-    
 }
 
 

@@ -16,17 +16,4 @@ public:
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif //SOCIAL_GAMING_VARIABLES_H

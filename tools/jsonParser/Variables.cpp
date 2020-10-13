@@ -8,8 +8,7 @@ void Variables::addWinner(string str){
 }
 
 void Variables::print(){
-    for (int i = 0; i < winners.size(); i++)
-    {
+    for (int i = 0; i < winners.size(); i++) {
         cout << winners[i] << endl;
     }
 }
