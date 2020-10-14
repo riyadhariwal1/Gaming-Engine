@@ -387,7 +387,7 @@ Server::receive() {
 void
 Server::send(const std::deque<Message>& messages) {
   for (auto& message : messages) {
-    auto found = impl->channels.find(message.connection);
+    auto found = impl->channels.find(message.c);
     if (impl->channels.end() != found) {
       found->second->send(message.text);
     }

@@ -4,7 +4,8 @@
 // This file is distributed under the MIT License. See the LICENSE file
 // for details.
 /////////////////////////////////////////////////////////////////////////////
-
+//todo: rewrite chatServer code to work with Users instead of connections
+//implement room.addUser and room.removeUser.
 
 #include "Server.h"
 
@@ -15,20 +16,23 @@
 #include <unistd.h>
 #include <vector>
 
-
+#include "User.h"
+#include "Room.h"
 using networking::Server;
 using networking::Connection;
 using networking::Message;
 
 //list of client IDs
-std::vector<Connection> clients;
-
+std::vector<User> clients;
+std::vector<Room> rooms;
 //ran by Server.h every time a new connection is made.
 //adds a new connection (i.e client ID) to the clients vector.
 void
 onConnect(Connection c) {
   std::cout << "New connection found: " << c.id << "\n";
-  clients.push_back(c);
+  auto newUser(c);
+  clients.push_back(newUser);
+  rooms.at(0).addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -36,8 +40,12 @@ onConnect(Connection c) {
 void
 onDisconnect(Connection c) {
   std::cout << "Connection lost: " << c.id << "\n";
-  auto eraseBegin = std::remove(std::begin(clients), std::end(clients), c);
-  clients.erase(eraseBegin, std::end(clients));
+  for (auto client:clients){
+      if (client.getConnection() == c){
+          auto eraseBegin = std::remove(std::begin(clients), std::end(clients), client);
+          clients.erase(eraseBegin, std::end(clients));
+      }
+  }
 }
 
 //shouldShutdown is set to true, if the message's text was "Shutdown". If shouldShutdown is true, the main function's while loop will break.
@@ -45,6 +53,36 @@ struct MessageResult {
   std::string result;
   bool shouldShutdown;
 };
+
+//given a Connection, return that room;
+User
+getUser(Connection c){
+    for (auto client:clients){
+        if (client.connection == c)
+            return client;
+    }
+    std::cout<<"Error. Trying to find user with Id "<< c.id <<"but they are not in the Client vector"<<"\n";
+    throw;
+}
+
+//given a specific user, find the room they're in and return a pointer to that room.
+Room*
+getRoom(User target){
+    int counter = 0;
+    for (auto room:rooms){
+
+        auto userList = room.getUsers();
+        for (auto user:userList){
+            if (user == target){
+                return &rooms.at(0);
+            }
+        }
+        counter++;
+    }
+    std::cout<<"Error. Trying to find user with Id "<< target.connection.id <<"but they are not any room in the rooms vector"<<"\n";
+    throw;
+}
+
 
 //called by chatserver::main();
 //takes in a server (don't worry about this, theres only ever one server to consider), and a double ended queue of 'Message's (defined in Server.h)
@@ -59,12 +97,27 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
   bool quit = false;
   for (auto& message : incoming) {
     if (message.text == "quit") {
-      server.disconnect(message.connection);
+      server.disconnect(message.c);
     } else if (message.text == "shutdown") {
-      std::cout << "Shutting down.\n";
-      quit = true;
-    } else {
-      result << message.connection.id << "> " << message.text << "\n";
+        std::cout << "Shutting down.\n";
+        quit = true;
+    } else if (message.text=="/join"){
+        result << "Sending User:"<<message.c.id<<" to room 2.\n";
+        rooms.at(1).addUser(getUser(message.c));
+        rooms.at(0).removeUser(getUser(message.c));
+    } else if (message.text=="/leave"){
+        result << "Sending User:"<<message.c.id<<" to main room.\n";
+        rooms.at(0).addUser(getUser(message.c));
+        rooms.at(1).removeUser(getUser(message.c));
+    } else if (message.text=="/roomList"){
+        result << "Please check the console for debug information.\n";
+        std::cout<<"\n";
+        for (auto room:rooms){
+            room.printUsers();
+        }
+
+    }else {
+        result << message.c.id << "> " << message.text << "\n";
     }
   }
   return MessageResult{result.str(), quit};
@@ -81,7 +134,7 @@ std::deque<Message>
 buildOutgoing(const std::string& log) {
   std::deque<Message> outgoing;
   for (auto client : clients) {
-    outgoing.push_back({client, log});
+    outgoing.push_back({client.connection, log,0});
   }
   return outgoing;
 }
@@ -93,18 +146,18 @@ buildOutgoing(const std::string& log) {
 //
 
 
-std::deque<Message> postOffice(const std::deque<Message>& incoming){
-    std::deque<Message> output;
-    for (auto& message : incoming) {
-        //extract the roomId from Message -> User
-        //for each User in that room
-            //create a new output Message for that user.
-            //add that new output Message into the output dequeue
-
-        //result << message.connection.id << "> " << message.text << "\n";
-        //return that output dequeue into server.send
-    }
-}
+//std::deque<Message> postOffice(const std::deque<Message>& incoming){
+//    std::deque<Message> output;
+//    for (auto& message : incoming) {
+//        //use getRoom to find the room that contains Message->Connection
+//        //for each User in that room
+//            //create a new output Message for that user.
+//            //add that new output Message into the output dequeue
+//
+//        //result << message.connection.id << "> " << message.text << "\n";
+//        //return that output dequeue into server.send
+//    }
+//}
 
 
 std::string
@@ -120,6 +173,7 @@ getHTTPMessage(const char* htmlLocation) {
     std::exit(-1);
   }
 }
+
 
 //runs indefinitely, until it receives a message where 'shouldQuit' is true. (refer to processMessages() to see when 'quit' is set to true')
 
@@ -139,6 +193,8 @@ main(int argc, char* argv[]) {
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
 
+  rooms.push_back(Room(0));
+  rooms.push_back(Room(1));
   while (true) {
     bool errorWhileUpdating = false;
     try {

@@ -46,8 +46,11 @@ struct ConnectionHash {
  *  Connection.
  */
 struct Message {
-  Connection connection;
-  std::string text;
+
+    Connection c;
+    std::string text;
+    int sendersRoomId;
+
 };
 
 
