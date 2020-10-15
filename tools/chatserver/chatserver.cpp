@@ -22,6 +22,9 @@ using networking::Server;
 using networking::Connection;
 using networking::Message;
 
+// error enums
+const std::string ROOM_NOT_EXIST = "ROOM_NOT_EXIST";
+
 //list of client IDs
 std::vector<User> clients;
 std::vector<Room> rooms;
@@ -73,8 +76,7 @@ getRoomByName(std::string roomName) {
     }
   }
 
-  // TODO: create error enums
-  std::string error = "ROOM_NOT_EXIST";
+  std::string error = ROOM_NOT_EXIST;
   throw error;
 }
 
@@ -112,6 +114,10 @@ tokenizeMessage(std::string message) {
   return tokens;
 }
 
+// TODO: handle the /join command
+void
+joinChatroom(std::vector<std::string> tokens) {}
+
 // prints the tokenized message (DEBUG ONLY)
 void
 printMessageTokens(std::vector<std::string> tokens) {
@@ -135,18 +141,39 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
   std::ostringstream result;
   bool quit = false;
   for (auto& message : incoming) {
+    // split the string into tokens
     std::vector<std::string> tokens = tokenizeMessage(message.text);
     printMessageTokens(tokens);
 
     auto commandType = tokens.at(0);
 
-    // split the string into tokens
     if (message.text == "quit") {
       server.disconnect(message.c);
     } else if (message.text == "shutdown") {
         std::cout << "Shutting down.\n";
         quit = true;
-    } else if (commandType == "/join"){
+    } else if (commandType == "/create") {
+        // DISCUSS: the command code should be in separate functions
+        std::string targetRoomName;
+
+        try {
+          targetRoomName = tokens.at(1);
+
+          // check if the room already exists
+          // if getRoomByName() does not error out, it means the room exists
+          Room *room = getRoomByName(targetRoomName);
+          result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName << " to join the room.\n";
+
+        } catch (const std::exception& e) {
+          // room name is not provided
+          std::cout << e.what();
+          result << "Please provide a room name.\n";
+        } catch (const std::string& e) {
+          if (e == ROOM_NOT_EXIST) {
+
+          }
+        }
+    } else if (commandType == "/join") {
         std::string targetRoomName;
         try {
           targetRoomName = tokens.at(1);
@@ -163,7 +190,7 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
           std::cout << e.what();
           result << "Please provide a room name.\n";
         } catch (const std::string& e) {
-          // catch the custom string errors from the functions
+          // catch the custom string errors from getRoomByName()
           if (e == "ROOM_NOT_EXIST") {
             result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
           };
