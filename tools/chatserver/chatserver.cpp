@@ -32,7 +32,6 @@ onConnect(Connection c) {
   std::cout << "New connection found: " << c.id << "\n";
   auto newUser(c);
   clients.push_back(newUser);
-  rooms.at(0).addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -65,6 +64,19 @@ getUser(Connection c){
     throw;
 }
 
+// given a room name, return a pointer to that Room otherwise throw an error with the room not found.
+Room*
+getRoomByName(std::string roomName) {
+  for (auto& room : rooms) {
+    if (room.getRoomName() == roomName) {
+      return &room;
+    }
+  }
+
+  std::cout << "Room " << roomName << " does not exist. Type \"/create " << roomName << "\" to make the room.\n";
+  throw;
+}
+
 //given a specific user, find the room they're in and return a pointer to that room.
 Room*
 getRoom(User target){
@@ -74,6 +86,7 @@ getRoom(User target){
         auto userList = room.getUsers();
         for (auto user:userList){
             if (user == target){
+                // TODO: update this function to return the correct room
                 return &rooms.at(0);
             }
         }
@@ -83,6 +96,31 @@ getRoom(User target){
     throw;
 }
 
+// Tokenize the user input to handle commands
+std::vector<std::string>
+tokenizeMessage(std::string message) {
+  std::vector<std::string> tokens;
+
+  std::stringstream stream(message);
+  std::string temp;
+
+  while(getline(stream, temp, ' ')) {
+    tokens.push_back(temp);
+  }
+
+  return tokens;
+}
+
+// prints the tokenized message (DEBUG ONLY)
+void
+printMessageTokens(std::vector<std::string> tokens) {
+  std::cout << "Tokenized Message: \n";
+
+  for (auto token : tokens)
+  {
+    std::cout << token << '\n';
+  }
+}
 
 //called by chatserver::main();
 //takes in a server (don't worry about this, theres only ever one server to consider), and a double ended queue of 'Message's (defined in Server.h)
@@ -96,26 +134,37 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
   std::ostringstream result;
   bool quit = false;
   for (auto& message : incoming) {
+    std::vector<std::string> tokens = tokenizeMessage(message.text);
+    printMessageTokens(tokens);
+
+    auto commandType = tokens.at(0);
+
+    // split the string into tokens
     if (message.text == "quit") {
       server.disconnect(message.c);
     } else if (message.text == "shutdown") {
         std::cout << "Shutting down.\n";
         quit = true;
-    } else if (message.text=="/join"){
-        result << "Sending User:"<<message.c.id<<" to room 2.\n";
-        rooms.at(1).addUser(getUser(message.c));
-        rooms.at(0).removeUser(getUser(message.c));
+    } else if (commandType == "/join"){
+        try {
+          auto targetRoomName = tokens.at(1);
+
+          result << "Sending User:" << message.c.id << " to room " << targetRoomName << ".\n";
+          // rooms.at(1).addUser(getUser(message.c));
+          // rooms.at(0).removeUser(getUser(message.c));
+        } catch (...) {
+          result << "Please provide a room name.\n";
+        }
     } else if (message.text=="/leave"){
         result << "Sending User:"<<message.c.id<<" to main room.\n";
-        rooms.at(0).addUser(getUser(message.c));
-        rooms.at(1).removeUser(getUser(message.c));
+        // rooms.at(0).addUser(getUser(message.c));
+        // rooms.at(1).removeUser(getUser(message.c));
     } else if (message.text=="/roomList"){
         result << "Please check the console for debug information.\n";
         std::cout<<"\n";
         for (auto room:rooms){
             room.printUsers();
         }
-
     }else {
         result << message.c.id << "> " << message.text << "\n";
     }
@@ -193,8 +242,6 @@ main(int argc, char* argv[]) {
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
 
-  rooms.push_back(Room(0));
-  rooms.push_back(Room(1));
   while (true) {
     bool errorWhileUpdating = false;
     try {
