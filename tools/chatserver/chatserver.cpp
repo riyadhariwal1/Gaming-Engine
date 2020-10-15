@@ -73,8 +73,9 @@ getRoomByName(std::string roomName) {
     }
   }
 
-  std::cout << "Room " << roomName << " does not exist. Type \"/create " << roomName << "\" to make the room.\n";
-  throw;
+  // TODO: create error enums
+  std::string error = "ROOM_NOT_EXIST";
+  throw error;
 }
 
 //given a specific user, find the room they're in and return a pointer to that room.
@@ -146,27 +147,39 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
         std::cout << "Shutting down.\n";
         quit = true;
     } else if (commandType == "/join"){
+        std::string targetRoomName;
         try {
-          auto targetRoomName = tokens.at(1);
+          targetRoomName = tokens.at(1);
 
-          result << "Sending User:" << message.c.id << " to room " << targetRoomName << ".\n";
-          // rooms.at(1).addUser(getUser(message.c));
-          // rooms.at(0).removeUser(getUser(message.c));
-        } catch (...) {
+          Room* room = getRoomByName(targetRoomName);
+          User user = getUser(message.c);
+
+          user.roomId = room->getRoomId();
+          room->addUser(user);
+
+          result << "Sending User:" << message.c.id << " to room " << room->getRoomName() << ".\n";
+        } catch (const std::exception& e) {
+          // room name is not provided
+          std::cout << e.what();
           result << "Please provide a room name.\n";
+        } catch (const std::string& e) {
+          // catch the custom string errors from the functions
+          if (e == "ROOM_NOT_EXIST") {
+            result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
+          };
         }
-    } else if (message.text=="/leave"){
+    } else if (commandType == "/leave"){
         result << "Sending User:"<<message.c.id<<" to main room.\n";
         // rooms.at(0).addUser(getUser(message.c));
         // rooms.at(1).removeUser(getUser(message.c));
-    } else if (message.text=="/roomList"){
+    } else if (commandType == "/roomList"){
         result << "Please check the console for debug information.\n";
         std::cout<<"\n";
         for (auto room:rooms){
             room.printUsers();
         }
     }else {
-        result << message.c.id << "> " << message.text << "\n";
+        result << message.c.id << "> " << commandType << "\n";
     }
   }
   return MessageResult{result.str(), quit};
