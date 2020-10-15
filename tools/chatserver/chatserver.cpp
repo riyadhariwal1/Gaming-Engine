@@ -170,7 +170,10 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
           result << "Please provide a room name.\n";
         } catch (const std::string& e) {
           if (e == ROOM_NOT_EXIST) {
-
+            // TODO:
+            // - create the Room with the custom name
+            // - add the User to the room
+            // - update the User.roomId
           }
         }
     } else if (commandType == "/join") {
