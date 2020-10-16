@@ -25,7 +25,7 @@ int main() {
 
     //constants
     json constantsArr = j["constants"]["weapons"];
-    Constants constant; 
+    Constants constant;
     for (const auto &element : constantsArr){
         auto name = element.at("name").get<string>();
         auto beats = element.at("beats").get<string>();
@@ -43,6 +43,33 @@ int main() {
     }
 
     var.print();
+
+    // rules
+    // basics -- discard, global messgae, extend
+    // when, input-choice, add,
+    // parellelfor, foreach
+    json rules = j["rules"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-
-
