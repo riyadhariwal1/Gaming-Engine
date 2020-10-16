@@ -80,6 +80,22 @@ getRoomByName(std::string roomName) {
   throw error;
 }
 
+// given a room id, return a pointer to that Room otherwise throw an error with the room not found.
+Room*
+getRoomById(int roomId)
+{
+  for (auto &room : rooms)
+  {
+    if (room.getRoomId() == roomId)
+    {
+      return &room;
+    }
+  }
+
+  std::string error = ROOM_NOT_EXIST;
+  throw error;
+}
+
 //given a specific user, find the room they're in and return a pointer to that room.
 Room*
 getRoom(User target){
@@ -163,17 +179,19 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
           // if getRoomByName() does not error out, it means the room exists
           Room *room = getRoomByName(targetRoomName);
           result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName << " to join the room.\n";
-
         } catch (const std::exception& e) {
           // room name is not provided
           std::cout << e.what();
           result << "Please provide a room name.\n";
         } catch (const std::string& e) {
           if (e == ROOM_NOT_EXIST) {
-            // TODO:
-            // - create the Room with the custom name
-            // - add the User to the room
-            // - update the User.roomId
+            Room newRoom = Room(rand() % 10000, targetRoomName);
+            User user = getUser(message.c);
+
+            newRoom.addUser(user);
+            user.roomId = newRoom.getRoomId();
+
+            result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").\n";
           }
         }
     } else if (commandType == "/join") {
@@ -199,9 +217,15 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
           };
         }
     } else if (commandType == "/leave"){
-        result << "Sending User:"<<message.c.id<<" to main room.\n";
-        // rooms.at(0).addUser(getUser(message.c));
-        // rooms.at(1).removeUser(getUser(message.c));
+        User user = getUser(message.c);
+        Room* room = getRoomById(user.getRoom());
+
+        room->removeUser(user);
+        // DISCUSS: Should default roomId be 0?
+        user.roomId = 0;
+
+        result << "Left room " << room->getRoomName() << "\n";
+        result << "Sending User:"<< user.getConnection().id <<" to main lobby.\n";
     } else if (commandType == "/roomList"){
         result << "Please check the console for debug information.\n";
         std::cout<<"\n";
