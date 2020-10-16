@@ -217,15 +217,19 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
           };
         }
     } else if (commandType == "/leave"){
-        User user = getUser(message.c);
-        Room* room = getRoomById(user.getRoom());
+        try {
+          User user = getUser(message.c);
+          Room *room = getRoomById(user.getRoom());
 
-        room->removeUser(user);
-        // DISCUSS: Should default roomId be 0?
-        user.roomId = 0;
+          room->removeUser(user);
+          // DISCUSS: Should default roomId be 0?
+          user.roomId = 0;
 
-        result << "Left room " << room->getRoomName() << "\n";
-        result << "Sending User:"<< user.getConnection().id <<" to main lobby.\n";
+          result << "Left room " << room->getRoomName() << "\n";
+          result << "Sending User:" << user.getConnection().id << " to main lobby.\n";
+        } catch (std::exception& e) {
+          std::cout << e.what() << "\n";
+        }
     } else if (commandType == "/roomList"){
         result << "Please check the console for debug information.\n";
         std::cout<<"\n";
