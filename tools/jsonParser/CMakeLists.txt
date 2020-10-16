@@ -15,4 +15,6 @@ install(TARGETS jsonparser
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
         DESTINATION ${CMAKE_BINARY_DIR}/bin)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
+        DESTINATION ${CMAKE_BINARY_DIR})
 
