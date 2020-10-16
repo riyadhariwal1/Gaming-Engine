@@ -64,7 +64,7 @@ void whenRule (json rule)
 //         }
 //      }
 // }
-void forEachRule(json element)
+void forEachRule(json element )
 {
     class forEach;
     string list = element.at("list").get<string>();
@@ -113,6 +113,7 @@ void forEachRule(json element)
 
 
 int main() {
+
     string filePath = "rockPaperScissors.json";
     ifstream ifs(filePath, std::ifstream::binary);
 
