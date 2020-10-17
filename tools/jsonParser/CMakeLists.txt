@@ -1,7 +1,17 @@
-find_package(nlohmann_json 3.2.0 REQUIRED)
+include(FetchContent)
+
+FetchContent_Declare(json
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
+  GIT_TAG v3.7.0)
+
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+  FetchContent_Populate(json)
+  add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
 
 add_executable(jsonparser Loader.cpp Constants.cpp Configuration.cpp Variables.cpp)
-target_link_libraries(jsonparser PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(jsonparser PRIVATE nlohmann_json::nlohmann_json gameState ruleClasses)
 
 set_target_properties(jsonparser
         PROPERTIES
@@ -15,4 +25,5 @@ install(TARGETS jsonparser
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
         DESTINATION ${CMAKE_BINARY_DIR}/bin)
-
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
+        DESTINATION ${CMAKE_BINARY_DIR})

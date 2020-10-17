@@ -6,6 +6,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "GlobalMessage.h"
+#include "GameState.h"
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -41,35 +44,24 @@ int main() {
         string winner = element.get<string>();
         var.addWinner(winner);
     }
-
     var.print();
 
     // rules
-    // basics -- discard, global messgae, extend
+    // basics -- discard, global messagae, extend
     // when, input-choice, add,
     // parellelfor, foreach
-    json rules = j["rules"]
+    json rules = j["rules"];
+    json rule_samples = rules[0]["rules"];
 
+    json rule_GM = rule_samples[0];
+    /*json rule_parallelfor = rule_samples[1];
+    json rule_input-choice = rule_samples[2];
+    json rule_discard = rule_samples[3];
+    json rule_foreach = rule_samples[4];
+    json rule_when = rule_samples[5];
+    json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    cout << rule_GM.dump() << endl;
+    
 
 }
