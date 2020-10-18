@@ -6,17 +6,20 @@
 class Room {
 private:
     int roomId;
+    std::string name;
     std::vector<User> users;
 
 public:
     Room(){
         roomId = 0;
     }
-    Room(int Id){
+    Room(int Id, std::string roomName){
         roomId = Id;
+        name = roomName;
     }
     std::vector<User> getUsers() {return users;}
     int getRoomId(){return roomId;}
+    std::string getRoomName() {return name;}
     void addUser(User);
     void removeUser(User);
     void printUsers();
