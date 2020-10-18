@@ -6,6 +6,10 @@
 #include <fstream>
 #include <sstream>
 
+#include "GlobalMessage.h"
+#include "Player.h"
+#include "AddRule.h"
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -25,7 +29,7 @@ int main() {
 
     //constants
     json constantsArr = j["constants"]["weapons"];
-    Constants constant; 
+    Constants constant;
     for (const auto &element : constantsArr){
         auto name = element.at("name").get<string>();
         auto beats = element.at("beats").get<string>();
@@ -41,8 +45,40 @@ int main() {
         string winner = element.get<string>();
         var.addWinner(winner);
     }
-
     var.print();
+
+    // rules
+    // basics -- discard, global messagae, extend
+    // when, input-choice, add,
+    // parellelfor, foreach
+    json rules = j["rules"];
+    json rule_samples = rules[0]["rules"];
+
+    /*json rule_parallelfor = rule_samples[1];
+    json rule_input-choice = rule_samples[2];
+    json rule_discard = rule_samples[3];
+    json rule_foreach = rule_samples[4];
+    json rule_when = rule_samples[5];
+    json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];*/
+
+    // global message
+    json rule_GM = rule_samples[0];
+    cout << "Test Rule:" << rule_GM.dump() << endl;
+
+    string ruleTest1 = rule_GM.dump();
+    GlobalMessage gm(ruleTest1);
+    gm.execute();
+
+    cout << "\n";
+
+    // add
+    json rule_when = rule_samples[5];
+    json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];
+    cout << "Test Rule:" << rule_add.dump() << endl;
+
+    Player player1("Jason");
+    string ruleTest2 = rule_add.dump();
+    AddRule newWinForPlayer(player1.name, 1);
+
+
 }
-
-

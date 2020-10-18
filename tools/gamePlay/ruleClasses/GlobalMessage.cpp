@@ -1,10 +1,14 @@
 #include "GlobalMessage.h"
 #include <iostream>
-using namespace std;
+
+
+// template Rule
 
 GlobalMessage::GlobalMessage(string& value) : value(value){
 }
-   
-void GlobalMessage::execute(GameState&){
+
+void GlobalMessage::execute(){
+  // replace in string
+  // Example:  "Winners: {winners.elements.name}"
     cout<<value<<endl;
 }

@@ -1,12 +1,13 @@
-#ifndef ADD_RULE_H
-#define ADD_RULE_H
+#ifndef DISCARD_RULE_H
+#define DISCARD_RULE_H
 #include "Rule.h"
 #include "GameState.h"
 #include <string>
 
-class AddRule {
+class DiscardRule : public Rule
+{
     public:
-    AddRule(string& variable, int count);
+    DiscardRule(string, int);
     void execute(GameState&) override;
 };
 #endif

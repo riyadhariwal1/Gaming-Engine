@@ -3,15 +3,18 @@
 #include <any>
 #include<string>
 #include <unordered_map>
+#include <boost/any.hpp>
 using namespace std;
+
 
 class GameState {
     public:
-        GameState::GameState(unordered_map<string,any>);
+        GameState(unordered_map<string,boost::any>);
         auto getVariable(string);
         void addIntVariable(string,int);
         void addStringVariable(string,string);
     private:
-        unordered_map<string,any> varMap; 
+        unordered_map<string,boost::any> varMap;
 };
+
 #endif

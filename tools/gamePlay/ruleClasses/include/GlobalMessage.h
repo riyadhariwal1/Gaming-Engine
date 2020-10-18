@@ -2,12 +2,12 @@
 #define GLOBAL_MESSAGE_RULE_H
 #include "Rule.h"
 #include "GameState.h"
-#include<string>
+#include <string>
 
-class GlobalMessage : public Rule {
+class GlobalMessage {
     public:
         explicit GlobalMessage(std::string& value);
-        void execute(GameState&) override;
+        void execute();
     private:
         std::string& value;
 

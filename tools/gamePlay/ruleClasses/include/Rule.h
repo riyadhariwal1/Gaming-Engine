@@ -1,10 +1,11 @@
 #ifndef RULE_H
 #define RULE_H
 #include<string>
-#include "GameState.h"
+ #include "GameState.h"
 
 class Rule {
     public:
-        virtual void execute(GameState&);
+        Rule();
+        virtual void execute(string&);
 };
 #endif

@@ -14,6 +14,7 @@ target_include_directories(networking
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIR}
 )
 
 target_link_libraries(networking
