@@ -6,7 +6,8 @@ using namespace std;
 class Player {
     public:
       explicit Player(std::string& name);
-      void playerWins();
+      void playerWins(int count);
+      void printPlayer();
 
     private:
       int id;
@@ -16,7 +17,7 @@ class Player {
 #endif
 
 /*
-List of Players 
+List of Players
 class AllPlayers{
 
 }*/
