@@ -131,8 +131,17 @@ tokenizeMessage(std::string message) {
 }
 
 // TODO: handle the /join command
-void
-joinChatroom(std::vector<std::string> tokens) {}
+std::ostringstream joinChatroom(
+  User* user,
+  std::vector<std::string> roomName
+) {
+  std::ostringstream result;
+  // do not join if already in a room
+  if (!user->getRoom()) {
+    result << "User is already in a room.\n";
+    return result;
+  }
+}
 
 // prints the tokenized message (DEBUG ONLY)
 void
@@ -224,6 +233,7 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
           room->removeUser(user);
           // DISCUSS: Should default roomId be 0?
           user.roomId = 0;
+          std::cout << "227\n";
 
           result << "Left room " << room->getRoomName() << "\n";
           result << "Sending User:" << user.getConnection().id << " to main lobby.\n";
