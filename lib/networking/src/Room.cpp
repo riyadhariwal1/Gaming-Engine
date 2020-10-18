@@ -2,7 +2,7 @@
 #include "../include/Room.h"
 
 void Room::addUser(User user) {
-    std::cout << "Adding User: " << user.connection.id << "to room " << roomId << "\n";
+    std::cout << "Adding User: " << user.connection.id << " to room " << roomId << "\n";
     users.push_back(user);
 }
 

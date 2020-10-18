@@ -82,7 +82,57 @@ getRoom(User target){
     std::cout<<"Error. Trying to find user with Id "<< target.connection.id <<"but they are not any room in the rooms vector"<<"\n";
     throw;
 }
+//iterates through each character in a string, converting it into a lowercase letter if necessary.
+std::string
+strToLower(std::string text){
+    int counter =0;
+    for (auto character:text){
+        text[counter]= tolower(character);
+        counter++;
+    }
+    return text;
+}
 
+//extracts the first word from a command. i.e 'join' from '/join game'
+std::string extractCommand(std::string s){
+    return s.substr(1, s.find(' '));
+}
+
+const char commandPrefix = '/';
+std::string
+runCommand(Message message){
+    std::ostringstream result;
+    std::string commandName = strToLower(extractCommand(message.text));
+    std::cout<<"Attempting to call command:" <<commandName<<"\n";
+
+    if (commandName=="join"){
+        result << "Sending User:"<<message.c.id<<" to room 2.\n";
+        rooms.at(1).addUser(getUser(message.c));
+        rooms.at(0).removeUser(getUser(message.c));
+    } else if (commandName=="leave"){
+        result << "Sending User:"<<message.c.id<<" to main room.\n";
+        rooms.at(0).addUser(getUser(message.c));
+        rooms.at(1).removeUser(getUser(message.c));
+    } else if (commandName=="roomlist"){
+        result << "Please check the console for debug information.\n";
+        std::cout<<"\n";
+        for (auto room:rooms) {
+            room.printUsers();
+        }
+    }else{
+            std::cout<<"Tried to run command: "<< commandPrefix << commandName <<" but it was not an actual command"<<"\n";
+    }
+    return result.str();
+}
+
+
+
+
+bool
+isCommand(std::string text)
+{
+    return text[0]==commandPrefix;
+}
 
 //called by chatserver::main();
 //takes in a server (don't worry about this, theres only ever one server to consider), and a double ended queue of 'Message's (defined in Server.h)
@@ -96,32 +146,23 @@ processMessages(Server& server, const std::deque<Message>& incoming) {
   std::ostringstream result;
   bool quit = false;
   for (auto& message : incoming) {
-    if (message.text == "quit") {
-      server.disconnect(message.c);
-    } else if (message.text == "shutdown") {
-        std::cout << "Shutting down.\n";
-        quit = true;
-    } else if (message.text=="/join"){
-        result << "Sending User:"<<message.c.id<<" to room 2.\n";
-        rooms.at(1).addUser(getUser(message.c));
-        rooms.at(0).removeUser(getUser(message.c));
-    } else if (message.text=="/leave"){
-        result << "Sending User:"<<message.c.id<<" to main room.\n";
-        rooms.at(0).addUser(getUser(message.c));
-        rooms.at(1).removeUser(getUser(message.c));
-    } else if (message.text=="/roomList"){
-        result << "Please check the console for debug information.\n";
-        std::cout<<"\n";
-        for (auto room:rooms){
-            room.printUsers();
-        }
+      if (isCommand(message.text))
+      {
+//          result << "DEBUG : The server should be doing command stuff now\n";
+//          std::cout<<"DEBUG: The following message is a command. "<< message.text << "\n";
+          result << runCommand(message);
+      }
 
-    }else {
-        result << message.c.id << "> " << message.text << "\n";
-    }
+        else {
+            result << message.c.id << "> " << message.text << "\n";
+
+        }
   }
+
+
   return MessageResult{result.str(), quit};
 }
+
 
 //Takes in one long processed string,
 //Creates a new dequeue of 'Messages' (defined in Server.h).
@@ -207,6 +248,7 @@ main(int argc, char* argv[]) {
 
     auto incoming = server.receive();
     auto [log, shouldQuit] = processMessages(server, incoming);
+
     auto outgoing = buildOutgoing(log);
     server.send(outgoing);
 
