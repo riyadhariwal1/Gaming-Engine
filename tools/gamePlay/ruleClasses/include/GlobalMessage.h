@@ -4,10 +4,10 @@
 #include "GameState.h"
 #include <string>
 
-class GlobalMessage : public Rule {
+class GlobalMessage {
     public:
         explicit GlobalMessage(std::string& value);
-        void execute(GameState&);
+        void execute();
     private:
         std::string& value;
 

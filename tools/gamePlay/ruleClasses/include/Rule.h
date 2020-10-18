@@ -5,6 +5,7 @@
 
 class Rule {
     public:
-        virtual void execute(GameState&);
+        Rule();
+        virtual void execute(string&);
 };
 #endif

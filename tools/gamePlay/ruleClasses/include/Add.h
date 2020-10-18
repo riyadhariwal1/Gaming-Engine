@@ -4,10 +4,9 @@
 #include "GameState.h"
 #include <string>
 
-class AddRule : public Rule
-{
+class AddRule {
     public:
-    AddRule(string, int);
+    AddRule(string& variable, int count);
     void execute(GameState&) override;
 };
 #endif

@@ -7,7 +7,8 @@
 #include <sstream>
 
 #include "GlobalMessage.h"
-#include "GameState.h"
+#include "Player.h"
+#include "AddRule.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -53,7 +54,6 @@ int main() {
     json rules = j["rules"];
     json rule_samples = rules[0]["rules"];
 
-    json rule_GM = rule_samples[0];
     /*json rule_parallelfor = rule_samples[1];
     json rule_input-choice = rule_samples[2];
     json rule_discard = rule_samples[3];
@@ -61,7 +61,24 @@ int main() {
     json rule_when = rule_samples[5];
     json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];*/
 
-    cout << rule_GM.dump() << endl;
-    
+    // global message
+    json rule_GM = rule_samples[0];
+    cout << "Test Rule:" << rule_GM.dump() << endl;
+
+    string ruleTest1 = rule_GM.dump();
+    GlobalMessage gm(ruleTest1);
+    gm.execute();
+
+    cout << "\n";
+
+    // add
+    json rule_when = rule_samples[5];
+    json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];
+    cout << "Test Rule:" << rule_add.dump() << endl;
+
+    Player player1("Jason");
+    string ruleTest2 = rule_add.dump();
+    AddRule newWinForPlayer(player1.name, 1);
+
 
 }
