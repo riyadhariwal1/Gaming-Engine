@@ -7,7 +7,7 @@
 class ExtendRule : public Rule
 {
     public:
-    ExtendRule(string, std::list<boost::any>);
+    ExtendRule(string, string);
     void execute(GameState&) override;
 };
 #endif
