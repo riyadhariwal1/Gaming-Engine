@@ -9,7 +9,12 @@ using namespace std;
 class ForEachRule : public Rule
 {
     public:
-    ForEachRule(std::list<boost::any>, int);
-    void execute(GameState&) override;
+        ForEachRule(string&, string&);
+        void execute(GameState&) override;
+        void addRule(Rule&)
+    private:
+        list<Rule> ruleList;
+        string& listName;
+        string& element;
 };
 #endif
