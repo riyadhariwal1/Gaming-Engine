@@ -54,9 +54,43 @@ void discardRule (json rule)
 void whenRule (json rule)
 {
     cout << " im in when" << endl;
+
 }
+// void parallelForRule (json rule)
+// {
+//     cout << " im in parrallel" << endl;
 
-
+//      json rules = rule["rules"];
+//      for (const json rule :rules)
+//      {
+//         auto ruleName = rule.at("rule").get<string>();
+//         cout << ruleName << endl;
+//         if (ruleName == "global-message")
+//         {
+//             globalMessageRule(rule);
+//         }
+//         else if (ruleName == "foreach")
+//         {
+//             //forEachRule(rule);
+//         }
+//         else if (ruleName == "parallelfor")
+//         {
+//             parallelForRule(rule);
+//         }
+//         else if (ruleName == "discard")
+//         {
+//             discardRule(rule);
+//         }
+//         else if (ruleName == "when")
+//         {
+//             whenRule(rule);
+//         }
+//         else if (ruleName =="input-choice")
+//         {
+//             inputChoiceRule(rule);
+//         }
+//      }
+// }
 void forEachRule(json element)
 {
     class forEach;
@@ -101,15 +135,15 @@ void forEachRule(json element)
             inputChoiceRule(rule);
         }
     }
-
 }
 
+
 int main() {
-    string filePath = "./rockPaperScissors.json";
-    ifstream ifs(filePath);
+    string filePath = "rockPaperScissors.json";
+    ifstream ifs(filePath, std::ifstream::binary);
     if (ifs.fail()){
         throw std::runtime_error("Cannot open Json file");
-    }
+      }
     json j = json::parse(ifs);
 
     //config
@@ -137,6 +171,7 @@ int main() {
         var.addWinner(winner);
     }
     var.print();
+
 
     // rules
     // basics -- discard, global messagae, extend
@@ -166,6 +201,5 @@ int main() {
         {
             cout << "hahahaha" <<endl;
         }
-
-  }
+    }
 }
