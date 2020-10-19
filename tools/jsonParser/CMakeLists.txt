@@ -11,6 +11,12 @@ if(NOT json_POPULATED)
 endif()
 
 add_executable(jsonparser Loader.cpp Constants.cpp Configuration.cpp Variables.cpp)
+
+target_include_directories(jsonparser
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
 target_link_libraries(jsonparser PRIVATE nlohmann_json::nlohmann_json gameState ruleClasses Players)
 
 set_target_properties(jsonparser

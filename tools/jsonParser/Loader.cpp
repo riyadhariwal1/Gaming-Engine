@@ -13,6 +13,11 @@
 using namespace std;
 using json = nlohmann::json;
 
+/* DECLARATIONS */
+void forEachRule(json element);
+
+
+/* -- */
 void globalMessageRule (json rule)
 {
     cout << " im in global" << endl;
@@ -54,7 +59,17 @@ void discardRule (json rule)
 void whenRule (json rule)
 {
     cout << " im in when" << endl;
+    //cout << rule << "\n" << endl;
 
+    json conditions = rule["cases"];
+    for (const json element : conditions) {
+      cout << element << endl;
+      // parse the given condition
+      // if condition is true: extract element["rules"]
+      if (element["condition"] == true){
+        forEachRule(element);
+      }
+    }
 }
 // void parallelForRule (json rule)
 // {
@@ -91,11 +106,14 @@ void whenRule (json rule)
 //         }
 //      }
 // }
+
+// Note: we cannot treat this recursive function that
+// loops through all rules the same as rule=="foreach"
+// "foreach" class will need to receive list + element
+// and apply some rules specifically to that
 void forEachRule(json element)
 {
-    class forEach;
-    string list = element.at("list").get<string>();
-    string ele = element.at("element").get<string>();
+    //class forEach;
 
     json rules = element["rules"];
     int i = 0;
@@ -103,15 +121,18 @@ void forEachRule(json element)
     for (const json rule :rules)
     {
         cout << i++ << endl;
-        auto ruleName = rule.at("rule").get<string>();
+        auto ruleName = rule["rule"];
         cout << ruleName << endl;
 
-        if (ruleName == "global-message")
+      if (ruleName == "global-message")
         {
             globalMessageRule(rule);
         }
         else if (ruleName == "foreach")
         {
+            auto list = element["list"];
+            auto ele = element["element"];
+            // apply the upcoming rules to these lists/element
             forEachRule(rule);
         }
         else if (ruleName == "parallelfor")
@@ -134,6 +155,10 @@ void forEachRule(json element)
         {
             inputChoiceRule(rule);
         }
+        else if (ruleName == "scores")
+        {
+            cout << "hahahaha" <<endl;
+        }
     }
 }
 
@@ -143,7 +168,8 @@ int main() {
     ifstream ifs(filePath, std::ifstream::binary);
     if (ifs.fail()){
         throw std::runtime_error("Cannot open Json file");
-      }
+    }
+
     json j = json::parse(ifs);
 
     //config
@@ -171,35 +197,9 @@ int main() {
         var.addWinner(winner);
     }
     var.print();
+    cout << "\n\n" <<endl;
 
+    // Loop through the rules!
+    forEachRule(j);
 
-    // rules
-    // basics -- discard, global messagae, extend
-    // when, input-choice, add,
-    // parellelfor, foreach
-
-    /*json rule_parallelfor = rule_samples[0];
-    json rule_input-choice = rule_samples[1];
-    json rule_discard = rule_samples[2];
-    json rule_foreach = rule_samples[3];
-    json rule_when = rule_samples[4];
-    json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];*/
-
-    json rules = j["rules"];
-
-    int i = 0;
-    for (const json element :rules)
-    {
-        //cout << i++ << endl;
-        auto rulesName = element.at("rule").get<string>();
-        //cout << rulesName << endl;
-        if(rulesName == "foreach")
-        {
-            forEachRule(element);
-        }
-        if (rulesName == "scores")
-        {
-            cout << "hahahaha" <<endl;
-        }
-    }
 }
