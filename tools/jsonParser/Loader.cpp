@@ -207,5 +207,8 @@ int main() {
     // Loop through the rules!
     forEachRule(j);
 
-    Game game()
+
+    //game test ! missing ruleList
+    AllPlayers allPlayer;
+    Game game(allPlayer.getList(), configuration, constant, var);
 }

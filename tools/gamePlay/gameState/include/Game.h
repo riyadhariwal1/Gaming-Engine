@@ -16,13 +16,15 @@ class Game {
 private:
     vector<Player> playerList;
     Configuration configuration;
-    vector<Rule> ruleList;
+    //vector<Rule> ruleList;
     Constants constants;
     Variables variables;
 
 public:
-    Game(vector<Player> playerList, Configuration configuration, vector<Rule> ruleList, Constants constants, Variables variables);
+//    Game(vector<Player> playerList, Configuration configuration, vector<Rule> ruleList, Constants constants, Variables variables);
+    Game(vector<Player> playerList, Configuration configuration, Constants constants, Variables variables);
     vector<Weapon> getConstantList(string listName);
+    void print();
 };
 
 
