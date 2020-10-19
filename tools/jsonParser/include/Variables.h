@@ -8,7 +8,7 @@ using namespace std;
 class Variables {
 private:
     vector<string>winners;
-        
+
 public:
     Variables();
     void addWinner (string);
