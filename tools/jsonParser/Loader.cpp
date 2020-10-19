@@ -5,7 +5,7 @@
 #include "Variables.h"
 #include <fstream>
 #include <sstream>
-
+#include "Game.h"
 #include "GlobalMessage.h"
 #include "Player.h"
 #include "Add.h"
@@ -51,8 +51,13 @@ void inputChoiceRule(json rule)
     cout << " im in input" << endl;
 
 }
-void discardRule (json rule)
-{
+
+//Discard
+//{ "rule": "discard",
+//"from": << variable name of a list to discard from >>,
+//"count": << number of elements to discard >>
+//}
+void discardRule (json rule) {
     cout << " im in discard" << endl;
 }
 
@@ -202,4 +207,5 @@ int main() {
     // Loop through the rules!
     forEachRule(j);
 
+    Game game()
 }

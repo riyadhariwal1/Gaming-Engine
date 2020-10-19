@@ -1,7 +1,7 @@
 #include "Configuration.h"
 
 Configuration::Configuration(string name, int min, int max, bool audience, int rounds)
-        : name(name), playerCount({min, max}), audience(audience), rounds(rounds) {}
+    : name(name), playerCount({min, max}), audience(audience), rounds(rounds) {}
 
 
 void Configuration::printConfiguration() {

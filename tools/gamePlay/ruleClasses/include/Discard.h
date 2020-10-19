@@ -4,10 +4,12 @@
 #include "GameState.h"
 #include <string>
 
-class DiscardRule : public Rule
-{
-    public:
+class DiscardRule : public Rule {
+public:
     DiscardRule(string, int);
     void execute(GameState&) override;
+
+private:
+
 };
 #endif

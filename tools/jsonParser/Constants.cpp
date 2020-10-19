@@ -19,3 +19,7 @@ void Constants::print(){
         weapons[i].print();
     }
 }
+
+vector<Weapon> Constants::getList() {
+    return weapons;
+}

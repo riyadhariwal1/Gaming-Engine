@@ -18,8 +18,8 @@ class Player {
 };
 #endif
 
-/*
-List of Players
+
+//List of Players - yet to implement
 class AllPlayers{
 
-}*/
+}

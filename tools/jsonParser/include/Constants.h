@@ -9,7 +9,6 @@
 #include <vector>
 using namespace std;
 
-
 class Weapon{
 private:
     string name;
@@ -28,6 +27,7 @@ public:
     Constants();
     void addWeapon(Weapon weapon);
     void print();
+    vector<Weapon> getList(); //Game class
 };
 
 
