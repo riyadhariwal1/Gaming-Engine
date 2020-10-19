@@ -5,7 +5,8 @@ using namespace std;
 
 class Player {
     public:
-      explicit Player(std::string& name);
+      Player();
+      Player(std::string& name);
       void playerWins(int count);
       void printPlayer();
       // define player "Type"? -- game-player or audience-player

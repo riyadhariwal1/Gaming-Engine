@@ -13,6 +13,97 @@
 using namespace std;
 using json = nlohmann::json;
 
+void globalMessageRule (json rule)
+{
+    cout << " im in global" << endl;
+    cout << rule.dump() << endl;
+
+    string ruleTest = rule["value"].dump();
+    GlobalMessage gm(ruleTest);
+    gm.execute();
+
+    cout << "\n";
+
+}
+
+void addRule (json rule)
+{
+  cout << " im in add" << endl;
+  // example player to be removed with
+  // rule["to"] when real players are used
+  string exampleName = "Jason";
+  Player sample_player(exampleName);
+  sample_player.printPlayer();
+
+  AddRule newWinForPlayer(sample_player, rule["value"]);
+  sample_player.printPlayer();
+
+  cout << "\n";
+}
+
+void inputChoiceRule(json rule)
+{
+    cout << " im in input" << endl;
+
+}
+void discardRule (json rule)
+{
+    cout << " im in discard" << endl;
+}
+
+void whenRule (json rule)
+{
+    cout << " im in when" << endl;
+}
+
+
+void forEachRule(json element)
+{
+    class forEach;
+    string list = element.at("list").get<string>();
+    string ele = element.at("element").get<string>();
+
+    json rules = element["rules"];
+    int i = 0;
+
+    for (const json rule :rules)
+    {
+        cout << i++ << endl;
+        auto ruleName = rule.at("rule").get<string>();
+        cout << ruleName << endl;
+
+        if (ruleName == "global-message")
+        {
+            globalMessageRule(rule);
+        }
+        else if (ruleName == "foreach")
+        {
+            forEachRule(rule);
+        }
+        else if (ruleName == "parallelfor")
+        {
+            forEachRule(rule);
+        }
+        else if (ruleName == "discard")
+        {
+            discardRule(rule);
+        }
+        else if (ruleName == "add")
+        {
+          addRule(rule);
+        }
+        else if (ruleName == "when")
+        {
+            whenRule(rule);
+        }
+        else if (ruleName =="input-choice")
+        {
+            inputChoiceRule(rule);
+        }
+    }
+
+}
+
 int main() {
     string filePath = "./rockPaperScissors.json";
     ifstream ifs(filePath);
@@ -58,35 +149,23 @@ int main() {
     json rule_foreach = rule_samples[3];
     json rule_when = rule_samples[4];
     json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];*/
-    cout << "\n";
 
     json rules = j["rules"];
-    json rule_samples = rules[0]["rules"];
 
-    // global message
-    json rule_GM = rule_samples[0]["value"];
-    cout << "Test Rule:" << rule_GM.dump() << endl;
+    int i = 0;
+    for (const json element :rules)
+    {
+        //cout << i++ << endl;
+        auto rulesName = element.at("rule").get<string>();
+        //cout << rulesName << endl;
+        if(rulesName == "foreach")
+        {
+            forEachRule(element);
+        }
+        if (rulesName == "scores")
+        {
+            cout << "hahahaha" <<endl;
+        }
 
-    string ruleTest1 = rule_GM.dump();
-    GlobalMessage gm(ruleTest1);
-    gm.execute();
-
-    cout << "\n";
-
-    // add
-    json rule_when = rule_samples[4];
-    json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];
-    cout << "Test Rule:" << rule_add.dump() << endl;
-
-    string name = "Jason";
-    Player player1(name);
-    player1.printPlayer();
-    string ruleTest2 = rule_add.dump();
-    AddRule newWinForPlayer(player1, rule_add["value"]);
-    player1.printPlayer();
-
-    cout << "\n";
-
-    //
-
+  }
 }
