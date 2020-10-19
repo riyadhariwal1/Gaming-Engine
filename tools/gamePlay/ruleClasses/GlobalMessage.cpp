@@ -8,7 +8,13 @@ GlobalMessage::GlobalMessage(string& value) : value(value){
 }
 
 void GlobalMessage::execute(){
-  // replace in string
+  // replace in string -- need GameState varaibles first
   // Example:  "Winners: {winners.elements.name}"
-    cout<<value<<endl;
+  // might end up using regex ?
+  size_t open = value.find("{");
+  size_t close = value.find("}") - open +1;
+
+  string variableToReplace = value.substr(open, close);
+  value.replace(open, close, "VARIABLE");
+  cout<<value<<endl;
 }

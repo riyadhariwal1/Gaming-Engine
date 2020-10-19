@@ -52,11 +52,11 @@ int main() {
     // when, input-choice, add,
     // parellelfor, foreach
 
-    /*json rule_parallelfor = rule_samples[1];
-    json rule_input-choice = rule_samples[2];
-    json rule_discard = rule_samples[3];
-    json rule_foreach = rule_samples[4];
-    json rule_when = rule_samples[5];
+    /*json rule_parallelfor = rule_samples[0];
+    json rule_input-choice = rule_samples[1];
+    json rule_discard = rule_samples[2];
+    json rule_foreach = rule_samples[3];
+    json rule_when = rule_samples[4];
     json rule_add = rule_when["cases"][2]["rules"][1]["rules"][0];*/
     cout << "\n";
 
@@ -64,7 +64,7 @@ int main() {
     json rule_samples = rules[0]["rules"];
 
     // global message
-    json rule_GM = rule_samples[0];
+    json rule_GM = rule_samples[0]["value"];
     cout << "Test Rule:" << rule_GM.dump() << endl;
 
     string ruleTest1 = rule_GM.dump();
@@ -82,7 +82,7 @@ int main() {
     Player player1(name);
     player1.printPlayer();
     string ruleTest2 = rule_add.dump();
-    AddRule newWinForPlayer(player1, 1);
+    AddRule newWinForPlayer(player1, rule_add["value"]);
     player1.printPlayer();
 
     cout << "\n";
