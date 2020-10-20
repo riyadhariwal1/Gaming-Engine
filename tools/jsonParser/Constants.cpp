@@ -4,14 +4,16 @@ Weapon::Weapon(string name, string beats){
     this->name = name;
     this->beats = beats;
 }
-void Constants:: addWeapon(Weapon weapon){   
-    weapons.push_back(weapon);
-}
+
 void Weapon:: print(){
     cout << "   " << name << " beats " << beats << endl;
 }
 
 Constants::Constants(){};
+
+void Constants:: addWeapon(Weapon weapon){   
+    weapons.push_back(weapon);
+}
 
 void Constants::print(){
     cout << "Constants:" << endl;

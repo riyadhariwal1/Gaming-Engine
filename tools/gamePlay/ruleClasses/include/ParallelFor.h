@@ -2,6 +2,7 @@
 #define PARALLELFOR_RULE_H
 #include "Rule.h"
 #include "GameState.h"
+#include <list>
 #include <string>
 #include <boost/any.hpp>
 using namespace std;
@@ -9,12 +10,13 @@ using namespace std;
 class ParallelFor : public Rule
 {
     public:
-        ParallelFor(string&, string&);
+        ParallelFor(string, string);
         void execute(GameState&) override;
-        void addRule(Rule&);
+        void addRule(Rule*);
+        void print() override;
     private:
-        list<Rule> ruleList;
-        string& listName;
-        string& element;
+        vector<Rule*> ruleList;
+        string list;
+        string element;
 };
 #endif
