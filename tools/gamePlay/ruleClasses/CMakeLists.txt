@@ -5,7 +5,7 @@ target_sources(ruleClasses
     Add.cpp
     Discard.cpp
     ForEachRule.cpp
-    InputeChoice.cpp
+    InputChoice.cpp
     ParallelFor.cpp
     Extend.cpp
     WhenRule.cpp
