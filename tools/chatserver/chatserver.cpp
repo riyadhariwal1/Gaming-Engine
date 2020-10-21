@@ -144,7 +144,7 @@ runCommand(Message message)
   std::ostringstream result;
   std::string commandName = strToLower(extractCommand(message.text));
   std::cout << "Attempting to call command:" << commandName << "\n";
-  //todo :can join room numerous times. Fix so person actually leaves room upon joining a new room.
+
   if (commandName == "join")
   {
     std::string targetRoomName;
@@ -196,8 +196,6 @@ runCommand(Message message)
   }
   else if (commandName == "leave")
   {
-    std::cout << "Hey, your command name is " << commandName << " and you're running the leave command" << "\n";
-
     User* user = getUser(message.c);
 
     if (user->roomId == 0) {
@@ -212,9 +210,6 @@ runCommand(Message message)
   }
   else if (commandName == "roomlist")
   {
-    std::cout << "Hey, your command name is " << commandName << " and you're running the roomlist command"
-              << "\n";
-
     // print the available rooms to the user
     // also print detailed room into the console
     // todo: show lock icon next to private rooms
@@ -223,17 +218,16 @@ runCommand(Message message)
     result << "\n";
     std::cout << "\n";
 
+    User* user = getUser(message.c);
+
     for (auto room : rooms)
     {
-      result << room.getRoomName() << "\n";
+      result << room.getRoomName() << (user->getRoom() == room.getRoomId() ? " (current)" : "") << "\n";
       room.printUsers();
     }
   }
   else if (commandName == "create")
   {
-    std::cout << "Hey, your command name is " << commandName << " and you're running the create command"
-              << "\n";
-
     std::string targetRoomName;
     auto tokens = tokenizeMessage(message.text);
 
