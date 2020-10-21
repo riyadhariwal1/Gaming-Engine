@@ -268,6 +268,19 @@ runCommand(Message message)
       result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").\n";
     }
   }
+  else if (commandName == "name"){
+    std::string targetName;
+    auto tokens = tokenizeMessage(message.text);
+    
+    for (size_t i=1;i<tokens.size();i++){
+      targetName += tokens.at(i);
+      targetName += " ";
+    }
+
+    User* user = getUser(message.c);
+    user->setUserName(targetName);
+    std::cout << "You changed your name to " << targetName << std::endl;
+  }
   else
   {
     std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
@@ -304,17 +317,22 @@ processMessages(const std::deque<Message> &incoming)
   for (auto &message : incoming)
   {
     std::ostringstream result;
+    auto user = getUser(message.c);
 
     if (isCommand(message.text))
     {
       result << runCommand(message);
+    }
+    else if (user->getUserName() != "")
+    {
+      result << user->getUserName() << "> " << message.text << "\n";
     }
     else
     {
       result << message.c.id << "> " << message.text << "\n";
     }
 
-    auto sendersRoomId = getUser(message.c)->getRoom();
+    auto sendersRoomId = user->getRoom();
 
     outgoing.push_back({message.c, result.str(), sendersRoomId});
   }

@@ -10,15 +10,25 @@ class User {
 public:
     Connection connection;
     int roomId;
+    std::string userName;
 
     User(){
         connection = {0};
         roomId = 0;
+        userName = "";
     }
     User(Connection connection){
         this->connection = connection;
         roomId = 0;
+        userName = "";
     }
+
+    void
+    setUserName(std::string name){
+        this->userName = name;
+    }
+
+    std::string getUserName(){return userName;}
 
     Connection getConnection(){return connection;}
     int getRoom(){return roomId;}
