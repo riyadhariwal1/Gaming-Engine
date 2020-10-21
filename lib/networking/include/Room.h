@@ -20,9 +20,10 @@ public:
     std::vector<User> getUsers() {return users;}
     int getRoomId(){return roomId;}
     std::string getRoomName() {return name;}
-    void addUser(User);
-    void removeUser(User);
+    void addUser(User&);
+    void removeUser(User&);
     void printUsers();
+    bool containsUser(User&);
 };
 
 
