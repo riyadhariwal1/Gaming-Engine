@@ -86,7 +86,7 @@ getRoomByName(std::string roomName)
 }
 
 // given a room id, return a pointer to that Room otherwise return nullptr
-Room *
+Room*
 getRoomById(int roomId)
 {
   for (auto &room : rooms)
@@ -299,18 +299,17 @@ bool isCommand(std::string text)
 }
 
 //called by chatserver::main();
-//takes in a server (don't worry about this, theres only ever one server to consider), and a double ended queue of 'Message's (defined in Server.h)
-//Reads through the dequeue of Messages.
-//if the message's content was "quit", disconnect the user who sent the message.
-//if the message's content was "shutdown" shutdown the server.
-//else, create a new string called result that is as follows: SENDER_ID ++ ">" ++ MESSAGE_TEXT
+//takes in a double ended queue of 'Message's (defined in Server.h)
+//Reads through the dequeue of Messages and creates a new string called result that is as follows: SENDER_ID ++ ">" ++ MESSAGE_TEXT
 //refer to main() to see what happens with the return value.
-MessageResult
+std::deque<Message>
 processMessages(const std::deque<Message> &incoming)
 {
-  std::ostringstream result;
+  std::deque<Message> outgoing;
+
   for (auto &message : incoming)
   {
+    std::ostringstream result;
 
     if (isCommand(message.text))
     {
@@ -320,8 +319,12 @@ processMessages(const std::deque<Message> &incoming)
     {
       result << message.c.id << "> " << message.text << "\n";
     }
+
+    auto sendersRoomId = getUser(message.c)->getRoom();
+
+    outgoing.push_back({message.c, result.str(), sendersRoomId});
   }
-  return MessageResult{result.str()};
+  return outgoing;
 }
 
 //Takes in one long processed string,
@@ -331,6 +334,7 @@ processMessages(const std::deque<Message> &incoming)
 //                              text = RESULT }
 //note that RESULT will be the same string of text as defined in processMessages();
 //The end result is one big list of 'Messages', with a recipient ID, and a line of text to send to that recipient's client.
+// REPLACED WITH POSTOFFICE
 std::deque<Message>
 buildOutgoing(const std::string &log)
 {
@@ -342,22 +346,23 @@ buildOutgoing(const std::string &log)
   return outgoing;
 }
 
-//processes deque incoming messages.
-//returns deque of messages in the form of
+// takes the the messages from processMessages()
+// and creates a deque of output Messages assigned to the appropriate room members
+// returns deque of messages in the form of
 //                              Connection: Recipient ID  	(where recipient = a user who's in the same room as the sender)
 //                              Text: USER_ID> MESSAGE_TEXT
 std::deque<Message>
-postOffice(const std::deque<Message>& incoming){
+postOffice(const std::deque<Message>& processedMessages){
    std::deque<Message> output;
-   for (auto& message : incoming) {
-       //use getRoom to find the room that contains Message->Connection
-       //for each User in that room
-           //create a new output Message for that user.
-           //add that new output Message into the output dequeue
+   for (auto& message : processedMessages) {
+        auto sendersRoom = getRoomById(message.sendersRoomId);
 
-       //result << message.connection.id << "> " << message.text << "\n";
-       //return that output dequeue into server.send
+        for (auto user : sendersRoom->getUsers()) {
+          output.push_back({ user.connection, message.text, message.sendersRoomId});
+        }
    }
+
+   return output;
 }
 
 std::string
@@ -415,9 +420,10 @@ int main(int argc, char *argv[])
     }
 
     auto incoming = server.receive();
-    auto [log] = processMessages(incoming);
+    auto messages = processMessages(incoming);
 
-    auto outgoing = buildOutgoing(log);
+    // auto outgoing = buildOutgoing(log);
+    auto outgoing = postOffice(messages);
     server.send(outgoing);
 
     if (errorWhileUpdating)
