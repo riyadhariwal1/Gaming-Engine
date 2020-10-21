@@ -53,7 +53,6 @@ void onDisconnect(Connection c)
 struct MessageResult
 {
   std::string result;
-  bool shouldShutdown;
 };
 
 //given a Connection, return that user;
@@ -307,17 +306,14 @@ bool isCommand(std::string text)
 //else, create a new string called result that is as follows: SENDER_ID ++ ">" ++ MESSAGE_TEXT
 //refer to main() to see what happens with the return value.
 MessageResult
-processMessages(Server &server, const std::deque<Message> &incoming)
+processMessages(const std::deque<Message> &incoming)
 {
   std::ostringstream result;
-  bool quit = false;
   for (auto &message : incoming)
   {
 
     if (isCommand(message.text))
     {
-      //          result << "DEBUG : The server should be doing command stuff now\n";
-      //          std::cout<<"DEBUG: The following message is a command. "<< message.text << "\n";
       result << runCommand(message);
     }
     else
@@ -325,7 +321,7 @@ processMessages(Server &server, const std::deque<Message> &incoming)
       result << message.c.id << "> " << message.text << "\n";
     }
   }
-  return MessageResult{result.str(), quit};
+  return MessageResult{result.str()};
 }
 
 //Takes in one long processed string,
@@ -350,20 +346,19 @@ buildOutgoing(const std::string &log)
 //returns deque of messages in the form of
 //                              Connection: Recipient ID  	(where recipient = a user who's in the same room as the sender)
 //                              Text: USER_ID> MESSAGE_TEXT
-//
+std::deque<Message>
+postOffice(const std::deque<Message>& incoming){
+   std::deque<Message> output;
+   for (auto& message : incoming) {
+       //use getRoom to find the room that contains Message->Connection
+       //for each User in that room
+           //create a new output Message for that user.
+           //add that new output Message into the output dequeue
 
-//std::deque<Message> postOffice(const std::deque<Message>& incoming){
-//    std::deque<Message> output;
-//    for (auto& message : incoming) {
-//        //use getRoom to find the room that contains Message->Connection
-//        //for each User in that room
-//            //create a new output Message for that user.
-//            //add that new output Message into the output dequeue
-//
-//        //result << message.connection.id << "> " << message.text << "\n";
-//        //return that output dequeue into server.send
-//    }
-//}
+       //result << message.connection.id << "> " << message.text << "\n";
+       //return that output dequeue into server.send
+   }
+}
 
 std::string
 getHTTPMessage(const char *htmlLocation)
@@ -420,12 +415,12 @@ int main(int argc, char *argv[])
     }
 
     auto incoming = server.receive();
-    auto [log, shouldQuit] = processMessages(server, incoming);
+    auto [log] = processMessages(incoming);
 
     auto outgoing = buildOutgoing(log);
     server.send(outgoing);
 
-    if (shouldQuit || errorWhileUpdating)
+    if (errorWhileUpdating)
     {
       break;
     }
