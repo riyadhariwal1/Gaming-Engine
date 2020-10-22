@@ -13,6 +13,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <vector>
 #include <unordered_map>
 
 
@@ -46,8 +47,11 @@ struct ConnectionHash {
  *  Connection.
  */
 struct Message {
-  Connection connection;
-  std::string text;
+
+    Connection c;
+    std::string text;
+    int sendersRoomId;
+
 };
 
 

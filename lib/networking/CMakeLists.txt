@@ -4,6 +4,8 @@ set(LLVM_ENABLE_EH ON)
 add_library(networking
   src/Server.cpp
   src/Client.cpp
+  src/Room.cpp
+  src/User.cpp
 )
 
 find_package(Boost 1.72 COMPONENTS system REQUIRED)
