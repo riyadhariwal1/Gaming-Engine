@@ -8,9 +8,16 @@
 #include "Variables.h"
 #include <fstream>
 #include <sstream>
-#include "Game.h"
+#include "Rule.h"
 #include "GlobalMessage.h"
+#include "Extend.h"
+#include "When.h"
+#include "Discard.h"
+#include "ForEach.h"
+#include "ParallelFor.h"
 #include "Player.h"
+#include "InputChoice.h"
+#include "Scores.h"
 #include "Add.h"
 
 using namespace std;
@@ -19,13 +26,15 @@ using json = nlohmann::json;
 class Loader {
 public:
 
-    void forEachRule(json element);
-    void globalMessageRule (json rule);
+    ForEachRule* forEachRule(json element);
+    GlobalMessage * globalMessageRule (json rule);
     void addRule (json rule);
-    void inputChoiceRule(json rule);
-    void discardRule (json rule);
-    void whenRule (json rule);
-    //void parallelForRule (json rule);
+    InputChoiceRule * inputChoiceRule(json rule);
+    DiscardRule * discardRule (json rule);
+    WhenRule * whenRule (json rule);
+    ParallelFor * parallelForRule (json rule);
+    ExtendRule* extendRule (json rule);
+    ScoreRule * scoreRule(json rule);
 
 };
 

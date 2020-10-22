@@ -5,9 +5,16 @@
 #include "Variables.h"
 #include <fstream>
 #include <sstream>
-#include "Game.h"
+#include "Rule.h"
 #include "GlobalMessage.h"
+#include "Extend.h"
+#include "When.h"
+#include "Discard.h"
+#include "ForEach.h"
+#include "ParallelFor.h"
 #include "Player.h"
+#include "InputChoice.h"
+#include "Scores.h"
 #include "Add.h"
 #include "Loader.h"
 
@@ -51,11 +58,39 @@ int main() {
     cout << "\n\n" <<endl;
 
     // Loop through the rules!
+    json rules = j["rules"];
+    vector<Rule *> allRule;
+
     Loader loader;
-    loader.forEachRule(j);
+    int i = 0;
+    for (const json element : rules)
+    {
+        //cout << i++ << endl;
+        auto rulesName = element.at("rule").get<string>();
+        //cout << rulesName << endl;
+        if (rulesName == "foreach")
+        {
+            ForEachRule *ruleIndex = loader.forEachRule(element);
+            allRule.push_back(ruleIndex);
+        }
+        
+        else if (rulesName == "scores")
+        {
+            ScoreRule *ruleIndex = loader.scoreRule(element);
+            allRule.push_back(ruleIndex);
+        }
+    }
+    for (int i = 0 ; i < allRule.size() ; i++)
+    {
+        allRule[i] ->print();
+    }
 
 
-    //game test ! missing ruleList
-    AllPlayers allPlayer;
-    Game game(allPlayer.getList(), configuration, constant, var);
+    // Loader loader;
+    // loader.forEachRule(j);
+
+
+    // //game test ! missing ruleList
+    // AllPlayers allPlayer;
+    // Game game(allPlayer.getList(), configuration, constant, var);
 }

@@ -10,7 +10,7 @@ using namespace std;
 class GameState {
     public:
         GameState(unordered_map<string,boost::any>);
-        auto getVariable(string);
+        //auto getVariable(string);
         void addIntVariable(string,int);
         void addStringVariable(string,string);
     private:
