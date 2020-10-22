@@ -13,6 +13,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <iomanip>
 
 #include "User.h"
 #include "Room.h"
@@ -65,6 +66,20 @@ getUser(Connection c)
       return &client;
   }
   std::cout << "Error. Trying to find user with Id " << c.id << "but they are not in the Client vector"
+            << "\n";
+
+  return nullptr;
+}
+
+// given a string of a user name, return a user
+User*
+getUserByName(std::string name){
+  for (auto& client : clients)
+  {
+    if (client.userName == name)
+      return &client;
+  }
+  std::cout << "Error. There is no such a name among the connected users."
             << "\n";
 
   return nullptr;
@@ -281,12 +296,30 @@ runCommand(Message message)
     user->setUserName(targetName);
     std::cout << "You changed your name to " << targetName << std::endl;
   }
+  else if (commandName == "whisper"){
+    auto text = message.text;
+    auto v = quoted(text);
+    targetName = v[1];
+    sendingMessage = v[2]
+  }
   else
   {
     std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
               << "\n";
   }
   return result.str();
+}
+
+// extract content by way of quotation marks
+std::vector<std::string>
+quoted(std::string text){
+  std::vector<std:string> v;
+  std::string s;
+
+  while (text >> std::quoted(s)){
+      v.push_back(s);
+    }
+  return v;
 }
 
 // prints the tokenized message (DEBUG ONLY)
@@ -333,6 +366,8 @@ processMessages(const std::deque<Message> &incoming)
     }
 
     auto sendersRoomId = user->getRoom();
+
+    
 
     outgoing.push_back({message.c, result.str(), sendersRoomId});
   }
