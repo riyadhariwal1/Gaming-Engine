@@ -6,17 +6,26 @@
 #include <vector>
 using namespace std;
 
-struct Case {
-    string condition;
-    vector<Rule> ruleList;
-};
-class When :  public Rule {
-    public:
-        When(vector<Case>&);
-        void execute(GameState&) override;
-        void addCase(Case&);
+class Case {
     private:
-        vector<Case> caseList;
+        string stringCondition;
+        vector<Rule*> ruleList;
+    public:
+        Case(string);
+        Case(bool);
+        void addRule(Rule* );
+        void print();
+};
+class WhenRule :  public Rule {
+    public:
+        WhenRule ();
+        //WhenRule(vector<Case>&);
+        void execute(GameState&) override;
+        void addCase(Case*);
+        void print();
+    private:
+        vector<Case*> caseList;
+        
 
 };
 #endif

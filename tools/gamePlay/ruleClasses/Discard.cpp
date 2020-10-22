@@ -1,7 +1,15 @@
-#include "Discard.h"
-#include "Constants.h"
-#include <vector>
+#include "include/Discard.h"
 
-DiscardRule::Discard(string list, int count) {
+DiscardRule::DiscardRule(string from, string count) : from(from), count(count)
+{
+  // discard count number of elements from list
+}
 
+void DiscardRule::execute(GameState &gameState){}
+
+void DiscardRule::print()
+{
+  cout << "Discard rule: " << endl;
+  cout << "    from == " << from << endl;
+  cout << "    count == " << count << endl;
 }

@@ -1,15 +1,15 @@
 #ifndef GLOBAL_MESSAGE_RULE_H
 #define GLOBAL_MESSAGE_RULE_H
 #include "Rule.h"
-#include "GameState.h"
 #include <string>
 
-class GlobalMessage {
+class GlobalMessage : public Rule{
     public:
-        explicit GlobalMessage(std::string& value);
-        void execute();
+        GlobalMessage(string value);
+        void execute(GameState&) override ;
+        void print() override;
     private:
-        std::string& value;
+        string value;
 
 };
 #endif

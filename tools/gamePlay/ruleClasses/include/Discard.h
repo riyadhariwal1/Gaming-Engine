@@ -1,15 +1,17 @@
 #ifndef DISCARD_RULE_H
 #define DISCARD_RULE_H
 #include "Rule.h"
-#include "GameState.h"
 #include <string>
 
-class DiscardRule : public Rule {
-public:
-    DiscardRule(string, int);
+class DiscardRule : public Rule
+{
+    public:
+    DiscardRule(string, string);
     void execute(GameState&) override;
-
-private:
-
+    void print() override;
+    
+    private:
+    string from;
+    string count;
 };
 #endif

@@ -5,8 +5,14 @@
 #include <string>
 using namespace std;
 
-class Scores :  public Rule {
-    Scores(string, bool);
+class ScoreRule :  public Rule {
+    public:
+    ScoreRule(string, bool);
     void execute(GameState&) override;
+    void print()override;
+
+    private:
+    string score;
+    bool ascending;
 };
 #endif

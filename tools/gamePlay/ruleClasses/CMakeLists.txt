@@ -3,6 +3,13 @@ target_sources(ruleClasses
   PRIVATE
     GlobalMessage.cpp
     Add.cpp
+    Discard.cpp
+    ForEachRule.cpp
+    InputChoice.cpp
+    ParallelFor.cpp
+    Extend.cpp
+    WhenRule.cpp
+    Scores.cpp
 )
 target_include_directories(ruleClasses
   PUBLIC
