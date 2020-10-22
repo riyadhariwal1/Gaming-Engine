@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <string>
+#include <vector>
 using namespace std;
 
 class Player {
@@ -16,10 +17,16 @@ class Player {
       std::string& name;
       int gameWins;
 };
-#endif
 
-/*
-List of Players
+
+
+//List of Players - yet to implement
 class AllPlayers{
+private:
+    vector<Player> playerList;
 
-}*/
+public:
+    void addPlayer(Player player);
+    vector<Player> getList();
+};
+#endif

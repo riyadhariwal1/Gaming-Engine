@@ -10,26 +10,16 @@ if(NOT json_POPULATED)
   add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-add_executable(jsonparser Loader.cpp Constants.cpp Configuration.cpp Variables.cpp)
+add_library(jsonParsing)
+target_sources(jsonParsing
+        PRIVATE
+        Configuration.cpp Constants.cpp Variables.cpp Loader.cpp)
 
-target_include_directories(jsonparser
+target_include_directories(jsonParsing
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
-target_link_libraries(jsonparser PRIVATE nlohmann_json::nlohmann_json gameState ruleClasses Players)
+target_link_libraries(jsonParsing PRIVATE nlohmann_json::nlohmann_json gameState ruleClasses Players)
 
-set_target_properties(jsonparser
-        PROPERTIES
-        LINKER_LANGUAGE CXX
-        CXX_STANDARD 17
-        PREFIX ""
-        )
 
-install(TARGETS jsonparser
-        RUNTIME DESTINATION bin)
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
-        DESTINATION ${CMAKE_BINARY_DIR}/bin)
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
-        DESTINATION ${CMAKE_BINARY_DIR})
