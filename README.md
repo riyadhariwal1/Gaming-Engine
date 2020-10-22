@@ -6,6 +6,7 @@ This project requires:
 2. Boost >= 1.72
 3. CMake >= 3.12
 4. NCurses (only tested with 6.1)
+5. nlohmann_json >= 3.2.0
 
 ## Building with CMake
 

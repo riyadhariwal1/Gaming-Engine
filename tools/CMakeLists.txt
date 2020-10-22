@@ -1,3 +1,6 @@
 add_subdirectory(chatserver)
 add_subdirectory(chatclient)
 add_subdirectory(flutterclient)
+add_subdirectory(jsonParser)
+add_subdirectory(gamePlay)
+add_subdirectory(runner)
