@@ -10,4 +10,6 @@ target_include_directories(gameState
         )
 
 #error: fatal error: Player.h: No such file or directory
-#target_link_libraries(gameState ruleClasses Players)
+target_link_libraries(gameState ruleClasses Players jsonParsing)
+
+

@@ -1,24 +1,6 @@
-#include <iostream>
-#include <nlohmann/json.hpp>
-#include "Configuration.h"
-#include "Constants.h"
-#include "Variables.h"
-#include <fstream>
-#include <sstream>
-#include "Game.h"
-#include "GlobalMessage.h"
-#include "Player.h"
-#include "Add.h"
+#include "Loader.h"
 
-using namespace std;
-using json = nlohmann::json;
-
-/* DECLARATIONS */
-void forEachRule(json element);
-
-
-/* -- */
-void globalMessageRule (json rule)
+void Loader::globalMessageRule (json rule)
 {
     cout << " im in global" << endl;
     cout << rule.dump() << endl;
@@ -31,7 +13,7 @@ void globalMessageRule (json rule)
 
 }
 
-void addRule (json rule)
+void Loader::addRule (json rule)
 {
   cout << " im in add" << endl;
   // example player to be removed with
@@ -46,7 +28,7 @@ void addRule (json rule)
   cout << "\n";
 }
 
-void inputChoiceRule(json rule)
+void Loader::inputChoiceRule(json rule)
 {
     cout << " im in input" << endl;
 
@@ -57,11 +39,11 @@ void inputChoiceRule(json rule)
 //"from": << variable name of a list to discard from >>,
 //"count": << number of elements to discard >>
 //}
-void discardRule (json rule) {
+void Loader::discardRule (json rule) {
     cout << " im in discard" << endl;
 }
 
-void whenRule (json rule)
+void Loader::whenRule (json rule)
 {
     cout << " im in when" << endl;
     //cout << rule << "\n" << endl;
@@ -76,7 +58,7 @@ void whenRule (json rule)
       }
     }
 }
-// void parallelForRule (json rule)
+// void Loader::parallelForRule (json rule)
 // {
 //     cout << " im in parrallel" << endl;
 
@@ -116,7 +98,7 @@ void whenRule (json rule)
 // loops through all rules the same as rule=="foreach"
 // "foreach" class will need to receive list + element
 // and apply some rules specifically to that
-void forEachRule(json element)
+void Loader::forEachRule(json element)
 {
     //class forEach;
 
@@ -168,47 +150,4 @@ void forEachRule(json element)
 }
 
 
-int main() {
-    string filePath = "rockPaperScissors.json";
-    ifstream ifs(filePath, std::ifstream::binary);
-    if (ifs.fail()){
-        throw std::runtime_error("Cannot open Json file");
-    }
 
-    json j = json::parse(ifs);
-
-    //config
-    json config = j["configuration"];
-    Configuration configuration = Configuration(config["name"], config["player count"]["min"],
-                                                config["player count"]["max"], config["audience"], config["setup"]["Rounds"]);
-    configuration.printConfiguration();
-
-    //constants
-    json constantsArr = j["constants"]["weapons"];
-    Constants constant;
-    for (const auto &element : constantsArr){
-        auto name = element.at("name").get<string>();
-        auto beats = element.at("beats").get<string>();
-        Weapon temp(name, beats);
-        constant.addWeapon(temp);
-    }
-    constant.print();
-
-    //variable
-    json variable = j["variables"]["winners"];
-    Variables var;
-    for (const auto &element : variable){
-        string winner = element.get<string>();
-        var.addWinner(winner);
-    }
-    var.print();
-    cout << "\n\n" <<endl;
-
-    // Loop through the rules!
-    forEachRule(j);
-
-
-    //game test ! missing ruleList
-    AllPlayers allPlayer;
-    Game game(allPlayer.getList(), configuration, constant, var);
-}
