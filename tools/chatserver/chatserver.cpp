@@ -367,8 +367,13 @@ processMessages(const std::deque<Message> &incoming)
 
     auto sendersRoomId = user->getRoom();
     // create a placeholder Message object
-    // auto tempMessage = Message(message.c, result.str(), sendersRoomId);
+    Message tempMessage = {message.c, result.str(), sendersRoomId};
 
+    auto v = quoted(tempMessage);
+    if (v[0] == "/whisper"){
+      User* user = getUserByName(v[1])
+      tempMessage.whisperID = user->getConnection();
+    }
     // 1. extract the command and parameters again here using quoted(message.text)
     // 2. if first element == "/whisper", use the second element to find the user by name and add the Connection ID to tempMessage
     // 3, else just pass the Message forward as normal
@@ -412,8 +417,14 @@ postOffice(const std::deque<Message>& processedMessages){
         // if true, push_back one message object to the whisperId
         // else, send message to all rooms members as normal
 
-        for (auto user : sendersRoom->getUsers()) {
-          output.push_back({ user.connection, message.text, message.sendersRoomId});
+        if (message.whisperID !=undefined){
+          output.push_back({ message.c, message.text, message.sendersRoomId});
+          output.push_back({ message.whisperID, message.text, message.sendersRoomId});
+        }
+        else{
+          for (auto user : sendersRoom->getUsers()) {
+            output.push_back({ user.connection, message.text, message.sendersRoomId});
+          }
         }
    }
 
