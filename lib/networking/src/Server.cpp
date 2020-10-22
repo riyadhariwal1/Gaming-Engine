@@ -7,7 +7,7 @@
 
 
 #include "Server.h"
-
+#include <iostream>
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
 
@@ -373,7 +373,7 @@ Server::update() {
   impl->ioContext.poll();
 }
 
-
+//returns a deque of all Message objects (defined in Server.h) that have been sent by the clients
 std::deque<Message>
 Server::receive() {
   std::deque<Message> oldIncoming;
@@ -381,18 +381,20 @@ Server::receive() {
   return oldIncoming;
 }
 
-
+//Given a deque of Message objects (defined in Server.h)
+//Try to connect with the UserId found in the Message.
+//Send that user the Message's text.
 void
 Server::send(const std::deque<Message>& messages) {
   for (auto& message : messages) {
-    auto found = impl->channels.find(message.connection);
+    auto found = impl->channels.find(message.c);
     if (impl->channels.end() != found) {
       found->second->send(message.text);
     }
   }
 }
 
-
+//Given a userID, try to disconnect that user from the server.
 void
 Server::disconnect(Connection connection) {
   auto found = impl->channels.find(connection);
