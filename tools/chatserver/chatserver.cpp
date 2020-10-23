@@ -297,10 +297,6 @@ runCommand(Message message)
     std::cout << "You changed your name to " << targetName << std::endl;
   }
   else if (commandName == "whisper"){
-    auto text = message.text;
-    auto v = quoted(text);
-    targetName = v[1];
-    sendingMessage = v[2]
   }
   else
   {
@@ -313,10 +309,11 @@ runCommand(Message message)
 // extract content by way of quotation marks
 std::vector<std::string>
 quoted(std::string text){
-  std::vector<std:string> v;
+  std::vector<std::string> v;
+  std::istringstream newText(text);
   std::string s;
 
-  while (text >> std::quoted(s)){
+  while (newText >> std::quoted(s)){
       v.push_back(s);
     }
   return v;
@@ -369,9 +366,9 @@ processMessages(const std::deque<Message> &incoming)
     // create a placeholder Message object
     Message tempMessage = {message.c, result.str(), sendersRoomId};
 
-    auto v = quoted(tempMessage);
+    auto v = quoted(tempMessage.text);
     if (v[0] == "/whisper"){
-      User* user = getUserByName(v[1])
+      User* user = getUserByName(v[1]);
       tempMessage.whisperID = user->getConnection();
     }
     // 1. extract the command and parameters again here using quoted(message.text)
@@ -417,7 +414,7 @@ postOffice(const std::deque<Message>& processedMessages){
         // if true, push_back one message object to the whisperId
         // else, send message to all rooms members as normal
 
-        if (message.whisperID !=undefined){
+        if (message.whisperID.id != 0){
           output.push_back({ message.c, message.text, message.sendersRoomId});
           output.push_back({ message.whisperID, message.text, message.sendersRoomId});
         }
