@@ -8,7 +8,7 @@ using namespace std;
 
 class Rule {
     public:
-        virtual void execute(GameState&){};
+        virtual void execute(State&){};
         virtual void print ()
         {
             cout << "BASE CLASS SHOULD NOT BE PRINTING THIS " << endl;

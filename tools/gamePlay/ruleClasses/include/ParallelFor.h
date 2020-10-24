@@ -11,7 +11,7 @@ class ParallelFor : public Rule
 {
     public:
         ParallelFor(string, string);
-        void execute(GameState&) override;
+        void execute(State&) override;
         void addRule(Rule*);
         void print() override;
     private:

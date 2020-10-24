@@ -11,7 +11,7 @@ class ForEachRule : public Rule
 {
     public:
         ForEachRule(string, string);
-        void execute(GameState&) override ;
+        void execute(State&) override ;
         void addRule(Rule*);
         void print() override;
     private:

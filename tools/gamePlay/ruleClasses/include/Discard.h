@@ -7,7 +7,7 @@ class DiscardRule : public Rule
 {
     public:
     DiscardRule(string, string);
-    void execute(GameState&) override;
+    void execute(State&) override;
     void print() override;
     
     private:

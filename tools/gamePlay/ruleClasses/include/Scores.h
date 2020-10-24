@@ -8,7 +8,7 @@ using namespace std;
 class ScoreRule :  public Rule {
     public:
     ScoreRule(string, bool);
-    void execute(GameState&) override;
+    void execute(State&) override;
     void print()override;
 
     private:

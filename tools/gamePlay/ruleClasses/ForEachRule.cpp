@@ -10,7 +10,8 @@ void ForEachRule::addRule(Rule *rule)
 }
 void ForEachRule::execute(State &state)
 {
-
+    auto findList = state.findByName(list);
+    for()
 }
 void ForEachRule::print() 
 {
