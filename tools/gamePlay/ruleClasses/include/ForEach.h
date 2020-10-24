@@ -1,6 +1,7 @@
 #ifndef FOREACH_RULE_H
 #define FOREACH_RULE_H
 #include "Rule.h"
+#include "State.h"
 #include <list>
 #include <string>
 #include <boost/any.hpp>

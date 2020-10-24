@@ -8,8 +8,9 @@ void ForEachRule::addRule(Rule *rule)
 {
     ruleList.push_back(rule);
 }
-void ForEachRule::execute(GameState &gameState)
+void ForEachRule::execute(State &state)
 {
+
 }
 void ForEachRule::print() 
 {

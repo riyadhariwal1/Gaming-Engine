@@ -5,14 +5,15 @@
 //{}
 
 //no ruleList
-Game::Game(vector<Player> playerList, Configuration configuration, Constants constants, Variables variables)
-        : playerList(playerList), configuration(configuration), constants(constants), variables(variables)
+Game::Game(State state, vector<Rule*> ruleList)
+        : state(state), ruleList(ruleList)
 {}
 
-vector<Weapon> Game::getConstantList(string listName) {
+/* vector<Weapon> Game::getConstantList(string listName) {
     if (listName == "weapons") {
         return constants.getList();
     }
     //make this a more generalized implementation (map in Constants)
     return constants.getList();
-}
+} */
+
