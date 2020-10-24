@@ -11,9 +11,15 @@ void ForEachRule::addRule(Rule *rule)
 void ForEachRule::execute(State &state)
 {
     auto findList = state.findByName(list);
-    for()
+    for (auto &index : findList)
+    {
+        for (std::vector<Rule>::iterator it = std::begin(ruleList); it != std::end(ruleList); ++it)
+        {
+            it->execute(state);
+        }
+    }
 }
-void ForEachRule::print() 
+void ForEachRule::print()
 {
     cout << "ForEach: " << endl;
     cout << "   list " << list << endl;
