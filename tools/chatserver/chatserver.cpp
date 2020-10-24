@@ -74,10 +74,14 @@ getUser(Connection c)
 // given a string of a user name, return a user
 User*
 getUserByName(std::string name){
+  std::cout<<"you are whisper to "<<"\""<<name<<"\""<<"\n";
   for (auto& client : clients)
   {
-    if (client.userName == name)
+    std::string tempString = client.userName.substr(0, client.userName.length()-1);
+    bool whisperUser = name.compare(tempString) == 0;
+    if (whisperUser){
       return &client;
+    }
   }
   std::cout << "Error. There is no such a name among the connected users."
             << "\n";
@@ -366,9 +370,20 @@ processMessages(const std::deque<Message> &incoming)
     // create a placeholder Message object
     Message tempMessage = {message.c, result.str(), sendersRoomId};
 
-    auto v = quoted(tempMessage.text);
-    if (v[0] == "/whisper"){
-      User* user = getUserByName(v[1]);
+    auto v = quoted(message.text);
+    bool isCommandWhisper = v.size() !=0 && v.at(0) == "/whisper";
+
+    if (isCommandWhisper){
+      if (user->getUserName() != "")
+      {
+        result << user->getUserName() << "> " << v[2] << "\n";
+      }
+      else
+      {
+        result << message.c.id << "> " << v[2] << "\n";
+      }
+      tempMessage.text = result.str();
+      User* user = getUserByName(v.at(1));
       tempMessage.whisperID = user->getConnection();
     }
     // 1. extract the command and parameters again here using quoted(message.text)
@@ -417,6 +432,7 @@ postOffice(const std::deque<Message>& processedMessages){
         if (message.whisperID.id != 0){
           output.push_back({ message.c, message.text, message.sendersRoomId});
           output.push_back({ message.whisperID, message.text, message.sendersRoomId});
+
         }
         else{
           for (auto user : sendersRoom->getUsers()) {
