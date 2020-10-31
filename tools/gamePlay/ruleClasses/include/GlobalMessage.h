@@ -6,7 +6,7 @@
 class GlobalMessage : public Rule{
     public:
         GlobalMessage(string value);
-        void execute(GameState&) override ;
+        void execute(State&) override ;
         void print() override;
     private:
         string value;

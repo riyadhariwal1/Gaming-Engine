@@ -20,7 +20,7 @@ class WhenRule :  public Rule {
     public:
         WhenRule ();
         //WhenRule(vector<Case>&);
-        void execute(GameState&) override;
+        void execute(State&) override;
         void addCase(Case*);
         void print();
     private:

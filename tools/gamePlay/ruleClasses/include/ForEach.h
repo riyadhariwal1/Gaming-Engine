@@ -1,6 +1,7 @@
 #ifndef FOREACH_RULE_H
 #define FOREACH_RULE_H
 #include "Rule.h"
+#include "State.h"
 #include <list>
 #include <string>
 #include <boost/any.hpp>
@@ -10,7 +11,7 @@ class ForEachRule : public Rule
 {
     public:
         ForEachRule(string, string);
-        void execute(GameState&) override ;
+        void execute(State&) override ;
         void addRule(Rule*);
         void print() override;
     private:

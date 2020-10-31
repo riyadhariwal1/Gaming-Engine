@@ -8,7 +8,7 @@ class InputChoiceRule : public Rule
 {
     public:
     InputChoiceRule(string, string, string, string);
-    void execute(GameState&) override;
+    void execute(State&) override;
     void print() override;
 
     private:

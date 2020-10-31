@@ -17,14 +17,19 @@
 #include "Scores.h"
 #include "Add.h"
 #include "Loader.h"
+#include "State.h"
+#include "Game.h"
+#include <string>
 
 using namespace std;
 using json = nlohmann::json;
 
-int main() {
+int main()
+{
     string filePath = "rockPaperScissors.json";
     ifstream ifs(filePath, std::ifstream::binary);
-    if (ifs.fail()){
+    if (ifs.fail())
+    {
         throw std::runtime_error("Cannot open Json file");
     }
 
@@ -39,7 +44,8 @@ int main() {
     //constants
     json constantsArr = j["constants"]["weapons"];
     Constants constant;
-    for (const auto &element : constantsArr){
+    for (const auto &element : constantsArr)
+    {
         auto name = element.at("name").get<string>();
         auto beats = element.at("beats").get<string>();
         Weapon temp(name, beats);
@@ -50,17 +56,18 @@ int main() {
     //variable
     json variable = j["variables"]["winners"];
     Variables var;
-    for (const auto &element : variable){
+    for (const auto &element : variable)
+    {
         string winner = element.get<string>();
         var.addWinner(winner);
     }
     var.print();
-    cout << "\n\n" <<endl;
+    cout << "\n\n"
+         << endl;
 
     // Loop through the rules!
     json rules = j["rules"];
     vector<Rule *> allRule;
-
     Loader loader;
     int i = 0;
     for (const json element : rules)
@@ -73,24 +80,23 @@ int main() {
             ForEachRule *ruleIndex = loader.forEachRule(element);
             allRule.push_back(ruleIndex);
         }
-        
+
         else if (rulesName == "scores")
         {
             ScoreRule *ruleIndex = loader.scoreRule(element);
             allRule.push_back(ruleIndex);
         }
     }
-    for (int i = 0 ; i < allRule.size() ; i++)
+    for (int i = 0; i < allRule.size(); i++)
     {
-        allRule[i] ->print();
+        allRule[i]->print();
     }
-
 
     // Loader loader;
     // loader.forEachRule(j);
 
-
     // //game test ! missing ruleList
-    // AllPlayers allPlayer;
-    // Game game(allPlayer.getList(), configuration, constant, var);
+    AllPlayers allPlayer;
+    State state(allPlayer.getList(), configuration, constant, var);
+    Game game(state, allRule);
 }

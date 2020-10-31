@@ -4,9 +4,15 @@
 #include "GameState.h"
 #include "Player.h"
 #include <string>
+using namespace std;
 
-class AddRule {
-    public:
-    AddRule(Player& variable, int count);
+class AddRule
+{
+public:
+    AddRule(string, string);
+    void execute(State&);
+private:
+    string to;
+    string value;
 };
 #endif

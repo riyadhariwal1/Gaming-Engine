@@ -7,7 +7,7 @@ GlobalMessage::GlobalMessage(string value) : value(value)
 {
 }
 
-void GlobalMessage::execute(GameState& gameState)
+void GlobalMessage::execute(State& gameState)
 {
   // replace in string -- need GameState varaibles first
   // Example:  "Winners: {winners.elements.name}"
@@ -18,6 +18,7 @@ void GlobalMessage::execute(GameState& gameState)
   string variableToReplace = value.substr(open, close);
   value.replace(open, close, "VARIABLE");
   cout << value << endl;
+  
 }
 
 void GlobalMessage::print()

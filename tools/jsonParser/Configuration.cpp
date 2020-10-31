@@ -11,3 +11,15 @@ void Configuration::printConfiguration() {
          "   audience: " << audience << endl <<
          "   rounds: " << rounds << endl;
 }
+string Configuration::getName() {
+    return name;
+}
+int Configuration::getRounds() {
+    return rounds;
+}
+PlayerCount getPlayerCount() {
+    return playerCount;
+}
+bool isAudible(){
+    return audience;
+}

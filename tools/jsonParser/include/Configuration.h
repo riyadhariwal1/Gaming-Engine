@@ -22,6 +22,10 @@ private:
 
 public:
     Configuration(string name, int min, int max, bool audience, int rounds);
+    string getName();
+    PlayerCount getPlayerCount();
+    bool isAudible();
+    int getRounds();
     void printConfiguration();
 };
 
