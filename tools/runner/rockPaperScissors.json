@@ -7,7 +7,10 @@
     },
     "audience": false,
     "setup": {
-      "Rounds": 10
+      "Rounds": 10,
+      "Levels": 1.0,
+      "TestString": "string",
+      "TestBool": true
     }
   },
   "constants": {

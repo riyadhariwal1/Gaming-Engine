@@ -5,7 +5,7 @@ DiscardRule::DiscardRule(string from, string count) : from(from), count(count)
   // discard count number of elements from list
 }
 
-void DiscardRule::execute(GameState &gameState){}
+void DiscardRule::execute(State &gameState){}
 
 void DiscardRule::print()
 {

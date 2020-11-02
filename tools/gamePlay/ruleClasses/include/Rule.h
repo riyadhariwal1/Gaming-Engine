@@ -4,6 +4,8 @@
 #include<iostream>
 #include<vector>
 #include "GameState.h"
+#include "State.h"
+
 using namespace std;
 
 class Rule {

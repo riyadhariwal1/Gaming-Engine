@@ -8,11 +8,11 @@ void ParallelFor::addRule(Rule *rule)
 {
     ruleList.push_back(rule);
 }
-void ParallelFor::execute(GameState &gameState)
+void ParallelFor::execute(State &gameState)
 {
 }
 
-void ParallelFor::print() 
+void ParallelFor::print()
 {
     cout << "ParallelFor: " << endl;
     cout << "    list == " << list << endl;

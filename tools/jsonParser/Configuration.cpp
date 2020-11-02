@@ -1,7 +1,10 @@
 #include "Configuration.h"
 
-Configuration::Configuration(string name, int min, int max, bool audience, int rounds)
-    : name(name), playerCount({min, max}), audience(audience), rounds(rounds) {}
+Settings::Settings(unordered_map<string,boost::variant<int, double, bool, string>> settingsMap) : settingsMap(settingsMap){}
+
+
+Configuration::Configuration(string name, int min, int max, bool audience, Settings setup)
+    : name(name), playerCount({min, max}), audience(audience), setup(setup){}
 
 
 void Configuration::printConfiguration() {
@@ -9,17 +12,21 @@ void Configuration::printConfiguration() {
             "   name: " << name << endl <<
          "   playerCount: min: " << playerCount.min << " max: " << playerCount.max << endl <<
          "   audience: " << audience << endl <<
-         "   rounds: " << rounds << endl;
+         "   rounds: " << endl;
 }
+
 string Configuration::getName() {
     return name;
 }
-int Configuration::getRounds() {
-    return rounds;
-}
-PlayerCount getPlayerCount() {
+
+/*SetUp Configuration::getSetUp() {
+    return setup;
+}*/
+
+PlayerCount Configuration::getPlayerCount() {
     return playerCount;
 }
-bool isAudible(){
+
+bool Configuration::isAudible(){
     return audience;
 }

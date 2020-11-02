@@ -11,7 +11,7 @@ void Weapon:: print(){
 
 Constants::Constants(){};
 
-void Constants:: addWeapon(Weapon weapon){   
+void Constants:: addWeapon(Weapon weapon){
     weapons.push_back(weapon);
 }
 

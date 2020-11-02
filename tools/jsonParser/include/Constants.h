@@ -13,7 +13,7 @@ class Weapon{
 private:
     string name;
     string beats;
-    
+
 public:
     Weapon(string name, string beats);
     void print();

@@ -10,14 +10,14 @@ void ForEachRule::addRule(Rule *rule)
 }
 void ForEachRule::execute(State &state)
 {
-    auto findList = state.findByName(list);
+    /*auto findList = state.findByName(list);
     for (auto &index : findList)
     {
         for (std::vector<Rule>::iterator it = std::begin(ruleList); it != std::end(ruleList); ++it)
         {
             it->execute(state);
         }
-    }
+    }*/
 }
 void ForEachRule::print()
 {
