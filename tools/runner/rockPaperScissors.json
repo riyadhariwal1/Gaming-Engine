@@ -10,7 +10,11 @@
       "Rounds": 10,
       "Levels": 1.0,
       "TestString": "string",
-      "TestBool": true
+      "TestBool": true,
+      "TestKind": {
+        "Kind": "Integer",
+        "Prompt": "Owner must input something"
+      }
     }
   },
   "constants": {

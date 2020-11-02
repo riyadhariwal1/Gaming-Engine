@@ -11,14 +11,8 @@
 
 using namespace std;
 
-template <typename T>
 
-// for more generic setup
-// requires input-choice
-struct SettingKind {
-  T value;
-  string prompt;
-};
+
 
 struct PlayerCount {
     int min;
@@ -31,6 +25,7 @@ class Settings {
 
   public:
     Settings(unordered_map<string,boost::variant<int, double, bool, string>> settingsMap);
+    void printSettings();
 };
 
 class Configuration {

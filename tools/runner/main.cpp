@@ -46,10 +46,8 @@ int main()
     json rules = GAMEJSON["rules"];
 
     // EXTRACT STATE
-
     // config
-    // conver json setup to mapped-settings
-    // clean up how to access these !!!
+    // extract setup
     json setup = config["setup"];
     unordered_map<string,boost::variant<int, double, bool, string>> config_setup;
     for ( auto& itrr : setup.items())
@@ -57,30 +55,30 @@ int main()
       string key = itrr.key();
       if (setup[key].type() == json::value_t::boolean) {
         config_setup[key] = setup[key].get<bool>();
-        cout << setup[key] << endl;
-        //cout << "type: " << config_setup[key].type().name() == typeid("string").name() << endl;
       }
-      if (setup[key].type() == json::value_t::number_integer) {
+      else if ((setup[key].type() == json::value_t::number_unsigned) ||
+        (setup[key].type() == json::value_t::number_integer)) {
         config_setup[key] = setup[key].get<int>();
-        cout << setup[key] << endl;
-        cout << "type: " << config_setup[key].which() << endl;
 
       }
-      if (setup[key].type() == json::value_t::string) {
-        config_setup[key] = setup[key].get<string>();
-        cout << setup[key] << endl;
-          cout << "type: " << config_setup[key].which() << endl;
+      else if (setup[key].type() == json::value_t::number_float) {
+        config_setup[key] = setup[key].get<double>();
 
+      }
+      else if (setup[key].type() == json::value_t::string) {
+        config_setup[key] = setup[key].get<string>();
+      }
+      else if (setup[key].type() == json::value_t::object) {
+        // still need to update for this 
+        cout <<  setup[key]["Kind"];
+        cout <<  setup[key]["Prompt"];
       }
     }
 
-
-    //cout << test << endl;
-    // json to unordered_map
-    //Settings setup(s);
     Settings game_settings(config_setup);
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
+    configuration.printConfiguration();
 /*
     //constants
     json constant_weapons = constants["weapons"];
