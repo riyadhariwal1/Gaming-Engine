@@ -14,9 +14,10 @@
 #include <unistd.h>
 #include <vector>
 #include <iomanip>
-
+#include <map>
 #include "User.h"
 #include "Room.h"
+#include "chatserver.h"
 using networking::Connection;
 using networking::Message;
 using networking::Server;
@@ -24,6 +25,17 @@ using networking::Server;
 //list of client IDs
 std::vector<User> clients;
 std::vector<Room> rooms;
+
+std::map<std::string, std::string (*)(Message)> commands = {
+    {"join",command_joinRoom},
+    {"create",command_createRoom},
+    {"leave",command_leaveRoom},
+    {"roomlist",command_printRoomList},
+    {"name",command_changeName},
+    {"whisper",command_whisper},
+    {"cmds",command_showCommands}
+};
+
 //ran by Server.h every time a new connection is made.
 //adds a new connection (i.e client ID) to the clients vector.
 void onConnect(Connection c)
@@ -155,6 +167,158 @@ tokenizeMessage(std::string message)
   return tokens;
 }
 
+std::string command_createRoom(Message message){
+    std::ostringstream result;
+    std::string targetRoomName;
+    auto tokens = tokenizeMessage(message.text);
+
+    try
+    {
+        targetRoomName = tokens.at(1);
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << "Room name is not provided for /create" << '\n';
+        std::cout << e.what() << "\n";
+        result << "Please provide a room name.\n";
+    }
+
+    // check if the room already exists
+    Room *existingRoom = getRoomByName(targetRoomName);
+
+    if (existingRoom != nullptr)
+    {
+        result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName
+               << " to join the room.\n";
+    }
+    else
+    {
+        Room newRoom(rooms.size(), targetRoomName);
+        User* user = getUser(message.c);
+
+        // leave the user's current room
+        Room* currentRoom = getRoomById(user->getRoom());
+        std::cout << currentRoom->getRoomId() << "\n";
+
+        if (currentRoom != nullptr) {
+            currentRoom->removeUser(*user);
+        }
+
+        newRoom.addUser(*user);
+        rooms.push_back(newRoom);
+        result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").\n";
+    }
+    return result.str();
+}
+std::string command_joinRoom(Message message){
+    std::ostringstream result;
+    std::string targetRoomName;
+    std::vector<std::string> tokens;
+
+    try
+    {
+        tokens = tokenizeMessage(message.text);
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << e.what() << "\n";
+    }
+
+    try
+    {
+        targetRoomName = tokens.at(1);
+
+        User* user = getUser(message.c);
+        Room* existingRoom = getRoomByName(targetRoomName);
+
+        // We check the target room exists before kicking the user out of their room
+        if (existingRoom == nullptr)
+        {
+            result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
+        }
+        else
+        {
+            Room *currentRoom = getRoomById(user->getRoom());
+
+            if (currentRoom != nullptr)
+            {
+                // remove the user from their current room
+                currentRoom->removeUser(*user);
+            }
+
+            existingRoom->addUser(*user);
+            result << "Sending User:" << message.c.id << " to room " << existingRoom->getRoomName() << ".\n";
+        }
+    }
+    catch (const std::exception &e)
+    {
+        // room name is not provided
+        std::cout << "No room provided for /join"
+                  << "\n";
+        std::cout << e.what() << "\n";
+        result << "Please provide a room name.\n";
+    }
+    return result.str();
+}
+std::string command_leaveRoom(Message message){
+    std::ostringstream result;
+    User* user = getUser(message.c);
+
+    if (user->roomId == 0) {
+        result << "You are already in the Main Lobby.\n";
+    } else {
+        Room *room = getRoomById(user->getRoom()); // this shouldn't fail...
+
+        room->removeUser(*user);
+        rooms.at(0).addUser(*user);
+        result << "Sending User:" << user->getConnection().id << " to main lobby.\n";
+    }
+    return result.str();
+}
+// print the available rooms to the user
+// also print detailed room into the console
+// todo: show lock icon next to private rooms
+std::string command_printRoomList(Message message){
+    std::ostringstream result;
+    result << "Here are the available rooms.\n";
+    result << "(Please check the console for debug information.)\n";
+    result << "\n";
+    std::cout << "\n";
+
+    User* user = getUser(message.c);
+    for (auto room : rooms)
+    {
+        result << room.getRoomName() << (user->getRoom() == room.getRoomId() ? " (current)" : "") << "\n";
+        room.printUsers();
+    }
+    return result.str();
+}
+std::string command_changeName(Message message){
+    std::string targetName;
+    auto tokens = tokenizeMessage(message.text);
+
+    for (size_t i=1;i<tokens.size();i++){
+        targetName += tokens.at(i);
+        targetName += " ";
+    }
+
+    User* user = getUser(message.c);
+    user->setUserName(targetName);
+    std::cout << "You changed your name to " << targetName << std::endl;
+    return "";
+}
+std::string command_whisper(Message message){
+    return "Will be implemented later.";
+}
+std::string command_showCommands(Message message){
+    std::ostringstream result;
+    result <<"List of Commands:"<<"\n";
+    for(auto pair:commands){
+        result<<pair.first<<"\n";
+    }
+    return result.str();
+}
+
 const char commandPrefix = '/';
 
 std::string
@@ -163,149 +327,13 @@ runCommand(Message message)
   std::ostringstream result;
   std::string commandName = strToLower(extractCommand(message.text));
   std::cout << "Attempting to call command:" << commandName << "\n";
-
-  if (commandName == "join")
-  {
-    std::string targetRoomName;
-    std::vector<std::string> tokens;
-
-    try
-    {
-      tokens = tokenizeMessage(message.text);
-    }
-    catch (const std::exception &e)
-    {
-      std::cout << e.what() << "\n";
-    }
-
-    try
-    {
-      targetRoomName = tokens.at(1);
-
-      User* user = getUser(message.c);
-      Room* existingRoom = getRoomByName(targetRoomName);
-
-      // We check the target room exists before kicking the user out of their room
-      if (existingRoom == nullptr)
-      {
-        result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
-      }
-      else
-      {
-        Room *currentRoom = getRoomById(user->getRoom());
-
-        if (currentRoom != nullptr)
-        {
-          // remove the user from their current room
-          currentRoom->removeUser(*user);
-        }
-
-        existingRoom->addUser(*user);
-        result << "Sending User:" << message.c.id << " to room " << existingRoom->getRoomName() << ".\n";
-      }
-    }
-    catch (const std::exception &e)
-    {
-      // room name is not provided
-      std::cout << "No room provided for /join"
-                << "\n";
-      std::cout << e.what() << "\n";
-      result << "Please provide a room name.\n";
-    }
-  }
-  else if (commandName == "leave")
-  {
-    User* user = getUser(message.c);
-
-    if (user->roomId == 0) {
-      result << "You are already in the Main Lobby.\n";
-    } else {
-      Room *room = getRoomById(user->getRoom()); // this shouldn't fail...
-
-      room->removeUser(*user);
-      rooms.at(0).addUser(*user);
-      result << "Sending User:" << user->getConnection().id << " to main lobby.\n";
-    }
-  }
-  else if (commandName == "roomlist")
-  {
-    // print the available rooms to the user
-    // also print detailed room into the console
-    // todo: show lock icon next to private rooms
-    result << "Here are the available rooms.\n";
-    result << "(Please check the console for debug information.)\n";
-    result << "\n";
-    std::cout << "\n";
-
-    User* user = getUser(message.c);
-
-    for (auto room : rooms)
-    {
-      result << room.getRoomName() << (user->getRoom() == room.getRoomId() ? " (current)" : "") << "\n";
-      room.printUsers();
-    }
-  }
-  else if (commandName == "create")
-  {
-    std::string targetRoomName;
-    auto tokens = tokenizeMessage(message.text);
-
-    try
-    {
-      targetRoomName = tokens.at(1);
-    }
-    catch (const std::exception &e)
-    {
-      std::cout << "Room name is not provided for /create" << '\n';
-      std::cout << e.what() << "\n";
-      result << "Please provide a room name.\n";
-    }
-
-    // check if the room already exists
-    Room *existingRoom = getRoomByName(targetRoomName);
-
-    if (existingRoom != nullptr)
-    {
-      result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName
-             << " to join the room.\n";
-    }
-    else
-    {
-      Room newRoom(rooms.size(), targetRoomName);
-      User* user = getUser(message.c);
-
-      // leave the user's current room
-      Room* currentRoom = getRoomById(user->getRoom());
-      std::cout << currentRoom->getRoomId() << "\n";
-
-      if (currentRoom != nullptr) {
-        currentRoom->removeUser(*user);
-      }
-
-      newRoom.addUser(*user);
-      rooms.push_back(newRoom);
-      result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").\n";
-    }
-  }
-  else if (commandName == "name"){
-    std::string targetName;
-    auto tokens = tokenizeMessage(message.text);
-    
-    for (size_t i=1;i<tokens.size();i++){
-      targetName += tokens.at(i);
-      targetName += " ";
-    }
-
-    User* user = getUser(message.c);
-    user->setUserName(targetName);
-    std::cout << "You changed your name to " << targetName << std::endl;
-  }
-  else if (commandName == "whisper"){
-  }
-  else
-  {
-    std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
+  auto search = commands.find(commandName);
+  if (search != commands.end()) {
+      result << search->second(message);
+  } else {
+         std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
               << "\n";
+         result << "Error: " <<commandName <<" is not a valid command. Please type /cmds for a list of commands.";
   }
   return result.str();
 }
