@@ -99,6 +99,8 @@ WhenRule *Loader::whenRule(json rule)
     //whenRule->print();
     return whenRule;
 }
+
+
 ScoreRule * Loader::scoreRule(json rule)
 {
     ScoreRule* scoreRule = new ScoreRule (rule.at("score").get<string>(), rule.at("ascending").get<bool>());
