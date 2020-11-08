@@ -19,9 +19,10 @@
 #include "Loader.h"
 #include "State.h"
 #include "Game.h"
+#include "Parser.h"
 #include <string>
 #include <typeinfo>
-#include <boost/variant.hpp>
+
 
 using namespace std;
 using json = nlohmann::json;
@@ -46,52 +47,29 @@ int main()
     json rules = GAMEJSON["rules"];
 
     // EXTRACT STATE
-    // config
-    // extract setup
-    json setup = config["setup"];
-    unordered_map<string,boost::variant<int, double, bool, string>> config_setup;
-    for ( auto& itrr : setup.items())
-    {
-      string key = itrr.key();
-      if (setup[key].type() == json::value_t::boolean) {
-        config_setup[key] = setup[key].get<bool>();
-      }
-      else if ((setup[key].type() == json::value_t::number_unsigned) ||
-        (setup[key].type() == json::value_t::number_integer)) {
-        config_setup[key] = setup[key].get<int>();
-
-      }
-      else if (setup[key].type() == json::value_t::number_float) {
-        config_setup[key] = setup[key].get<double>();
-
-      }
-      else if (setup[key].type() == json::value_t::string) {
-        config_setup[key] = setup[key].get<string>();
-      }
-      else if (setup[key].type() == json::value_t::object) {
-        // still need to update for this 
-        cout <<  setup[key]["Kind"];
-        cout <<  setup[key]["Prompt"];
-      }
-    }
-
-    Settings game_settings(config_setup);
+    //config
+    //unordered_map<string,string> test = boost::get<unordered_map<string,string>>(config_setup["TestKind"]);
+    Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
     configuration.printConfiguration();
-/*
-    //constants
-    json constant_weapons = constants["weapons"];
-    Constants constant;
-    for (const auto &element : constant_weapons)
-    {
-        auto name = element.at("name").get<string>();
-        auto beats = element.at("beats").get<string>();
-        Weapon temp(name, beats);
-        constant.addWeapon(temp);
-    }
-    constant.print();
 
+    //constants
+    // unordered_map<string,boost::variant<int, double, bool, string>> config_setup = jsonToMap(config["setup"]);
+    // Constants constant;
+
+
+
+    // for (const auto &element : constant_weapons)
+    // {
+    //     auto name = element.at("name").get<string>();
+    //     auto beats = element.at("beats").get<string>();
+    //     Weapon temp(name, beats);
+    //     constant.addWeapon(temp);
+    // }
+    // constant.print();
+
+/*
     //variables
     json winners = variables["winners"];
     Variables var;

@@ -5,29 +5,19 @@
 #ifndef SOCIAL_GAMING_CONSTANTS_H
 #define SOCIAL_GAMING_CONSTANTS_H
 
+#include <boost/variant.hpp>
 #include <iostream>
 #include <vector>
 using namespace std;
 
-class Weapon{
-private:
-    string name;
-    string beats;
-
-public:
-    Weapon(string name, string beats);
-    void print();
-};
-
 class Constants{
 private:
-    vector<Weapon> weapons;
+    //unordered_map<string,GameVariant> constantsMap;
 
 public:
-    Constants();
-    void addWeapon(Weapon weapon);
-    void print();
-    vector<Weapon> getList(); //Game class
+    // Constants(unordered_map<string,boost::variant<int, double, bool, string>> constantsMap);
+    // void print();
+
 };
 
 

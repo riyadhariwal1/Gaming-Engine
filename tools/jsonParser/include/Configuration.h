@@ -6,12 +6,10 @@
 #define SOCIAL_GAMING_CONFIGURATION_H
 
 #include <unordered_map>
-#include <boost/variant.hpp>
 #include <iostream>
+#include "Parser.h"
 
 using namespace std;
-
-
 
 
 struct PlayerCount {
@@ -19,13 +17,17 @@ struct PlayerCount {
     int max;
 };
 
+
+// settings can be changed by users
 class Settings {
   private:
-    unordered_map<string,boost::variant<int, double, bool, string>> settingsMap;
+    unordered_map<string, GameVariant> settingsMap;
 
   public:
-    Settings(unordered_map<string,boost::variant<int, double, bool, string>> settingsMap);
+    Settings(unordered_map<string, GameVariant> settingsMap);
     void printSettings();
+    // update a setting
+    //void UpdateSetting(string keyToUpdate, boost::variant<unordered_map<string,string>, int, double, bool, string>> valueToUpdate);
 };
 
 class Configuration {
@@ -33,7 +35,7 @@ class Configuration {
       string name;
       PlayerCount playerCount;
       bool audience;
-      Settings setup; //have set up class instead
+      Settings setup;
       // data that may be uploaded by the owner for quiz based games ?
 
   public:
@@ -41,7 +43,7 @@ class Configuration {
       string getName();
       PlayerCount getPlayerCount();
       bool isAudible();
-      Settings getSettings();
+      Settings getSetUp();
       void printConfiguration();
 };
 
