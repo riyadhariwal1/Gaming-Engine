@@ -48,16 +48,14 @@ int main()
 
     // EXTRACT STATE
     //config
-    //unordered_map<string,string> test = boost::get<unordered_map<string,string>>(config_setup["TestKind"]);
     Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
     configuration.printConfiguration();
 
     //constants
-    // unordered_map<string,boost::variant<int, double, bool, string>> config_setup = jsonToMap(config["setup"]);
-    // Constants constant;
-
+    Constants constant(jsonToMap(constants));
+    constant.print();
 
 
     // for (const auto &element : constant_weapons)

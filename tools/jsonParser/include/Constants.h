@@ -8,15 +8,17 @@
 #include <boost/variant.hpp>
 #include <iostream>
 #include <vector>
+#include "Parser.h"
+
 using namespace std;
 
 class Constants{
 private:
-    //unordered_map<string,GameVariant> constantsMap;
+    unordered_map<string,GameVariant> constantsMap;
 
 public:
-    // Constants(unordered_map<string,boost::variant<int, double, bool, string>> constantsMap);
-    // void print();
+    Constants(unordered_map<string,GameVariant> constantsMap);
+    void print();
 
 };
 

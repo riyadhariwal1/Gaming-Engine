@@ -29,6 +29,7 @@ void Settings::printSettings(){
         cout << ": " << boost::get<string>(itrr.second) << endl;
         break;
       default:
+      // setup does not have lists
         cout << "" << endl;
     }
 

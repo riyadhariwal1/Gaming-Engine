@@ -5,7 +5,6 @@
 #ifndef SOCIAL_GAMING_CONFIGURATION_H
 #define SOCIAL_GAMING_CONFIGURATION_H
 
-#include <unordered_map>
 #include <iostream>
 #include "Parser.h"
 
@@ -27,7 +26,7 @@ class Settings {
     Settings(unordered_map<string, GameVariant> settingsMap);
     void printSettings();
     // update a setting
-    //void UpdateSetting(string keyToUpdate, boost::variant<unordered_map<string,string>, int, double, bool, string>> valueToUpdate);
+    void UpdateSetting(string keyToUpdate, GameVariant valueToUpdate);
 };
 
 class Configuration {
