@@ -20,6 +20,7 @@
 #include "State.h"
 #include "Game.h"
 #include "Parser.h"
+#include "PlayerSetup.h"
 #include <string>
 #include <typeinfo>
 
@@ -61,7 +62,14 @@ int main()
     Variables variable(jsonToMap(variables));
     variable.print();
 
-/*
+    //players
+    PerPlayer perPlayer(jsonToMap(per_player));
+    perPlayer.print();
+
+    PerAudience perAudience(jsonToMap(per_audience));
+    perAudience.print();
+
+
     // rules!
     vector<Rule *> allRule;
     Loader loader;
@@ -94,5 +102,5 @@ int main()
     AllPlayers allPlayer;
     State state(allPlayer.getList(), configuration, constant, var);
 
-    Game game(state, allRule);*/
+    Game game(state, allRule);
 }

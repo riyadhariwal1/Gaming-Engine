@@ -13,7 +13,7 @@ endif()
 add_library(jsonParsing)
 target_sources(jsonParsing
         PRIVATE
-        Configuration.cpp Constants.cpp Variables.cpp Loader.cpp Parser.cpp)
+        Configuration.cpp Constants.cpp Variables.cpp Loader.cpp Parser.cpp PlayerSetup.cpp)
 
 target_include_directories(jsonParsing
   PUBLIC

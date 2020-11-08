@@ -5,9 +5,7 @@
 #ifndef SOCIAL_GAMING_CONSTANTS_H
 #define SOCIAL_GAMING_CONSTANTS_H
 
-#include <boost/variant.hpp>
 #include <iostream>
-#include <vector>
 #include "Parser.h"
 
 using namespace std;

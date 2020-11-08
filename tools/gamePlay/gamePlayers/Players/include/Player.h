@@ -4,6 +4,7 @@
 #include <vector>
 using namespace std;
 
+
 class Player {
     public:
       Player();
@@ -17,8 +18,6 @@ class Player {
       std::string& name;
       int gameWins;
 };
-
-
 
 //List of Players - yet to implement
 class AllPlayers{
