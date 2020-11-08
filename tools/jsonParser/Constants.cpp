@@ -10,7 +10,7 @@ void Constants::print(){
     cout << "   " << itrr.first;
     switch(itrr.second.which()){
       case 0:
-        cout << "\n";
+        cout << endl;
         for (auto i : boost::get<unordered_map<string,string>>(itrr.second)){
           cout << "   "<< i.first << ":" << i.second << endl;
         }

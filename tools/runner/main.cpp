@@ -57,29 +57,11 @@ int main()
     Constants constant(jsonToMap(constants));
     constant.print();
 
-
-    // for (const auto &element : constant_weapons)
-    // {
-    //     auto name = element.at("name").get<string>();
-    //     auto beats = element.at("beats").get<string>();
-    //     Weapon temp(name, beats);
-    //     constant.addWeapon(temp);
-    // }
-    // constant.print();
+    //variables
+    Variables variable(jsonToMap(variables));
+    variable.print();
 
 /*
-    //variables
-    json winners = variables["winners"];
-    Variables var;
-    for (const auto &element : winners)
-    {
-        string winner = element.get<string>();
-        var.addWinner(winner);
-    }
-    var.print();
-    cout << "\n\n"
-         << endl;
-
     // rules!
     vector<Rule *> allRule;
     Loader loader;
