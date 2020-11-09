@@ -43,7 +43,7 @@ class Configuration {
       PlayerCount getPlayerCount();
       bool isAudible();
       Settings getSetUp();
-      void printConfiguration();
+      void print();
 };
 
 

@@ -6,6 +6,7 @@
 class GlobalMessage : public Rule{
     public:
         GlobalMessage(string value);
+        string getMessage();
         void execute(State&) override ;
         void print() override;
     private:

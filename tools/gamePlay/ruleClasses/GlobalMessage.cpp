@@ -3,22 +3,15 @@
 
 // template Rule
 
-GlobalMessage::GlobalMessage(string value) : value(value)
-{
+GlobalMessage::GlobalMessage(string value) : value(value){}
+
+string GlobalMessage::getMessage(){
+  return value;
 }
 
 void GlobalMessage::execute(State& gameState)
 {
-  // replace in string -- need GameState varaibles first
-  // Example:  "Winners: {winners.elements.name}"
-  // might end up using regex ?
-  size_t open = value.find("{");
-  size_t close = value.find("}") - open + 1;
 
-  string variableToReplace = value.substr(open, close);
-  value.replace(open, close, "VARIABLE");
-  cout << value << endl;
-  
 }
 
 void GlobalMessage::print()

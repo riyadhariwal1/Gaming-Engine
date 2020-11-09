@@ -42,7 +42,7 @@ Configuration::Configuration(string name, int min, int max, bool audience, Setti
     : name(name), playerCount({min, max}), audience(audience), setup(setup){}
 
 
-void Configuration::printConfiguration() {
+void Configuration::print() {
     cout << "Configuration: \n"
             "   name: " << name << endl <<
          "   playerCount: min: " << playerCount.min << " max: " << playerCount.max << endl <<

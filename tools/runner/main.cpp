@@ -52,7 +52,7 @@ int main()
     Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
-    configuration.printConfiguration();
+    configuration.print();
 
     //constants
     Constants constant(jsonToMap(constants));
@@ -69,8 +69,12 @@ int main()
     PerAudience perAudience(jsonToMap(per_audience));
     perAudience.print();
 
+    AllPlayers allPlayer;
+
+    State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
 
     // rules!
+    // change this up using AST
     vector<Rule *> allRule;
     Loader loader;
     int i = 0;
@@ -96,11 +100,6 @@ int main()
         allRule[i]->print();
     }
 
-    // Loader loader;
-    // loader.forEachRule(j);
-    // //game test ! missing ruleList
-    AllPlayers allPlayer;
-    State state(allPlayer.getList(), configuration, constant, var);
-
+    //Start Game
     Game game(state, allRule);
 }
