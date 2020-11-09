@@ -6,6 +6,9 @@ private:
 	int gameId;
 	std::string name;
 	std::string filePath;
+	std::string description;
+	int maxPlayer;
+	int current_player;
 public:
 	Game(){gameId = 0;}
 	Game(int Id, std::string gameName, std::string path){
@@ -19,5 +22,8 @@ public:
 	void setName(std::string newName);
 	std::string getName() const;
 	void setPath(std::string path);
-	std::string getPath() const;	
+	std::string getPath() const;
+	void setDescription(std::string descrip);
+	std::string getDescription() const;	
+
 };

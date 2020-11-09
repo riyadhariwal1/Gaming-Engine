@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/game.h"
+#include "../include/Game.h"
 
 void Game::setGameId(int id){
 	this->gameId = id;
@@ -23,4 +23,12 @@ void Game::setPath(std::string path){
 
 std::string Game::getPath() const{
 	return filePath;
+}
+
+void Game::setDescripttion(std:: descrip){
+	this->description = descrip;
+}
+
+std::string Game::getDescription() const{
+	return description;
 }
