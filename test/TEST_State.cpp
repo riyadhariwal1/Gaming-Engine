@@ -30,6 +30,9 @@ protected:
     variable = new Variables(jsonToMap(variables));
     per_Player = new PerPlayer(jsonToMap(per_player));
     per_Audience = new PerAudience(jsonToMap(per_audience));
+
+    mock_state = new State(allPlayer, *configuration, *constant, *variable, *per_Player, *per_Audience);
+
   }
 
     virtual void TearDown() override {
@@ -39,6 +42,7 @@ protected:
       delete variable;
       delete per_Player;
       delete per_Audience;
+      delete mock_state;
     }
 
   json config;
@@ -54,17 +58,33 @@ protected:
   Variables* variable;
   PerPlayer* per_Player;
   PerAudience* per_Audience;
+  vector<Player> allPlayer;
+  State* mock_state;
 };
 
 
-TEST_F(StateTest, State_GlobalMessage_checkIfNeedsState) {
-  // EXTRACT STATE
-  AllPlayers allPlayer;
-  State mock_state(allPlayer.getList(), *configuration, *constant, *variable, *per_Player, *per_Audience);
+TEST_F(StateTest, Rules_list_config) {
+  // configuration.Rounds
+  // only returns rounds for now
+  string config_rounds_upfrom_1 = "configuration.Rounds.upfrom(1)";
+  vector<GameVariant> result = mock_state->replaceWithState(config_rounds_upfrom_1);
+  GameVariant expected = 10;
 
-  //Global Message should have Rounds replaced
-  string value = "Round {round}. Choose your weapon!";
-  bool gm_needs_state = mock_state.checkIfStateValueNeeded(value);
+  EXPECT_TRUE(expected == result[0]);
+}
 
-  EXPECT_TRUE(gm_needs_state);
+TEST_F(StateTest, Rules_list_players) {
+  // Player m("Michelle");
+  // Player k("Kamala");
+  // mock_state->UpdateState_PlayersList(m);
+  // mock_state->UpdateState_PlayersList(k);
+  // string players = rules["rules"][1]["list"].get<string>();
+  // vector<Player> state_players = mock_state->getPlayers();
+}
+
+TEST_F(StateTest, Rules_list_weapons){
+  string weapons = "weapons";
+  vector<GameVariant> result = mock_state->replaceWithState(weapons);
+
+  EXPECT_TRUE(3 == result.size());
 }

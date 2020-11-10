@@ -5,10 +5,6 @@ State::State(vector<Player> playerList, Configuration configuration,
     : playerList(playerList), configuration(configuration), constants(constants), variables(variables),
     per_player(perPlayer), per_audience(perAudience){}
 
-
-// void State::UpdateState_PlayerList(vector<Player> p){
-//   //for each p
-// }
 void State::UpdateState_Config(Configuration c){
   this->configuration = c;
 }
@@ -24,74 +20,68 @@ void State::UpdateState_PerPlayer(PerPlayer pp){
 void State::UpdateState_PerAudience(PerAudience pa){
   this->per_audience = pa;
 }
-
-auto State::getPlayers() {
-  return playerList;
+void State::UpdateState_PlayersList(Player& p){
+  this->playerList.push_back(p);
 }
 
+
+vector<Player> State::getPlayers() {
+  return playerList;
+}
 Configuration State::getConfiguration(){
   return configuration;
 }
-
 Constants State::getConstants(){
   return constants;
 }
 
-bool State::checkIfStateValueNeeded(string value){
-
-  size_t open = value.find("{");
-  size_t close = value.find("}") - open + 1;
-
-  string variableToReplace = value.substr(open, close);
-  value.replace(open, close, "VARIABLE");
-  cout << value << endl;
-  return true;
-}
 
 // string manipulation
-void State::replaceWithStateValue(string input){
+vector<GameVariant> State::replaceWithState(string input){
 
+  vector<GameVariant> result;
 
+  // we can get configuration.some_key for now
+  if( input.find("configuration") != string::npos){
+    size_t pos = input.find(".")+1;
+    string substr_input = input.substr(pos, input.length());
+    size_t nextPos = substr_input.find(".");
+    string config_key = substr_input.substr(0, nextPos);
+    GameVariant value = this->configuration.getAtKey(config_key);
+    result.push_back(value);
+
+  }
+  else if( input.find("player") != string::npos){
+    // single player
+
+  }
+  else if( input.find("constants") != string::npos){
+  }
+  else if( input.find("variables") != string::npos){
+  }
+  else if( input.find("per-player") != string::npos){
+  }
+  else if( input.find("per-audience") != string::npos){
+  }
+  else {
+    // search within constants
+    GameVariant value = this->constants.getAtKey(input);
+    result.push_back(value);
+
+    //search within variables
+
+    // search within per-player, per-audience
+
+  }
+  // value.replace(open, close, "VARIABLE");
+  return result;
 }
 
-
-auto State::findByName(string input)
-{
-    auto i = 0;
-    //vector<Player> result;
-    //vector<Player> temp;
-    vector<string> splitString;
-
-    while (input != "")
-    {
-
-        int pos = input.find(".");
-        if (pos != 0)
-        {
-            splitString.push_back(input.substr(0, pos - 1));
-            input = input.substr(pos + 1);
-        }
-    }
-  /*  if (splitString.size() == 1)
-    {
-        if (splitString.front() == "players")
-        {
-            //result = playerList;
-        }
-        else if (splitString.front() == "winners")
-        {
-            //result = winnerList;
-        }
-    }
-    else
-    {
-        for (int i = 0; i++; i < splitString.size())
-        {
-            if (splitString[0] == "winners")
-            {
-                //temp = winnerList;
-            }
-        }
-    }*/
-    return i;
+void State::print(){
+  this->configuration.print();
+  this->constants.print();
+  this->variables.print();
+  this->per_player.print();
+  this->per_audience.print();
+  return;
 }

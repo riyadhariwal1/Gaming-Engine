@@ -1,4 +1,5 @@
 #include "Configuration.h"
+#include <iostream>
 
 // Settings
 Settings::Settings(unordered_map<string, GameVariant> settingsMap) : settingsMap(settingsMap){}
@@ -36,6 +37,10 @@ void Settings::printSettings(){
   }
 }
 
+GameVariant Settings::getAtKey(string key){
+  return this->settingsMap[key];
+}
+
 
 // Configuration
 Configuration::Configuration(string name, int min, int max, bool audience, Settings setup)
@@ -65,4 +70,13 @@ PlayerCount Configuration::getPlayerCount() {
 
 bool Configuration::isAudible(){
     return audience;
+}
+
+GameVariant Configuration::getAtKey(string key){
+
+  // check Settings;
+  GameVariant value_at_key = this->setup.getAtKey(key);
+
+  return value_at_key;
+
 }

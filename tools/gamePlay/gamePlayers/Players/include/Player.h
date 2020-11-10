@@ -4,11 +4,13 @@
 #include <vector>
 using namespace std;
 
-
+// convert to unordered_map<string,variant> ??
+// string == id
+// variant -> name, wins, input-choice will be placed in
 class Player {
     public:
       Player();
-      Player(std::string& name);
+      Player(string name);
       void playerWins(int count);
       void printPlayer();
       // define player "Type"? -- game-player or audience-player

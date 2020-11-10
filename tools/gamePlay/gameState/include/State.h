@@ -23,7 +23,7 @@ class State
       State(vector<Player> playerList, Configuration configuration,
             Constants constants, Variables variables, PerPlayer per_Player, PerAudience per_Audience);
 
-      auto getPlayers();
+      vector<Player> getPlayers();
       Configuration getConfiguration();
       Constants getConstants();
       Variables getVariables();
@@ -31,18 +31,18 @@ class State
       PerAudience getAudienceSetup();
 
       // update state
-      void UpdateState_PlayerList(vector<Player>);
       void UpdateState_Config(Configuration);
       void UpdateState_Constants(Constants);
       void UpdateState_Variables(Variables);
       void UpdateState_PerPlayer(PerPlayer);
       void UpdateState_PerAudience(PerAudience);
+      void UpdateState_PlayersList(Player&);
 
       // string manipulations
-      bool checkIfStateValueNeeded(string);
-      void replaceWithStateValue(string);
-      bool checkRuleCondition(string);
-      auto findByName(string);
+      vector<GameVariant> replaceWithState(string);
+      bool checkCondition(string);
+
+      void print();
 
 
 };

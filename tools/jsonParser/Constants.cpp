@@ -45,3 +45,7 @@ void Constants::print(){
 
   }
 }
+
+GameVariant Constants::getAtKey(string key){
+  this->constantsMap[key];
+}

@@ -77,7 +77,6 @@ int main()
     // change this up using AST
     vector<Rule *> allRule;
     Loader loader;
-    int i = 0;
     for (const json element : rules)
     {
         //cout << i++ << endl;

@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(string& name): name(name){
+Player::Player(string name): name(name){
   this->id=1001;
   this->gameWins=0;
 }

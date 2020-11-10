@@ -5,7 +5,6 @@
 #ifndef SOCIAL_GAMING_CONFIGURATION_H
 #define SOCIAL_GAMING_CONFIGURATION_H
 
-#include <iostream>
 #include "Parser.h"
 
 using namespace std;
@@ -27,10 +26,13 @@ class Settings {
     void printSettings();
     // update a setting
     void UpdateSetting(string keyToUpdate, GameVariant valueToUpdate);
+    GameVariant getAtKey(string);
 };
 
 class Configuration {
   private:
+
+    // this might need refactoring as unordered_map<string, GameVariant>
       string name;
       PlayerCount playerCount;
       bool audience;
@@ -39,10 +41,13 @@ class Configuration {
 
   public:
       Configuration(string name, int min, int max, bool audience, Settings setup);
+
       string getName();
       PlayerCount getPlayerCount();
       bool isAudible();
       Settings getSetUp();
+
+      GameVariant getAtKey(string);
       void print();
 };
 
