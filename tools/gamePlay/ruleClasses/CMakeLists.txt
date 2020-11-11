@@ -10,6 +10,8 @@ target_sources(ruleClasses
     Extend.cpp
     WhenRule.cpp
     Scores.cpp
+    Element.cpp
+    List.cpp
 )
 target_include_directories(ruleClasses
   PUBLIC

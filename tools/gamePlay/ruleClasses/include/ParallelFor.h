@@ -2,6 +2,8 @@
 #define PARALLELFOR_RULE_H
 #include "Rule.h"
 #include "GameState.h"
+#include "List.h"
+#include "Element.h"
 #include <list>
 #include <string>
 #include <boost/any.hpp>

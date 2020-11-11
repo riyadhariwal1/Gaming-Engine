@@ -1,9 +1,9 @@
 #ifndef FOREACH_RULE_H
 #define FOREACH_RULE_H
 #include "Rule.h"
-#include <list>
-#include <string>
-#include <boost/any.hpp>
+#include "List.h"
+#include "Element.h"
+
 using namespace std;
 
 class ForEachRule : public Rule
@@ -15,7 +15,7 @@ class ForEachRule : public Rule
         void print() override;
     private:
         vector <Rule*> ruleList;
-        string list;
-        string element;
+        List list;
+        Element element;
 };
 #endif

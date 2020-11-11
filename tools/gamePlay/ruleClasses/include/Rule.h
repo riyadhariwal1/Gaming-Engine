@@ -4,6 +4,9 @@
 #include<iostream>
 #include<vector>
 #include "GameState.h"
+#include <list>
+#include <string>
+#include <boost/any.hpp>
 using namespace std;
 
 class Rule {
