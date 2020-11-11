@@ -1,6 +1,6 @@
 #ifndef WHEN_RULE_H
 #define WHEN_RULE_H
-#include "Rule.h"
+#include "AstNode.h"
 #include "GameState.h"
 #include <string>
 #include <vector>
@@ -9,16 +9,17 @@ using namespace std;
 class Case {
     private:
         string stringCondition;
-        vector<Rule*> ruleList;
+        vector<AstNode*> ruleList;
     public:
         Case(string);
         Case(bool);
-        void addRule(Rule* );
+        void addRule(AstNode* );
         void print();
 };
-class WhenRule :  public Rule {
+class WhenRule :  public AstNode {
     public:
         WhenRule ();
+        void accept(AstVisitor& visitor) override;
         //WhenRule(vector<Case>&);
         void execute(GameState&) override;
         void addCase(Case*);

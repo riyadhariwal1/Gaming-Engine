@@ -1,18 +1,19 @@
 #ifndef LIST_H
 #define LIST_H
-#include "Rule.h"
+#include "AstNode.h"
 
 using namespace std;
-class List : public Rule{
+class List : public AstNode{
     private:
         string value;
-        vector <Rule*> list;
+        vector <AstNode*> list;
 
 
     public:
         List();
-        vector<Rule*> getList();
+        vector<AstNode*> getList();
         List(string);
+        void accept(AstVisitor& visitor) override;
         void execute(GameState&);
         void print()
         {

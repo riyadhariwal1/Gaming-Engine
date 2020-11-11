@@ -5,7 +5,7 @@
 #include "Variables.h"
 #include <fstream>
 #include <sstream>
-#include "Rule.h"
+#include "AstNode.h"
 #include "GlobalMessage.h"
 #include "Extend.h"
 #include "When.h"
@@ -59,7 +59,7 @@ int main() {
 
     // Loop through the rules!
     json rules = j["rules"];
-    vector<Rule *> allRule;
+    vector<AstNode*> allRule;
 
     Loader loader;
     int i = 0;

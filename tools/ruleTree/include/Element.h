@@ -1,23 +1,24 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
-#include "Rule.h"
+#include "AstNode.h"
 
 using namespace std;
 
-class Element: public Rule{
+class Element: public AstNode{
     private:
         string value;
-        Rule* target;
+        AstNode* target;
 
     public:
         Element();
-        Rule* getTarget();
+        AstNode* getTarget();
         Element(string);
         void execute(GameState&);
         void print()
         {
             cout << value << endl;
         }
+        void accept(AstVisitor& visitor) override;
 
 };
 

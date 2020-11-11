@@ -2,7 +2,7 @@
 
 Case :: Case(string condition): stringCondition(condition){}
 
-void Case::addRule (Rule* rule){
+void Case::addRule (AstNode* rule){
     ruleList.push_back(rule);
 }
 void Case::print() {

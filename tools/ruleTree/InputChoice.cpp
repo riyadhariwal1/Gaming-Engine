@@ -23,6 +23,6 @@ void InputChoiceRule::print()
 
 }
 
-void InputChoice::accept(AstVisitor& visitor) {
+void InputChoiceRule::accept(AstVisitor& visitor) {
     visitor.visit(*this);
 }

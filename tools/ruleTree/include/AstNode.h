@@ -1,13 +1,12 @@
 #ifndef SOCIAL_GAMING_ASTNODE_H
 #define SOCIAL_GAMING_ASTNODE_H
 
-#include "GlobalMessage.h"
-#include "AstVisitor.h"
+
 #include<string>
 #include<iostream>
 #include<vector>
+#include "AstVisitor.h"
 #include "GameState.h"
-
 //visitable interface
 class AstNode {
 public:

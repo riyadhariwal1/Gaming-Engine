@@ -14,6 +14,6 @@ void ScoreRule:: print()
 
 }
 
-void Scores::accept(AstVisitor& visitor) {
+void ScoreRule::accept(AstVisitor& visitor) {
     visitor.visit(*this);
 }

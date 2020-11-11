@@ -1,20 +1,21 @@
 #ifndef FOREACH_RULE_H
 #define FOREACH_RULE_H
-#include "Rule.h"
+#include "AstNode.h"
 #include "List.h"
 #include "Element.h"
 
 using namespace std;
 
-class ForEachRule : public Rule
+class ForEachRule : public AstNode
 {
     public:
         ForEachRule(string, string);
         void execute(GameState&) override ;
-        void addRule(Rule*);
+        void addRule(AstNode*);
         void print() override;
+        void accept(AstVisitor& visitor) override;
     private:
-        vector <Rule*> ruleList;
+        vector <AstNode*> ruleList;
         List list;
         Element element;
 };

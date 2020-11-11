@@ -4,7 +4,9 @@ DiscardRule::DiscardRule(string from, string count) : from(from), count(count)
 {
   // discard count number of elements from list
 }
-
+void DiscardRule::accept(AstVisitor& visitor) {
+    visitor.visit(*this);
+}
 void DiscardRule::execute(GameState &gameState){}
 
 void DiscardRule::print()
@@ -14,6 +16,3 @@ void DiscardRule::print()
   cout << "    count == " << count << endl;
 }
 
-void DiscardRule::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
-}

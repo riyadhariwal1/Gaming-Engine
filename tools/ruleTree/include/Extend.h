@@ -1,14 +1,15 @@
 #ifndef EXTEND_RULE_H
 #define EXTEND_RULE_H
-#include "Rule.h"
+#include "AstNode.h"
 #include <string>
 
-class ExtendRule : public Rule
+class ExtendRule : public AstNode
 {
     public:
     ExtendRule(string, string);
     void execute(GameState&) override;
     void print () override;
+    void accept(AstVisitor& visitor) override;
 
     private:
     string target;

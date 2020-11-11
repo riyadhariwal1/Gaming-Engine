@@ -7,7 +7,6 @@
 
 #include <vector>
 #include "Player.h"
-#include "Rule.h"
 #include "Constants.h"
 #include "Configuration.h"
 #include "Variables.h"

@@ -1,24 +1,22 @@
 #ifndef PARALLELFOR_RULE_H
 #define PARALLELFOR_RULE_H
-#include "Rule.h"
-#include "GameState.h"
+#include "AstNode.h"
 #include "List.h"
 #include "Element.h"
-#include <list>
-#include <string>
-#include <boost/any.hpp>
 using namespace std;
 
-class ParallelFor : public Rule
+class ParallelFor : public AstNode
 {
     public:
         ParallelFor(string, string);
         void execute(GameState&) override;
-        void addRule(Rule*);
+        void addRule(AstNode*);
         void print() override;
+        void accept(AstVisitor& visitor) override;
+        
     private:
-        vector<Rule*> ruleList;
-        string list;
-        string element;
+        vector<AstNode*> ruleList;
+        List list;
+        Element element;
 };
 #endif
