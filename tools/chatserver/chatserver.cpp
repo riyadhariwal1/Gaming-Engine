@@ -24,6 +24,7 @@ using networking::Server;
 //list of client IDs
 std::vector<User> clients;
 std::vector<Room> rooms;
+
 //ran by Server.h every time a new connection is made.
 //adds a new connection (i.e client ID) to the clients vector.
 void onConnect(Connection c)
@@ -248,6 +249,7 @@ runCommand(Message message)
   else if (commandName == "create")
   {
     std::string targetRoomName;
+    std::string roomPin = "";
     auto tokens = tokenizeMessage(message.text);
 
     try
@@ -274,6 +276,24 @@ runCommand(Message message)
       Room newRoom(rooms.size(), targetRoomName);
       User* user = getUser(message.c);
 
+      // check if the user provided a pin to make the room private
+      if (tokens.size() > 2) {
+        roomPin = tokens.at(2);
+        std::cout << "Pin:" << roomPin << "\n";
+      }
+
+      // apply pin to room
+      if (!roomPin.empty()) {
+        try {
+          newRoom.setPin(roomPin);
+        } catch (const char* err) {
+          std::cout << err << "\n";
+          result << err << "Please provide a 4 digit numerical pin." "\n";
+
+          return result.str();
+        }
+      }
+
       // leave the user's current room
       Room* currentRoom = getRoomById(user->getRoom());
       std::cout << currentRoom->getRoomId() << "\n";
@@ -290,7 +310,7 @@ runCommand(Message message)
   else if (commandName == "name"){
     std::string targetName;
     auto tokens = tokenizeMessage(message.text);
-    
+
     for (size_t i=1;i<tokens.size();i++){
       targetName += tokens.at(i);
       targetName += " ";
