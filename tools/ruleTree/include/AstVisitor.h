@@ -10,6 +10,7 @@ class ParallelFor;
 class ScoreRule;
 class WhenRule;
 class List;
+class Element;
 
 
 //visitor interface
@@ -24,6 +25,10 @@ public:
     virtual void visit(ParallelFor& parallelFor) = 0;
     virtual void visit(ScoreRule& scores) = 0;
     virtual void visit(WhenRule& whenRule) = 0;
+    virtual void visit(Element& element) = 0;
+    virtual void visit(List& list) = 0;
+
+
 
 };
 

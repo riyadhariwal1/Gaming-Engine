@@ -6,8 +6,6 @@
 
 using namespace std;
 
-class List;
-class Element;
 
 class ForEachRule : public AstNode
 {
