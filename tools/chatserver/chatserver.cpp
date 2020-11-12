@@ -187,23 +187,21 @@ runCommand(Message message)
       Room* existingRoom = getRoomByName(targetRoomName);
 
       // We check the target room exists before kicking the user out of their room
-      if (existingRoom == nullptr)
-      {
+      if (existingRoom == nullptr) {
         result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
+        return result.str();
       }
-      else
+
+      Room *currentRoom = getRoomById(user->getRoom());
+
+      if (currentRoom != nullptr)
       {
-        Room *currentRoom = getRoomById(user->getRoom());
-
-        if (currentRoom != nullptr)
-        {
-          // remove the user from their current room
-          currentRoom->removeUser(*user);
-        }
-
-        existingRoom->addUser(*user);
-        result << "Sending User:" << message.c.id << " to room " << existingRoom->getRoomName() << ".\n";
+        // remove the user from their current room
+        currentRoom->removeUser(*user);
       }
+
+      existingRoom->addUser(*user);
+      result << "Sending User:" << message.c.id << " to room " << existingRoom->getRoomName() << ".\n";
     }
     catch (const std::exception &e)
     {
