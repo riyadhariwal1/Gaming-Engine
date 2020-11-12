@@ -9,7 +9,7 @@ class DiscardRule : public AstNode{
     void execute(State&) override;
     void print() override;
     void accept(AstVisitor& visitor) override;
-    
+
     private:
     string from;
     string count;

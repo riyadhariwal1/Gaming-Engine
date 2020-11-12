@@ -1,6 +1,6 @@
 #include "include/ForEach.h"
 
-ForEachRule::ForEachRule(string list, string element) 
+ForEachRule::ForEachRule(string list, string element)
 {
     this->list = List(list);
     this -> element = Element(element);
@@ -10,14 +10,14 @@ void ForEachRule::addRule(AstNode *rule)
 {
     ruleList.push_back(rule);
 }
-void ForEachRule::execute(GameState &gameState)
+void ForEachRule::execute(State &gameState)
 {
 }
-void ForEachRule::print() 
+void ForEachRule::print()
 {
     cout << "ForEach: " << endl;
     cout << "    list == ";
-    list.print(); 
+    list.print();
     cout << endl;
     cout << "    element == " ;
     element.print();

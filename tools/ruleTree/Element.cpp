@@ -14,9 +14,9 @@ void Element :: accept(AstVisitor& visitor)
     visitor.visit(*this);
 }
 
-void Element :: execute(GameState& state){
+void Element :: execute(State& state){
     //TODO: figure out what the data is and copy it into target variable
-    //from the List 
+    //from the List
 }
 
 AstNode* Element :: getTarget()

@@ -6,7 +6,7 @@
 #include<iostream>
 #include<vector>
 #include "AstVisitor.h"
-#include "GameState.h"
+#include "State.h"
 //visitable interface
 class List;
 class Element;
@@ -14,7 +14,7 @@ class Element;
 class AstNode {
 public:
     virtual void accept(AstVisitor& visitor) = 0;
-    virtual void execute(GameState&) = 0;
+    virtual void execute(State&) = 0;
     virtual void print () = 0;
 };
 

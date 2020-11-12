@@ -14,7 +14,7 @@ public:
     vector<AstNode*> getList();
     List(string);
     void accept(AstVisitor& visitor) override;
-    void execute(GameState&);
+    void execute(State&);
     void print();
 
 };

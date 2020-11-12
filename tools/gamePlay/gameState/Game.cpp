@@ -5,7 +5,7 @@
 //{}
 
 //no ruleList
-Game::Game(State state, vector<Rule*> ruleList)
+Game::Game(State state, vector<AstNode*> ruleList)
         : state(state), ruleList(ruleList)
 {}
 
@@ -16,4 +16,3 @@ Game::Game(State state, vector<Rule*> ruleList)
     //make this a more generalized implementation (map in Constants)
     return constants.getList();
 } */
-

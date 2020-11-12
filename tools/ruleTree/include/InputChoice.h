@@ -1,7 +1,6 @@
 #ifndef INPUTCHOICE_RULE_H
 #define INPUTCHOICE_RULE_H
 #include "AstNode.h"
-#include "GameState.h"
 #include <string>
 
 class InputChoiceRule : public AstNode
@@ -19,6 +18,6 @@ class InputChoiceRule : public AstNode
     string choices;
     string result;
     string timeout;
-    
+
 };
 #endif

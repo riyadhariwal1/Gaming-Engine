@@ -1,7 +1,6 @@
 #ifndef WHEN_RULE_H
 #define WHEN_RULE_H
 #include "AstNode.h"
-#include "GameState.h"
 #include <string>
 #include <vector>
 using namespace std;
@@ -26,7 +25,7 @@ class WhenRule :  public AstNode {
         void print();
     private:
         vector<Case*> caseList;
-        
+
 
 };
 #endif

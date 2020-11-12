@@ -8,9 +8,10 @@
 class GlobalMessage : public AstNode {
 public:
     GlobalMessage(string value);
-    void execute(GameState&) override ;
+    void execute(State&) override ;
     void print() override;
     void accept(AstVisitor& visitor) override;
+    string getMessage();
 
 private:
     string value;

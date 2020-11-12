@@ -11,7 +11,7 @@ class ForEachRule : public AstNode
 {
     public:
         ForEachRule(string, string);
-        void execute(GameState&) override ;
+        void execute(State&) override ;
         void addRule(AstNode*);
         void print() override;
         void accept(AstVisitor& visitor) override;

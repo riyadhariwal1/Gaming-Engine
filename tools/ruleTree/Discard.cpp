@@ -7,7 +7,7 @@ DiscardRule::DiscardRule(string from, string count) : from(from), count(count)
 void DiscardRule::accept(AstVisitor& visitor) {
     visitor.visit(*this);
 }
-void DiscardRule::execute(GameState &gameState){}
+void DiscardRule::execute(State &gameState){}
 
 void DiscardRule::print()
 {

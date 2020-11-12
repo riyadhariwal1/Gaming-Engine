@@ -15,7 +15,7 @@ void Case::print() {
 
 WhenRule::WhenRule(){}
 
-void WhenRule::execute(GameState& gameState) {
+void WhenRule::execute(State& gameState) {
 
 }
 

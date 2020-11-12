@@ -71,7 +71,6 @@ int main()
     perAudience.print();
 
     // Loop through the rules!
-    json rules = j["rules"];
     vector<AstNode*> allRule;
 
 
@@ -81,7 +80,6 @@ int main()
 
     // rules!
     // change this up using AST
-    vector<Rule *> allRule;
     Loader loader;
     for (const json element : rules)
     {

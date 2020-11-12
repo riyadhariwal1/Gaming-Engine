@@ -1,7 +1,6 @@
 #ifndef SCORES_RULE_H
 #define SCORES_RULE_H
 #include "AstNode.h"
-#include "GameState.h"
 #include <string>
 using namespace std;
 
