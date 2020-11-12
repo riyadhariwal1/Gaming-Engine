@@ -5,9 +5,9 @@
 //{}
 
 //no ruleList
-Game::Game(State state, vector<AstNode*> ruleList)
-        : state(state), ruleList(ruleList)
-{}
+// Game::Game(State state, vector<AstNode*> ruleList)
+//         : state(state), ruleList(ruleList)
+// {}
 
 /* vector<Weapon> Game::getConstantList(string listName) {
     if (listName == "weapons") {

@@ -6,7 +6,7 @@ add_executable(test
 )
 
 target_link_libraries(test
-  gmock gtest gtest_main jsonParsing gameState ruleClasses Players
+  gmock gtest gtest_main jsonParsing gameState ruleTree Players
 )
 
 add_test(NAME AllTests COMMAND test)

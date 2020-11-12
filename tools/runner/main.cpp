@@ -104,5 +104,5 @@ int main()
     }
 
     //Start Game
-    Game game(state, allRule);
+    //Game game(state, allRule);
 }
