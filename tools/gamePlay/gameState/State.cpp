@@ -1,10 +1,12 @@
 #include "State.h"
 
+// constructor
 State::State(vector<Player> playerList, Configuration configuration,
              Constants constants, Variables variables, PerPlayer perPlayer, PerAudience perAudience)
     : playerList(playerList), configuration(configuration), constants(constants), variables(variables),
     per_player(perPlayer), per_audience(perAudience){}
 
+// Update State Functions
 void State::UpdateState_Config(Configuration c){
   this->configuration = c;
 }
@@ -24,9 +26,12 @@ void State::UpdateState_PlayersList(Player& p){
   this->playerList.push_back(p);
 }
 
-
+// Get from State Functions
 vector<Player> State::getPlayers() {
   return playerList;
+}
+vector<Player> State::getWinners() {
+  return winnerList;
 }
 Configuration State::getConfiguration(){
   return configuration;
@@ -35,9 +40,10 @@ Constants State::getConstants(){
   return constants;
 }
 
-
-// string manipulation
-vector<GameVariant> State::replaceWithState(string input){
+// unfinished
+// Replace with State Value Functions
+// ignores the unimplemented functions for now
+vector<GameVariant> State::getStateList(string input){
 
   vector<GameVariant> result;
 
@@ -49,10 +55,6 @@ vector<GameVariant> State::replaceWithState(string input){
     string config_key = substr_input.substr(0, nextPos);
     GameVariant value = this->configuration.getAtKey(config_key);
     result.push_back(value);
-
-  }
-  else if( input.find("player") != string::npos){
-    // single player
 
   }
   else if( input.find("constants") != string::npos){
@@ -77,6 +79,7 @@ vector<GameVariant> State::replaceWithState(string input){
   return result;
 }
 
+// others
 void State::print(){
   this->configuration.print();
   this->constants.print();

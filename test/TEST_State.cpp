@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "Loader.h"
+#include "Helper.h"
 
 class StateTest : public ::testing::Test {
 protected:
@@ -62,29 +63,45 @@ protected:
   State* mock_state;
 };
 
-
-TEST_F(StateTest, Rules_list_config) {
-  // configuration.Rounds
-  // only returns rounds for now
+// TEST GETTING LISTS FROM STATE
+TEST_F(StateTest,List_config) {
+  // get list
   string config_rounds_upfrom_1 = "configuration.Rounds.upfrom(1)";
-  vector<GameVariant> result = mock_state->replaceWithState(config_rounds_upfrom_1);
+  vector<GameVariant> result = mock_state->getStateList(config_rounds_upfrom_1);
   GameVariant expected = 10;
 
   EXPECT_TRUE(expected == result[0]);
+
+  // replace with list element
+  GameVariant element = result[0];
+  string given_value = "Round {round}. Choose your weapon!";
+  string result_str = replaceInString(given_value, element);
+
+  string expected_str = "Round 10. Choose your weapon!";
+  EXPECT_TRUE(expected_str == result_str);
 }
 
-TEST_F(StateTest, Rules_list_players) {
-  // Player m("Michelle");
-  // Player k("Kamala");
-  // mock_state->UpdateState_PlayersList(m);
-  // mock_state->UpdateState_PlayersList(k);
-  // string players = rules["rules"][1]["list"].get<string>();
-  // vector<Player> state_players = mock_state->getPlayers();
-}
-
-TEST_F(StateTest, Rules_list_weapons){
+TEST_F(StateTest, List_weapons){
+  // get list
   string weapons = "weapons";
-  vector<GameVariant> result = mock_state->replaceWithState(weapons);
+  vector<GameVariant> result = mock_state->getStateList(weapons);
 
   EXPECT_TRUE(3 == result.size());
+
+  // replace with list element
+}
+
+TEST_F(StateTest, List_players) {
+  // get list
+  Player m("Michelle");
+  Player k("Kamala");
+  mock_state->UpdateState_PlayersList(m);
+  mock_state->UpdateState_PlayersList(k);
+
+  vector<Player> result = mock_state->getPlayers();
+  size_t expected = 2;
+
+  EXPECT_TRUE(expected == result.size());
+
+  // replace with list element
 }

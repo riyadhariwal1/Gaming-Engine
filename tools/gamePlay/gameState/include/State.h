@@ -24,6 +24,7 @@ class State
             Constants constants, Variables variables, PerPlayer per_Player, PerAudience per_Audience);
 
       vector<Player> getPlayers();
+      vector<Player> getWinners();
       Configuration getConfiguration();
       Constants getConstants();
       Variables getVariables();
@@ -38,8 +39,8 @@ class State
       void UpdateState_PerAudience(PerAudience);
       void UpdateState_PlayersList(Player&);
 
-      // string manipulations
-      vector<GameVariant> replaceWithState(string);
+      // string manipulations or condition checks
+      vector<GameVariant> getStateList(string);
       bool checkCondition(string);
 
       void print();
