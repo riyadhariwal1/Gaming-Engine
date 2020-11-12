@@ -5,20 +5,17 @@
 using namespace std;
 
 class Element: public AstNode{
-    private:
-        string value;
-        AstNode* target;
+private:
+    string value;
+    AstNode* target;
 
-    public:
-        Element();
-        AstNode* getTarget();
-        Element(string);
-        void execute(GameState&);
-        void print()
-        {
-            cout << value << endl;
-        }
-        void accept(AstVisitor& visitor) override;
+public:
+    Element();
+    AstNode* getTarget();
+    Element(string);
+    void execute(GameState&);
+    void print();
+    void accept(AstVisitor& visitor) override;
 
 };
 

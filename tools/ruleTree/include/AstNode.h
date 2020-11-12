@@ -8,6 +8,9 @@
 #include "AstVisitor.h"
 #include "GameState.h"
 //visitable interface
+class List;
+class Element;
+
 class AstNode {
 public:
     virtual void accept(AstVisitor& visitor) = 0;

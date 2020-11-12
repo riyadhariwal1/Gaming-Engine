@@ -5,6 +5,9 @@
 #include "Element.h"
 using namespace std;
 
+class List;
+class Element;
+
 class ParallelFor : public AstNode
 {
     public:

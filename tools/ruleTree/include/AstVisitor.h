@@ -1,15 +1,6 @@
 #ifndef SOCIAL_GAMING_ASTVISITOR_H
 #define SOCIAL_GAMING_ASTVISITOR_H
 
-// #include "GlobalMessage.h"
-// #include "Discard.h"
-// #include "Extend.h"
-// #include "ForEach.h"
-// #include "InputChoice.h"
-// #include "ParallelFor.h"
-// #include "Scores.h"
-// #include "When.h"
-
 class GlobalMessage;
 class DiscardRule;
 class ExtendRule;
@@ -18,6 +9,7 @@ class InputChoiceRule;
 class ParallelFor;
 class ScoreRule;
 class WhenRule;
+class List;
 
 
 //visitor interface

@@ -1,14 +1,16 @@
 add_library(ruleTree)
 target_sources(ruleTree PRIVATE
         GlobalMessage.cpp
-       Add.cpp
-       Discard.cpp
-       ForEachRule.cpp
-       InputChoice.cpp
-       ParallelFor.cpp
-       Extend.cpp
-       WhenRule.cpp
-       Scores.cpp
+        Add.cpp
+        Discard.cpp
+        Element.cpp
+        Extend.cpp
+        ForEachRule.cpp
+        InputChoice.cpp
+        List.cpp
+        ParallelFor.cpp
+        Scores.cpp
+        WhenRule.cpp
         )
 target_include_directories(ruleTree
         PUBLIC

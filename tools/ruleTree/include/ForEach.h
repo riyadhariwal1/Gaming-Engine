@@ -1,10 +1,13 @@
 #ifndef FOREACH_RULE_H
 #define FOREACH_RULE_H
-#include "AstNode.h"
 #include "List.h"
 #include "Element.h"
+#include "AstNode.h"
 
 using namespace std;
+
+class List;
+class Element;
 
 class ForEachRule : public AstNode
 {
