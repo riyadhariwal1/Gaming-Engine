@@ -9,7 +9,7 @@ InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, s
   this->choices = choices;
   this->result = result;
 }
-void InputChoiceRule::execute(GameState& gameState)
+void InputChoiceRule::execute(State& gameState)
 {
 }
 void InputChoiceRule::print()

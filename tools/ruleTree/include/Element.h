@@ -11,7 +11,7 @@ public:
     Element();
     AstNode* getTarget();
     Element(string);
-    void execute(GameState&);
+    void execute(State&);
     void print();
     void accept(AstVisitor& visitor) override;
 

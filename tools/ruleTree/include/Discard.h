@@ -6,10 +6,10 @@
 class DiscardRule : public AstNode{
     public:
     DiscardRule(string, string);
-    void execute(GameState&) override;
+    void execute(State&) override;
     void print() override;
     void accept(AstVisitor& visitor) override;
-    
+
     private:
     string from;
     string count;

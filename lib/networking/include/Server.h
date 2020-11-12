@@ -51,7 +51,7 @@ struct Message {
     Connection c;
     std::string text;
     int sendersRoomId;
-
+    Connection whisperID;
 };
 
 

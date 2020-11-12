@@ -1,27 +1,51 @@
 #include "Constants.h"
 
-Weapon::Weapon(string name, string beats){
-    this->name = name;
-    this->beats = beats;
-}
-
-void Weapon:: print(){
-    cout << "   " << name << " beats " << beats << endl;
-}
-
-Constants::Constants(){};
-
-void Constants:: addWeapon(Weapon weapon){   
-    weapons.push_back(weapon);
-}
+Constants::Constants(unordered_map<string,GameVariant> constantsMap)
+ : constantsMap(constantsMap) {};
 
 void Constants::print(){
-    cout << "Constants:" << endl;
-    for (int i = 0; i < weapons.size(); i++) {
-        weapons[i].print();
+  cout << "Constants: \n";
+  for ( auto itrr : this->constantsMap)
+  {
+    cout << "   " << itrr.first;
+    switch(itrr.second.which()){
+      case 0:
+        cout << endl;
+        for (auto i : boost::get<unordered_map<string,string>>(itrr.second)){
+          cout << "   "<< i.first << ":" << i.second << endl;
+        }
+        break;
+      case 1:
+        cout << ": " << boost::get<int>(itrr.second) << endl;
+        break;
+      case 2:
+        cout << ": " << boost::get<double>(itrr.second) << endl;
+        break;
+      case 3:
+        cout << ": " << boost::get<bool>(itrr.second) << endl;
+        break;
+      case 4:
+        cout << ": " << boost::get<string>(itrr.second) << endl;
+        break;
+      //List
+      case 5:
+        cout << "\n";
+        // a cheat for now
+        // needs to be vector<ListType> - will handle with visitor
+        for (auto vec : boost::get<vector<unordered_map<string,string>>>(itrr.second)){
+          for( auto val : vec){
+              cout << "     "<< val.first << ":" << val.second << endl;
+          }
+          cout << endl;
+        }
+      default:
+      // setup does not have lists
+        cout << "" << endl;
     }
+
+  }
 }
 
-vector<Weapon> Constants::getList() {
-    return weapons;
+GameVariant Constants::getAtKey(string key){
+  this->constantsMap[key];
 }

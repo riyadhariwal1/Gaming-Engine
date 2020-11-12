@@ -1,6 +1,6 @@
 #include "ParallelFor.h"
 
-ParallelFor::ParallelFor(string list, string element) 
+ParallelFor::ParallelFor(string list, string element)
 {
     this->list = List(list);
     this -> element = Element(element);
@@ -10,15 +10,15 @@ void ParallelFor::addRule(AstNode *astNode)
 {
     ruleList.push_back(astNode);
 }
-void ParallelFor::execute(GameState &gameState)
+void ParallelFor::execute(State &gameState)
 {
 }
 
-void ParallelFor::print() 
+void ParallelFor::print()
 {
     cout << "ParallelFor: " << endl;
     cout << "    list == ";
-    list.print(); 
+    list.print();
     cout << endl;
     cout << "    element == " ;
     element.print();
