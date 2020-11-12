@@ -1,18 +1,14 @@
 #ifndef ADD_RULE_H
 #define ADD_RULE_H
-#include "Rule.h"
+#include "AstVisitor.h"
+#include "AstNode.h"
 #include "GameState.h"
 #include "Player.h"
 #include <string>
 using namespace std;
 
-class AddRule
-{
+class AddRule {
 public:
-    AddRule(string, string);
-    void execute(State&);
-private:
-    string to;
-    string value;
+    AddRule(Player& variable, int count);
 };
 #endif

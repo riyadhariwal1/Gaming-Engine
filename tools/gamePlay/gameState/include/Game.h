@@ -6,8 +6,10 @@
 #define SOCIAL_GAMING_GAME_H
 
 #include <vector>
-#include "Rule.h"
-#include "State.h"
+#include "Player.h"
+#include "Constants.h"
+#include "Configuration.h"
+#include "Variables.h"
 
 class Game {
 private:

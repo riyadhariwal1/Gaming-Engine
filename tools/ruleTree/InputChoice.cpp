@@ -22,3 +22,7 @@ void InputChoiceRule::print()
   cout << "    timeout ==" << timeout << endl;
 
 }
+
+void InputChoiceRule::accept(AstVisitor& visitor) {
+    visitor.visit(*this);
+}

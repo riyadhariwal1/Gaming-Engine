@@ -19,3 +19,7 @@ void GlobalMessage::print()
   cout << "GlobalMessage: " << endl;
   cout << "   value == " << value << endl;
 }
+
+void GlobalMessage::accept(AstVisitor& visitor) {
+    visitor.visit(*this);
+}

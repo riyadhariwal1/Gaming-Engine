@@ -1,16 +1,16 @@
 #ifndef SCORES_RULE_H
 #define SCORES_RULE_H
-#include "Rule.h"
+#include "AstNode.h"
 #include "GameState.h"
 #include <string>
 using namespace std;
 
-class ScoreRule :  public Rule {
+class ScoreRule :  public AstNode {
     public:
     ScoreRule(string, bool);
     void execute(State&) override;
     void print()override;
-
+    void accept(AstVisitor& visitor) override;
     private:
     string score;
     bool ascending;

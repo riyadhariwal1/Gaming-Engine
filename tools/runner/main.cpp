@@ -5,7 +5,7 @@
 #include "Variables.h"
 #include <fstream>
 #include <sstream>
-#include "Rule.h"
+#include "AstNode.h"
 #include "GlobalMessage.h"
 #include "Extend.h"
 #include "When.h"
@@ -62,12 +62,18 @@ int main()
     Variables variable(jsonToMap(variables));
     variable.print();
 
+
     //players
     PerPlayer perPlayer(jsonToMap(per_player));
     perPlayer.print();
 
     PerAudience perAudience(jsonToMap(per_audience));
     perAudience.print();
+
+    // Loop through the rules!
+    json rules = j["rules"];
+    vector<AstNode*> allRule;
+
 
     AllPlayers allPlayer;
 
