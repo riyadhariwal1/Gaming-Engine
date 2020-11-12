@@ -2,8 +2,6 @@
 #define ELEMENT_H
 #include "AstNode.h"
 
-using namespace std;
-
 class Element: public AstNode{
 private:
     string value;
