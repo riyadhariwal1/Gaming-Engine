@@ -13,3 +13,7 @@ void ScoreRule:: print()
     cout << "    ascending == " << ascending << endl;
 
 }
+
+void ScoreRule::accept(AstVisitor& visitor) {
+    visitor.visit(*this);
+}

@@ -1,15 +1,15 @@
 #ifndef INPUTCHOICE_RULE_H
 #define INPUTCHOICE_RULE_H
-#include "Rule.h"
-#include "GameState.h"
+#include "AstNode.h"
 #include <string>
 
-class InputChoiceRule : public Rule
+class InputChoiceRule : public AstNode
 {
     public:
     InputChoiceRule(string, string, string, string);
     void execute(State&) override;
     void print() override;
+    void accept(AstVisitor& visitor) override;
 
     private:
     string rule;
@@ -18,6 +18,6 @@ class InputChoiceRule : public Rule
     string choices;
     string result;
     string timeout;
-    
+
 };
 #endif

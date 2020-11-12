@@ -2,26 +2,29 @@
 #define PLAYER_H
 #include <string>
 #include <vector>
+#include "Parser.h"
+
 using namespace std;
 
-// convert to unordered_map<string,variant> ??
-// string == id
-// variant -> name, wins, input-choice will be placed in
+// Players Class
 class Player {
     public:
       Player();
       Player(string name);
       void playerWins(int count);
       void printPlayer();
+      void AddVariable(string givenKey, GameVariant givenValue);
       // define player "Type"? -- game-player or audience-player
 
     private:
       int id;
       std::string& name;
       int gameWins;
+      // any variant inputs can be placed into this map;
+      unordered_map<string,GameVariant> PlayerVariablesMap;
 };
 
-//List of Players - yet to implement
+// All-Players Classs
 class AllPlayers{
 private:
     vector<Player> playerList;
