@@ -17,6 +17,8 @@
 
 #include "User.h"
 #include "Room.h"
+#include "Commands.h"
+#include "Store.h"
 using networking::Connection;
 using networking::Message;
 using networking::Server;
@@ -24,6 +26,8 @@ using networking::Server;
 //list of client IDs
 std::vector<User> clients;
 std::vector<Room> rooms;
+
+Store store;
 
 //ran by Server.h every time a new connection is made.
 //adds a new connection (i.e client ID) to the clients vector.
@@ -34,6 +38,9 @@ void onConnect(Connection c)
   User newUser(c);
   clients.push_back(newUser);
   rooms.at(0).addUser(newUser);
+
+  // _store
+  store.addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -338,6 +345,9 @@ runCommand(Message message)
     result << "You changed your name to " << targetName;
   }
   else if (commandName == "whisper"){}
+  else if (commandName == "commands") {
+
+  }
   else {
     std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
               << "\n";
@@ -518,6 +528,9 @@ int main(int argc, char *argv[])
   // create the main lobby
   Room newRoom(0, "Main");
   rooms.push_back(newRoom);
+
+  // _store
+  store.addRoom(newRoom);
 
   while (true)
   {
