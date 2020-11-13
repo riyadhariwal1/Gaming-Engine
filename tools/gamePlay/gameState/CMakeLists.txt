@@ -1,7 +1,7 @@
 add_library(gameState)
 target_sources(gameState
   PRIVATE
-    GameState.cpp Game.cpp State.cpp
+    Game.cpp State.cpp
 )
 
 target_include_directories(gameState
