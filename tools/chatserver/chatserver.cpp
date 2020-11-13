@@ -192,16 +192,37 @@ runCommand(Message message)
         return result.str();
       }
 
+      std::string pin;
+      // check if the room is private and user provided a pin
+      if (existingRoom->isPrivate()) {
+        try {
+          pin = tokens.at(2);
+        } catch (std::exception &e) {
+          result << "This room is private. Please provide a valid pin.\n";
+          return result.str();
+        }
+
+        const auto doesPinMatch = existingRoom->verifyPin(pin);
+
+        if (doesPinMatch) {
+          existingRoom->addUser(*user);
+        } else {
+          result << "The pin does not match.\n";
+          return result.str();
+        }
+      } else {
+        // no password required
+        existingRoom->addUser(*user);
+      }
+
       Room *currentRoom = getRoomById(user->getRoom());
 
-      if (currentRoom != nullptr)
-      {
+      if (currentRoom != nullptr) {
         // remove the user from their current room
         currentRoom->removeUser(*user);
       }
 
-      existingRoom->addUser(*user);
-      result << "Sending User:" << message.c.id << " to room " << existingRoom->getRoomName() << ".\n";
+      result << "Joining room " << existingRoom->getRoomName();
     }
     catch (const std::exception &e)
     {
@@ -267,7 +288,7 @@ runCommand(Message message)
     if (existingRoom != nullptr)
     {
       result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName
-             << " to join the room.\n";
+             << " to join the room.";
     }
     else
     {
@@ -275,9 +296,9 @@ runCommand(Message message)
       User* user = getUser(message.c);
 
       // check if the user provided a pin to make the room private
+      // Make sure not to throw an error here
       if (tokens.size() > 2) {
         roomPin = tokens.at(2);
-        std::cout << "Pin:" << roomPin << "\n";
       }
 
       // apply pin to room
@@ -285,16 +306,14 @@ runCommand(Message message)
         try {
           newRoom.setPin(roomPin);
         } catch (const char* err) {
-          std::cout << err << "\n";
-          result << err << "Please provide a 4 digit numerical pin." "\n";
-
+          result << err << "Please provide a 4 digit numerical pin.";
           return result.str();
         }
       }
 
       // leave the user's current room
       Room* currentRoom = getRoomById(user->getRoom());
-      std::cout << currentRoom->getRoomId() << "\n";
+      std::cout << currentRoom->getRoomId();
 
       if (currentRoom != nullptr) {
         currentRoom->removeUser(*user);
@@ -302,7 +321,7 @@ runCommand(Message message)
 
       newRoom.addUser(*user);
       rooms.push_back(newRoom);
-      result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").\n";
+      result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").";
     }
   }
   else if (commandName == "name"){
@@ -316,12 +335,10 @@ runCommand(Message message)
 
     User* user = getUser(message.c);
     user->setUserName(targetName);
-    std::cout << "You changed your name to " << targetName << std::endl;
+    result << "You changed your name to " << targetName;
   }
-  else if (commandName == "whisper"){
-  }
-  else
-  {
+  else if (commandName == "whisper"){}
+  else {
     std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
               << "\n";
   }

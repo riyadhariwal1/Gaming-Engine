@@ -3,14 +3,15 @@
 #include <regex>
 #include "../include/Room.h"
 
-// returns true if valid pin, false if not
-bool Room::validatePin(std::string dirtyPin) {
+// A util function to validate pins out of the Room context
+// This can probably be kept as a namespaced function and not part of the Room class
+std::string Room::sanitizePin(std::string pin) {
     std::regex pattern("^[0-9]{4}$");
-    auto matches = std::regex_match(dirtyPin, pattern);
+    auto matches = std::regex_match(pin, pattern);
 
-    if (!matches) throw "Pin is not valid";
+    if (!matches) throw "Pin is invalid.";
 
-    return matches;
+    return pin;
 }
 
 void Room::addUser(User& user) {
@@ -49,30 +50,26 @@ void Room::printUsers(){
 }
 
 // sets the room pin and returns true if successful
-bool Room::setPin(std::string pin) {
+void Room::setPin(std::string pin) {
     try {
-        const auto isValidPin = this->validatePin(pin);
+        const auto sanitizedPin = this->sanitizePin(pin);
 
-        if (isValidPin) {
-            this->pin = pin;
-            return true;
-        }
+        this->pin = sanitizedPin;
+        return;
     } catch (const char* err) {
         throw err;
     }
 
-    return false;
+    return;
 }
 
 // Verify the pin
 // If the room doesn't have a pin we return true
 // This checks for a valid 4-digit numerical pin
 bool Room::verifyPin(std::string input) {
-    std::string roomPin = this->getPin();
+    if (!this->isPrivate()) return false;
 
-    if (roomPin == "") return true;
+    const auto sanitizedPin = this->sanitizePin(input);
 
-    const auto isValidPin = this->validatePin(input);
-
-    return isValidPin ? roomPin == input : false;
+    return this->getPin() == sanitizedPin;
 }

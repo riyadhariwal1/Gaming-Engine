@@ -27,9 +27,10 @@ public:
     void printUsers();
     bool containsUser(User&);
     std::string getPin(){return pin;}
-    bool setPin(std::string pin);
+    void setPin(std::string pin);
     bool verifyPin(std::string input);
-    static bool validatePin(std::string dirtyPin);
+    static std::string sanitizePin(std::string dirtyPin);
+    bool isPrivate() {return pin != "";}
 };
 
 
