@@ -13,7 +13,13 @@ endif()
 add_library(jsonParsing)
 target_sources(jsonParsing
         PRIVATE
-        AstTree.cpp Configuration.cpp Constants.cpp Variables.cpp Loader.cpp)
+        Configuration.cpp
+        Constants.cpp
+        Variables.cpp
+        Loader.cpp
+        Parser.cpp
+        PlayerSetup.cpp
+        Helper.cpp)
 
 target_include_directories(jsonParsing
   PUBLIC
@@ -21,5 +27,3 @@ target_include_directories(jsonParsing
 )
 
 target_link_libraries(jsonParsing PRIVATE nlohmann_json::nlohmann_json gameState ruleTree Players)
-
-

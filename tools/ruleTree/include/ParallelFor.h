@@ -12,11 +12,11 @@ class ParallelFor : public AstNode
 {
     public:
         ParallelFor(string, string);
-        void execute(GameState&) override;
+        void execute(State&) override;
         void addRule(AstNode*);
         void print() override;
         void accept(AstVisitor& visitor) override;
-        
+
     private:
         vector<AstNode*> ruleList;
         List list;

@@ -7,7 +7,14 @@
     },
     "audience": false,
     "setup": {
-      "Rounds": 10
+      "Rounds": 10,
+      "Levels": 1.0,
+      "TestString": "string",
+      "TestBool": true,
+      "TestKind": {
+        "Kind": "Integer",
+        "Prompt": "Owner must input something"
+      }
     }
   },
   "constants": {
@@ -72,7 +79,8 @@
               "rule": "when",
               "cases": [
                 {
-                  "condition": "!players.elements.weapon.contains(weapon.name)",
+                  "condition": "!players.elements.weapon.contains
+                  (weapon.name)",
                   "rules": [
                     {
                       "rule": "extend",

@@ -1,7 +1,6 @@
 #ifndef WHEN_RULE_H
 #define WHEN_RULE_H
 #include "AstNode.h"
-#include "GameState.h"
 #include <string>
 #include <vector>
 using namespace std;
@@ -21,12 +20,12 @@ class WhenRule :  public AstNode {
         WhenRule ();
         void accept(AstVisitor& visitor) override;
         //WhenRule(vector<Case>&);
-        void execute(GameState&) override;
+        void execute(State&) override;
         void addCase(Case*);
         void print();
     private:
         vector<Case*> caseList;
-        
+
 
 };
 #endif

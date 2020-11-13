@@ -7,7 +7,7 @@ List::List (string value){
     this -> value = value;
 }
 
-void List :: execute(GameState& state){
+void List :: execute(State& state){
     //TODO: get the list from game state
 }
 
@@ -24,4 +24,3 @@ vector<AstNode*> List:: getList()
 void List::print() {
     cout << value;
 }
-

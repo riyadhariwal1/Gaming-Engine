@@ -10,21 +10,18 @@
 #include "Constants.h"
 #include "Configuration.h"
 #include "Variables.h"
-#include "AstTree.h"
+#include "State.h"
+//#include "AstNode.h"
+
 class Game {
 private:
-    vector<Player> playerList;
-    Configuration configuration;
-    //vector<Rule> ruleList;
-    AstTree astTree;
-    Constants constants;
-    Variables variables;
-
+    //vector<AstNode*> ruleList;
+    State state;
 public:
 //    Game(vector<Player> playerList, Configuration configuration, vector<Rule> ruleList, Constants constants, Variables variables);
-    Game(vector<Player>, Configuration, Constants, Variables, AstTree);
-    vector<Weapon> getConstantList(string);
+    //Game(State state, vector<AstNode*> ruleList);
     void print();
+    void execute();
 };
 
 
