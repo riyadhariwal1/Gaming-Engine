@@ -72,6 +72,7 @@ int main()
 
     // Loop through the rules!
     vector<AstNode*> allRule;
+    AstTree astTree;
 
 
     AllPlayers allPlayer;
@@ -90,12 +91,14 @@ int main()
         {
             ForEachRule *ruleIndex = loader.forEachRule(element);
             allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
 
         else if (rulesName == "scores")
         {
             ScoreRule *ruleIndex = loader.scoreRule(element);
             allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
     }
     for (int i = 0; i < allRule.size(); i++)

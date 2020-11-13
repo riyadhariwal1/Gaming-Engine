@@ -79,7 +79,8 @@
               "rule": "when",
               "cases": [
                 {
-                  "condition": "!players.elements.weapon.contains(weapon.name)",
+                  "condition": "!players.elements.weapon.contains
+                  (weapon.name)",
                   "rules": [
                     {
                       "rule": "extend",

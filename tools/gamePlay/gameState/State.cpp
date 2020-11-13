@@ -58,12 +58,16 @@ vector<GameVariant> State::getStateList(string input){
 
   }
   else if( input.find("constants") != string::npos){
+    // none in rockPaperScissors
   }
   else if( input.find("variables") != string::npos){
+        // none in rockPaperScissors
   }
   else if( input.find("per-player") != string::npos){
+        // none in rockPaperScissors
   }
   else if( input.find("per-audience") != string::npos){
+        // none in rockPaperScissors
   }
   else {
     // search within constants
