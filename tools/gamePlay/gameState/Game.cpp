@@ -1,4 +1,4 @@
-#include "include/Game.h"
+#include "Game.h"
 
 //Game::Game(vector<Player> playerList, Configuration configuration, vector<Rule> ruleList, Constants constants, Variables variables)
 //    : playerList(playerList), configuration(configuration), ruleList(ruleList), constants(constants), variables(variables)
