@@ -14,13 +14,13 @@ int GameManager::findGameIndex(Game game){
             return i;
         }
     }
-    std::cout<<"There is no such a game named: "<<game.getGameId<<".\n";
+    std::cout<<"There is no such a game named: "<< game.getGameId() <<".\n";
     return -1;
 }
 
 void GameManager::deleteGame(Game game){
-    int index = gameList.findGameIndex(game);
-    gameList.erase(index);
+    auto index = this->findGameIndex(game);
+    this->gameList.erase(this->gameList.begin() + index);
 }
 
 void GameManager::deleteLastGame(){

@@ -25,7 +25,7 @@ std::string Game::getPath() const{
 	return filePath;
 }
 
-void Game::setDescripttion(std:: descrip){
+void Game::setDescription(std::string descrip){
 	this->description = descrip;
 }
 
