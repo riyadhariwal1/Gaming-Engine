@@ -6,7 +6,6 @@
 #include <fstream>
 #include <sstream>
 #include "AstNode.h"
-#include "AstTree.h"
 #include "GlobalMessage.h"
 #include "Extend.h"
 #include "When.h"
@@ -18,7 +17,7 @@
 #include "Scores.h"
 #include "Add.h"
 #include "Loader.h"
-
+#include "Game.h"
 using namespace std;
 using json = nlohmann::json;
 
@@ -95,6 +94,6 @@ int main() {
 
 
     // //game test ! missing ruleList
-    // AllPlayers allPlayer;
-    // Game game(allPlayer.getList(), configuration, constant, var);
+     AllPlayers allPlayer;
+     Game game(allPlayer.getList(), configuration, constant, var, astTree);
 }
