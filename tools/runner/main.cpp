@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include "AstNode.h"
+#include "AstTree.h"
 #include "GlobalMessage.h"
 #include "Extend.h"
 #include "When.h"
@@ -60,6 +61,7 @@ int main() {
     // Loop through the rules!
     json rules = j["rules"];
     vector<AstNode*> allRule;
+    AstTree astTree;
 
     Loader loader;
     int i = 0;
@@ -72,12 +74,14 @@ int main() {
         {
             ForEachRule *ruleIndex = loader.forEachRule(element);
             allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
         
         else if (rulesName == "scores")
         {
             ScoreRule *ruleIndex = loader.scoreRule(element);
             allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
     }
     for (int i = 0 ; i < allRule.size() ; i++)
