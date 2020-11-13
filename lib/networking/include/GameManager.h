@@ -1,5 +1,5 @@
-#ifndef WEBSOCKETNETWORKING_USER_H
-#define WEBSOCKETNETWORKING_USER_H
+#ifndef WEBSOCKETNETWORKING_GAME_MANAGER_H
+#define WEBSOCKETNETWORKING_GAME_MANAGER_H
 
 #include <iostream>
 #include <algorithm>
@@ -16,3 +16,5 @@ class GameManager{
         void deleteLastGame();
         int findGameIndex(Game game);
 };
+
+#endif

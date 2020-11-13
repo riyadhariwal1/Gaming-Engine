@@ -1,6 +1,3 @@
-#ifndef WEBSOCKETNETWORKING_USER_H
-#define WEBSOCKETNETWORKING_USER_H
-
 #include "../include/GameManager.h"
 
 GameManager::GameManager(std::vector<Game> newList){

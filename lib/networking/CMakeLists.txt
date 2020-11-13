@@ -6,6 +6,8 @@ add_library(networking
   src/Client.cpp
   src/Room.cpp
   src/User.cpp
+  src/Game.cpp
+  src/GameManager.cpp
 )
 
 find_package(Boost 1.72 COMPONENTS system REQUIRED)

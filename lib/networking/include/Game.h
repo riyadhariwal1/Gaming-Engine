@@ -1,5 +1,5 @@
-#ifndef WEBSOCKETNETWORKING_USER_H
-#define WEBSOCKETNETWORKING_USER_H
+#ifndef WEBSOCKETNETWORKING_GAME_H
+#define WEBSOCKETNETWORKING_GAME_H
 
 class Game{
 private:
@@ -24,6 +24,8 @@ public:
 	void setPath(std::string path);
 	std::string getPath() const;
 	void setDescription(std::string descrip);
-	std::string getDescription() const;	
+	std::string getDescription() const;
 
 };
+
+#endif
