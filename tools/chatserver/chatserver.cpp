@@ -41,6 +41,7 @@ void onConnect(Connection c)
 
   // _store
   store.addUser(newUser);
+  store.getRooms().at(0).addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -56,6 +57,9 @@ void onDisconnect(Connection c)
       clients.erase(eraseBegin, std::end(clients));
     }
   }
+
+  // _store
+  store.removeUser(c);
 }
 
 //shouldShutdown is set to true, if the message's text was "Shutdown". If shouldShutdown is true, the main function's while loop will break.

@@ -5,9 +5,7 @@
 #include <string>
 
 
-class Commands
-{
-public:
+struct Commands {
   std::string CREATE{"create"};
   std::string JOIN{"join"};
   std::string LEAVE{"leave"};
