@@ -1,6 +1,8 @@
 #ifndef SOCIAL_GAMING_ASTVISITOR_H
 #define SOCIAL_GAMING_ASTVISITOR_H
 
+class Element;
+class List;
 class GlobalMessage;
 class DiscardRule;
 class ExtendRule;
