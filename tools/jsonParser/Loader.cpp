@@ -9,7 +9,7 @@ using json = nlohmann::json;
 /* -- */
 GlobalMessage* Loader::globalMessageRule(json rule)
 {
-    cout << "Im in golbal" << endl;
+    cout << "Global Message" << endl;
     GlobalMessage *globalMessage = new GlobalMessage(rule.at("value").get<string>());
 
     return globalMessage;
@@ -61,13 +61,13 @@ WhenRule *Loader::whenRule(json rule)
     //cout << rule << "\n" << endl;
 
     json conditions = rule["cases"];
-    
+
     WhenRule *whenRule = new WhenRule();
     for (const json ele : conditions)
     {
         string check = ele["condition"].dump();
         Case* cas = new Case(check);
-        
+
 
         json ruleList = ele["rules"];
 
@@ -85,11 +85,11 @@ WhenRule *Loader::whenRule(json rule)
                 cas -> addRule(ruleIndex);
             }
             else if (ruleName == "foreach")
-            {      
+            {
                 ForEachRule *ruleIndex = forEachRule(element);
                 cas -> addRule(ruleIndex);
             }
-            
+
         }
         cout << endl;
         whenRule -> addCase(cas);
@@ -99,6 +99,8 @@ WhenRule *Loader::whenRule(json rule)
     //whenRule->print();
     return whenRule;
 }
+
+
 ScoreRule * Loader::scoreRule(json rule)
 {
     ScoreRule* scoreRule = new ScoreRule (rule.at("score").get<string>(), rule.at("ascending").get<bool>());
@@ -192,5 +194,3 @@ ForEachRule *Loader::forEachRule(json element)
     //forEach->print();
     return forEach;
 }
-
-

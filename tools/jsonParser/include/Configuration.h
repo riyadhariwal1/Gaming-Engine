@@ -5,24 +5,50 @@
 #ifndef SOCIAL_GAMING_CONFIGURATION_H
 #define SOCIAL_GAMING_CONFIGURATION_H
 
-#include <iostream>
+#include "Parser.h"
+
 using namespace std;
+
 
 struct PlayerCount {
     int min;
     int max;
 };
 
-class Configuration {
-private:
-    string name;
-    PlayerCount playerCount;
-    bool audience;
-    int rounds; //have set up class instead
 
-public:
-    Configuration(string name, int min, int max, bool audience, int rounds);
-    void printConfiguration();
+// settings can be changed by users
+class Settings {
+  private:
+    unordered_map<string, GameVariant> settingsMap;
+
+  public:
+    Settings(unordered_map<string, GameVariant> settingsMap);
+    void printSettings();
+    // update a setting
+    void UpdateSetting(string keyToUpdate, GameVariant valueToUpdate);
+    GameVariant getAtKey(string);
+};
+
+class Configuration {
+  private:
+
+    // this might need refactoring as unordered_map<string, GameVariant>
+      string name;
+      PlayerCount playerCount;
+      bool audience;
+      Settings setup;
+      // data that may be uploaded by the owner for quiz based games ?
+
+  public:
+      Configuration(string name, int min, int max, bool audience, Settings setup);
+
+      string getName();
+      PlayerCount getPlayerCount();
+      bool isAudible();
+      Settings getSetUp();
+
+      GameVariant getAtKey(string);
+      void print();
 };
 
 

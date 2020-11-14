@@ -2,25 +2,29 @@
 #define PLAYER_H
 #include <string>
 #include <vector>
+#include "Parser.h"
+
 using namespace std;
 
+// Players Class
 class Player {
     public:
       Player();
-      Player(std::string& name);
+      Player(string name);
       void playerWins(int count);
       void printPlayer();
+      void AddVariable(string givenKey, GameVariant givenValue);
       // define player "Type"? -- game-player or audience-player
 
     private:
       int id;
       std::string& name;
       int gameWins;
+      // any variant inputs can be placed into this map;
+      unordered_map<string,GameVariant> PlayerVariablesMap;
 };
 
-
-
-//List of Players - yet to implement
+// All-Players Classs
 class AllPlayers{
 private:
     vector<Player> playerList;

@@ -5,7 +5,7 @@
 #include "Variables.h"
 #include <fstream>
 #include <sstream>
-#include "Rule.h"
+#include "AstNode.h"
 #include "GlobalMessage.h"
 #include "Extend.h"
 #include "When.h"
@@ -17,52 +17,71 @@
 #include "Scores.h"
 #include "Add.h"
 #include "Loader.h"
+#include "State.h"
+#include "Game.h"
+#include "Parser.h"
+#include "PlayerSetup.h"
+#include "AstTree.h"
+#include <string>
+#include <typeinfo>
+
 
 using namespace std;
 using json = nlohmann::json;
 
-int main() {
+int main()
+{
     string filePath = "rockPaperScissors.json";
     ifstream ifs(filePath, std::ifstream::binary);
-    if (ifs.fail()){
+    if (ifs.fail())
+    {
         throw std::runtime_error("Cannot open Json file");
     }
 
-    json j = json::parse(ifs);
+    json GAMEJSON = json::parse(ifs);
 
+    // EXTRACT GAME SPECIFICATION STRUCTURE
+    json config = GAMEJSON["configuration"];
+    json constants = GAMEJSON["constants"];
+    json variables = GAMEJSON["variables"];
+    json per_player = GAMEJSON["per-player"];
+    json per_audience = GAMEJSON["per-audience"];
+    json rules = GAMEJSON["rules"];
+
+    // EXTRACT STATE
     //config
-    json config = j["configuration"];
+    Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
-                                                config["player count"]["max"], config["audience"], config["setup"]["Rounds"]);
-    configuration.printConfiguration();
+                                                config["player count"]["max"], config["audience"], game_settings);
+    configuration.print();
 
     //constants
-    json constantsArr = j["constants"]["weapons"];
-    Constants constant;
-    for (const auto &element : constantsArr){
-        auto name = element.at("name").get<string>();
-        auto beats = element.at("beats").get<string>();
-        Weapon temp(name, beats);
-        constant.addWeapon(temp);
-    }
+    Constants constant(jsonToMap(constants));
     constant.print();
 
-    //variable
-    json variable = j["variables"]["winners"];
-    Variables var;
-    for (const auto &element : variable){
-        string winner = element.get<string>();
-        var.addWinner(winner);
-    }
-    var.print();
-    cout << "\n\n" <<endl;
+    //variables
+    Variables variable(jsonToMap(variables));
+    variable.print();
+
+
+    //players
+    PerPlayer perPlayer(jsonToMap(per_player));
+    perPlayer.print();
+
+    PerAudience perAudience(jsonToMap(per_audience));
+    perAudience.print();
 
     // Loop through the rules!
-    json rules = j["rules"];
-    vector<Rule *> allRule;
+    AstTree astTree;
 
+
+    AllPlayers allPlayer;
+
+    State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
+
+    // rules!
+    // change this up using AST
     Loader loader;
-    int i = 0;
     for (const json element : rules)
     {
         //cout << i++ << endl;
@@ -71,26 +90,16 @@ int main() {
         if (rulesName == "foreach")
         {
             ForEachRule *ruleIndex = loader.forEachRule(element);
-            allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
-        
+
         else if (rulesName == "scores")
         {
             ScoreRule *ruleIndex = loader.scoreRule(element);
-            allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
     }
-    for (int i = 0 ; i < allRule.size() ; i++)
-    {
-        allRule[i] ->print();
-    }
 
-
-    // Loader loader;
-    // loader.forEachRule(j);
-
-
-    // //game test ! missing ruleList
-    // AllPlayers allPlayer;
-    // Game game(allPlayer.getList(), configuration, constant, var);
+    //Start Game
+    Game game(astTree,state);
 }

@@ -5,26 +5,21 @@
 #ifndef SOCIAL_GAMING_GAME_H
 #define SOCIAL_GAMING_GAME_H
 
-#include <vector>
 #include "Player.h"
-#include "Rule.h"
 #include "Constants.h"
 #include "Configuration.h"
 #include "Variables.h"
+#include "State.h"
+#include "AstTree.h"
 
 class Game {
 private:
-    vector<Player> playerList;
-    Configuration configuration;
-    //vector<Rule> ruleList;
-    Constants constants;
-    Variables variables;
-
+    AstTree astTree;
+    State state;
 public:
-//    Game(vector<Player> playerList, Configuration configuration, vector<Rule> ruleList, Constants constants, Variables variables);
-    Game(vector<Player> playerList, Configuration configuration, Constants constants, Variables variables);
-    vector<Weapon> getConstantList(string listName);
+    Game (AstTree, State);
     void print();
+    void execute();
 };
 
 
