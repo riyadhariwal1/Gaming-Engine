@@ -32,6 +32,7 @@ public:
   User* getUserByConnection(networking::Connection c);
   User* getUserByName(std::string name);
   Room* getRoomByName(std::string roomName);
+  Room * Store::getRoomById(int roomId);
 };
 
 #endif

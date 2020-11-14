@@ -120,6 +120,7 @@ getRoomByName(std::string roomName)
 }
 
 // given a room id, return a pointer to that Room otherwise return nullptr
+// in store.h
 Room*
 getRoomById(int roomId)
 {
@@ -447,25 +448,6 @@ processMessages(const std::deque<Message> &incoming)
   return outgoing;
 }
 
-//Takes in one long processed string,
-//Creates a new dequeue of 'Messages' (defined in Server.h).
-//Each Message is as follows: {
-//                              connection =RECIPIENT_ID
-//                              text = RESULT }
-//note that RESULT will be the same string of text as defined in processMessages();
-//The end result is one big list of 'Messages', with a recipient ID, and a line of text to send to that recipient's client.
-// REPLACED WITH POSTOFFICE
-std::deque<Message>
-buildOutgoing(const std::string &log)
-{
-  std::deque<Message> outgoing;
-  for (auto client : clients)
-  {
-    outgoing.push_back({client.connection, log, 0});
-  }
-  return outgoing;
-}
-
 // takes the the messages from processMessages()
 // and creates a deque of output Messages assigned to the appropriate room members
 // returns deque of messages in the form of
@@ -556,7 +538,6 @@ int main(int argc, char *argv[])
     auto incoming = server.receive();
     auto messages = processMessages(incoming);
 
-    // auto outgoing = buildOutgoing(log);
     auto outgoing = postOffice(messages);
     server.send(outgoing);
 

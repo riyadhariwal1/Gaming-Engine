@@ -54,3 +54,15 @@ Store::getRoomByName(std::string roomName)
 
   return nullptr;
 }
+
+// given a room id, return a pointer to that Room otherwise return nullptr
+Room *
+Store::getRoomById(int roomId)
+{
+  for (auto &room : rooms)
+  {
+    if (room.getRoomId() == roomId) return &room;
+  }
+
+  return nullptr;
+}
