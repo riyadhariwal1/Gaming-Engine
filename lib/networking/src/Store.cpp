@@ -1,11 +1,11 @@
 #include "Store.h"
 
 void Store::addUser(User& user) {
-  this->users.push_back(user);
+  users.push_back(user);
 }
 
 void Store::removeUser(networking::Connection c) {
-  for (auto u : this->users)
+  for (auto u : users)
   {
     if (u.getConnection() == c)
     {
@@ -16,10 +16,11 @@ void Store::removeUser(networking::Connection c) {
 }
 
 void Store::addRoom(Room& room) {
-  this->rooms.push_back(room);
+  rooms.push_back(room);
 }
 
-User* Store::getUserByConnection(Connection c)
+User*
+Store::getUserByConnection(Connection c)
 {
   for (auto &user : users)
   {
@@ -28,6 +29,28 @@ User* Store::getUserByConnection(Connection c)
   }
   std::cout << "Error. Trying to find user with Id " << c.id << "but they are not in the Users vector"
             << "\n";
+
+  return nullptr;
+}
+
+User*
+Store::getUserByName(std::string name){
+  for (auto& user : users)
+  {
+    bool matches = name.compare(user.userName) == 0;
+    if (matches) return &user;
+  }
+
+  return nullptr;
+}
+
+Room *
+Store::getRoomByName(std::string roomName)
+{
+  for (auto &room : rooms)
+  {
+    if (room.getRoomName() == roomName) return &room;
+  }
 
   return nullptr;
 }

@@ -30,6 +30,8 @@ public:
   void removeUser(networking::Connection c);
   void addRoom(Room&);
   User* getUserByConnection(networking::Connection c);
+  User* getUserByName(std::string name);
+  Room* getRoomByName(std::string roomName);
 };
 
 #endif

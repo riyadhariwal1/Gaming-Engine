@@ -69,6 +69,7 @@ struct MessageResult
 };
 
 //given a Connection, return that user;
+// in store.h
 User*
 getUser(Connection c)
 {
@@ -84,6 +85,7 @@ getUser(Connection c)
 }
 
 // given a string of a user name, return a user
+// in store.h
 User*
 getUserByName(std::string name){
   std::cout<<"you are whisper to "<<"\""<<name<<"\""<<"\n";
@@ -102,6 +104,7 @@ getUserByName(std::string name){
 }
 
 // given a room name, return a pointer to that Room otherwise return nullptr
+// in store.h
 Room *
 getRoomByName(std::string roomName)
 {
