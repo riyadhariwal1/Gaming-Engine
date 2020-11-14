@@ -354,7 +354,7 @@ runCommand(Message message)
   }
   else if (commandName == "whisper"){}
   else if (commandName == "commands") {
-
+    result << Commands::listCommands;
   }
   else if (commandName == "debug") {
     store.print();
