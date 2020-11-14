@@ -41,7 +41,7 @@ void onConnect(Connection c)
 
   // _store
   store.addUser(newUser);
-  store.getRooms().at(0).addUser(newUser);
+  store.getLobby()->addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -356,6 +356,9 @@ runCommand(Message message)
   else if (commandName == "commands") {
 
   }
+  else if (commandName == "debug") {
+    store.print();
+  }
   else {
     std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
               << "\n";
@@ -515,11 +518,9 @@ int main(int argc, char *argv[])
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
 
   // create the main lobby
+  // _store handles this internally
   Room newRoom(0, "Main");
   rooms.push_back(newRoom);
-
-  // _store
-  store.addRoom(newRoom);
 
   while (true)
   {

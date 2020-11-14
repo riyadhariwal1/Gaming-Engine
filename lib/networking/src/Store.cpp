@@ -66,3 +66,15 @@ Store::getRoomById(int roomId)
 
   return nullptr;
 }
+
+void
+Store::print() {
+  for (auto& room : rooms) {
+    std::cout << "Room: " << room.getRoomName() << "\n";
+    std::cout << "Users:\n";
+    for (auto & user : room.getUsers()) {
+      auto userInfo = user.getUserName().empty() ? "" : "(" + user.getUserName() + ")";
+      std::cout << user.getConnection().id << userInfo << "\n";
+    }
+  }
+}
