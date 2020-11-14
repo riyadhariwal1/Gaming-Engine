@@ -13,13 +13,18 @@ endif()
 add_library(jsonParsing)
 target_sources(jsonParsing
         PRIVATE
-        Configuration.cpp Constants.cpp Variables.cpp Loader.cpp)
+        Configuration.cpp
+        Constants.cpp
+        Variables.cpp
+        Loader.cpp
+        Parser.cpp
+        PlayerSetup.cpp
+        Helper.cpp
+        AstTree.cpp)
 
 target_include_directories(jsonParsing
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
-target_link_libraries(jsonParsing PRIVATE nlohmann_json::nlohmann_json gameState ruleClasses Players)
-
-
+target_link_libraries(jsonParsing PRIVATE nlohmann_json::nlohmann_json gameState ruleTree Players)

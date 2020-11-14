@@ -8,7 +8,6 @@
 #include "Variables.h"
 #include <fstream>
 #include <sstream>
-#include "Rule.h"
 #include "GlobalMessage.h"
 #include "Extend.h"
 #include "When.h"

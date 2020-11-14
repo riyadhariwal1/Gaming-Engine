@@ -1,7 +1,7 @@
 add_library(gameState)
 target_sources(gameState
   PRIVATE
-    GameState.cpp Game.cpp
+    Game.cpp State.cpp
 )
 
 target_include_directories(gameState
@@ -10,6 +10,4 @@ target_include_directories(gameState
         )
 
 #error: fatal error: Player.h: No such file or directory
-target_link_libraries(gameState ruleClasses Players jsonParsing)
-
-
+target_link_libraries(gameState ruleTree Players jsonParsing)
