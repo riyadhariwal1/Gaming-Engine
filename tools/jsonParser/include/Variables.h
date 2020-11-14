@@ -2,7 +2,6 @@
 #define SOCIAL_GAMING_VARIABLES_H
 
 #include <iostream>
-#include <vector>
 #include "Parser.h"
 using namespace std;
 
