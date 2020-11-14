@@ -71,34 +71,14 @@ int main()
     PerAudience perAudience(jsonToMap(per_audience));
     perAudience.print();
 
-    // Loop through the rules!
-    AstTree astTree;
-
+    // Get AstTree
+    AstTree astTree(rules);
 
     AllPlayers allPlayer;
 
     State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
-
-    // rules!
-    // change this up using AST
-    Loader loader;
-    for (const json element : rules)
-    {
-        //cout << i++ << endl;
-        auto rulesName = element.at("rule").get<string>();
-        //cout << rulesName << endl;
-        if (rulesName == "foreach")
-        {
-            ForEachRule *ruleIndex = loader.forEachRule(element);
-            astTree.pushNode(ruleIndex);
-        }
-
-        else if (rulesName == "scores")
-        {
-            ScoreRule *ruleIndex = loader.scoreRule(element);
-            astTree.pushNode(ruleIndex);
-        }
-    }
+    
+    
 
     //Start Game
     Game game(astTree,state);
