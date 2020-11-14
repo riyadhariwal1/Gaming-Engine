@@ -9,8 +9,7 @@ string GlobalMessage::getMessage(){
   return value;
 }
 
-void GlobalMessage::execute(State& gameState)
-{
+void GlobalMessage::execute(State& gameState) {
 
 }
 

@@ -6,6 +6,7 @@
 #include<vector>
 #include "AstVisitor.h"
 #include "State.h"
+#include "Player.h"
 //visitable interface
 //class List;
 //class Element;

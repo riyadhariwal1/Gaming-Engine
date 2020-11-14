@@ -1,6 +1,7 @@
 #ifndef DISCARD_RULE_H
 #define DISCARD_RULE_H
 #include "AstNode.h"
+#include "Player.h"
 #include <string>
 
 class DiscardRule : public AstNode{
