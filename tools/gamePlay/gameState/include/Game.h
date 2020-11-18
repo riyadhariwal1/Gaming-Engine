@@ -1,6 +1,3 @@
-//
-// Created by Riya on 2020-10-18.
-//
 
 #ifndef SOCIAL_GAMING_GAME_H
 #define SOCIAL_GAMING_GAME_H

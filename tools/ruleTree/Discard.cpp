@@ -8,8 +8,9 @@ void DiscardRule::accept(AstVisitor& visitor) {
     visitor.visit(*this);
 }
 void DiscardRule::execute(State &gameState) {
-//    vector<Player> list = gameState.getWinners();
-//    list.erase(list.begin(), list.begin() + std::stoi(count));
+
+    vector<Player> list = gameState.getWinners();
+    list.erase(list.begin(), list.begin() + std::stoi(count));
 }
 
 void DiscardRule::print()
