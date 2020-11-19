@@ -9,7 +9,7 @@ using namespace std;
 // Players Class
 class Player {
     public:
-      Player();
+      //Player();
       Player(string name);
       void playerWins(int count);
       void printPlayer();
@@ -18,7 +18,7 @@ class Player {
 
     private:
       int id;
-      std::string& name;
+      std::string name;
       int gameWins;
       // any variant inputs can be placed into this map;
       unordered_map<string,GameVariant> PlayerVariablesMap;

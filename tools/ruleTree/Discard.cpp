@@ -7,7 +7,13 @@ DiscardRule::DiscardRule(string from, string count) : from(from), count(count)
 void DiscardRule::accept(AstVisitor& visitor) {
     visitor.visit(*this);
 }
-void DiscardRule::execute(State &gameState){}
+void DiscardRule::execute(State &gameState){
+  vector<Player> list = gameState.getWinners();
+  if(!list.empty()){
+    list.erase(list.begin(), list.begin()+1);
+    list.begin();
+  }
+}
 
 void DiscardRule::print()
 {

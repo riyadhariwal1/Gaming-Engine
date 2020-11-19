@@ -4,7 +4,7 @@
 #include "AstTree.h"
 #include "Loader.h"
 #include "Helper.h"
-
+#include "State.h"
 class GameTest : public ::testing::Test
 {
 protected:
@@ -17,7 +17,7 @@ protected:
 };
 
 //Read simple Rule
-TEST_F(GameTest, List_config)
+TEST_F(GameTest, List_config_1)
 {
     string filePath = "players.json";
     ifstream ifs(filePath, std::ifstream::binary);
@@ -32,7 +32,7 @@ TEST_F(GameTest, List_config)
 };
 
 //Read complex Rule
-TEST_F(GameTest, List_config)
+TEST_F(GameTest, List_config_2)
 {
     string filePath = "rockPaperScissors.json";
     ifstream ifs(filePath, std::ifstream::binary);

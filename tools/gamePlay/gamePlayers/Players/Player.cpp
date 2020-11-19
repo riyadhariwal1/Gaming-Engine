@@ -2,9 +2,9 @@
 #include <iostream>
 
 // Players Class
-Player::Player(string name): name(name){
-  this->id=1001;
-  this->gameWins=0;
+Player::Player(string name): name(name), id(1001), gameWins(0){
+  // this->id=1001;
+  // this->gameWins=0;
 }
 
 void Player::playerWins(int count) {

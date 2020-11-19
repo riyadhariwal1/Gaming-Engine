@@ -53,8 +53,8 @@ vector<GameVariant> State::getStateList(string input){
     string substr_input = input.substr(pos, input.length());
     size_t nextPos = substr_input.find(".");
     string config_key = substr_input.substr(0, nextPos);
-    GameVariant value = this->configuration.getAtKey(config_key);
-    result.push_back(value);
+    //GameVariant value = this->configuration.getAtKey(config_key);
+    //result.push_back(value);
 
   }
   else if( input.find("constants") != string::npos){
@@ -71,8 +71,8 @@ vector<GameVariant> State::getStateList(string input){
   }
   else {
     // search within constants
-    GameVariant value = this->constants.getAtKey(input);
-    result.push_back(value);
+    //GameVariant value = this->constants.getAtKey(input);
+    //result.push_back(value);
 
     //search within variables
 
@@ -84,11 +84,11 @@ vector<GameVariant> State::getStateList(string input){
 }
 
 // others
-void State::print(){
-  this->configuration.print();
-  this->constants.print();
-  this->variables.print();
-  this->per_player.print();
-  this->per_audience.print();
-  return;
-}
+// void State::print(){
+//   this->configuration.print();
+//   this->constants.print();
+//   this->variables.print();
+//   this->per_player.print();
+//   this->per_audience.print();
+//   return;
+// }
