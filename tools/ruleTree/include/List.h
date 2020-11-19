@@ -13,7 +13,7 @@ public:
     List();
     vector<AstNode*> getList();
     List(string);
-    void accept(AstVisitor& visitor) override;
+    void accept(AstVisitor& visitor, State& gameState) override;
     void execute(State&);
     void print();
 

@@ -9,7 +9,7 @@ class InputChoiceRule : public AstNode
     InputChoiceRule(string, string, string, string);
     void execute(State&) override;
     void print() override;
-    void accept(AstVisitor& visitor) override;
+    void accept(AstVisitor& visitor, State& gameState) override;
 
     private:
     string rule;

@@ -4,8 +4,8 @@ DiscardRule::DiscardRule(string from, string count)
 : from(from), count(count)
 { }
 
-void DiscardRule::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void DiscardRule::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this, gameState);
 }
 void DiscardRule::execute(State &gameState) {
 
