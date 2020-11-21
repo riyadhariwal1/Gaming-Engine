@@ -15,7 +15,8 @@ class ParallelFor : public AstNode
         void execute(State&) override;
         void addRule(AstNode*);
         void print() override;
-        void accept(AstVisitor& visitor) override;
+        void accept(AstVisitor& visitor, State& gameState) override;
+        vector<AstNode*> getRuleList();
 
     private:
         vector<AstNode*> ruleList;
