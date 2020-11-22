@@ -18,11 +18,10 @@ Game::Game(AstTree astTree, State state): astTree(astTree),state(state)
     return constants.getList();
 } */
 
-void Game::execute(State& gameState)
-{
-    RuleAstVisitor visitor ;
-    for (auto i: astTree.getAstTree())
-    {
-        i->accept(visitor, gameState);
-    }
+void Game::execute(State& gameState) {
+//    RuleAstVisitor visitor ;
+//    for (auto i: astTree.getAstTree())
+//    {
+//        i->accept(visitor, gameState);
+//    }
 }

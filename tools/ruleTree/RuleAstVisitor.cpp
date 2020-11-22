@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-
+//NOT INCLUDED IN THE CMAKEFILE SO UNCOMMENT IT IF YOU NEED TO COMPILE IT
 RuleAstVisitor::RuleAstVisitor()
 {}
 void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
