@@ -21,6 +21,7 @@
 #include "Game.h"
 #include "Parser.h"
 #include "PlayerSetup.h"
+#include "AstTree.h"
 #include <string>
 #include <typeinfo>
 
@@ -71,7 +72,7 @@ int main()
     perAudience.print();
 
     // Loop through the rules!
-    vector<AstNode*> allRule;
+    AstTree astTree;
 
 
     AllPlayers allPlayer;
@@ -89,20 +90,16 @@ int main()
         if (rulesName == "foreach")
         {
             ForEachRule *ruleIndex = loader.forEachRule(element);
-            allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
 
         else if (rulesName == "scores")
         {
             ScoreRule *ruleIndex = loader.scoreRule(element);
-            allRule.push_back(ruleIndex);
+            astTree.pushNode(ruleIndex);
         }
-    }
-    for (int i = 0; i < allRule.size(); i++)
-    {
-        allRule[i]->print();
     }
 
     //Start Game
-    //Game game(state, allRule);
+    Game game(astTree,state);
 }

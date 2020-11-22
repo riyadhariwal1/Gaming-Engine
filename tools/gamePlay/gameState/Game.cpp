@@ -1,8 +1,9 @@
 #include "include/Game.h"
 
-//Game::Game(vector<Player> playerList, Configuration configuration, vector<Rule> ruleList, Constants constants, Variables variables)
-//    : playerList(playerList), configuration(configuration), ruleList(ruleList), constants(constants), variables(variables)
-//{}
+Game::Game(AstTree astTree, State state): astTree(astTree),state(state)
+{
+    
+}
 
 //no ruleList
 // Game::Game(State state, vector<AstNode*> ruleList)
