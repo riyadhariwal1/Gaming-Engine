@@ -1,8 +1,20 @@
 #include "Add.h"
 
-// AddRule( per-player, value)
-// AddRule::AddRule(string to,  string value): to(to), value(value) {
-// }
-// void AddRule::execute(State& state){
-//    //auto findList = findByName(to);
-// }
+ AddRule::AddRule(Player& player, int count)
+ : player(player), count(count)
+ {}
+
+void AddRule::execute(State& gameState) {
+
+}
+
+void AddRule::print() {
+    cout << "Add Rule:" << endl;
+    cout << "    Player == " << player << endl;
+    cout << "    value == " << value << endl;
+
+}
+
+void AddRule::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this, gameState);
+}

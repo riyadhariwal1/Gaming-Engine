@@ -5,17 +5,15 @@ ExtendRule::ExtendRule(string list, string target): list(list), target(target)
 {}
 
 
-void ExtendRule::execute(State& gameState)
-{
+void ExtendRule::execute(State& gameState) {
+//TODO: function that finds list based on name
 
 }
 
-void ExtendRule::print()
-{
+void ExtendRule::print() {
   cout << "Extend Rule:" << endl;
   cout << "    list == " << list << endl;
   cout << "    target == " << target << endl;
-
 }
 
 

@@ -8,6 +8,13 @@ using namespace std;
 
 class AddRule {
 public:
-    AddRule(Player& variable, int count);
+    AddRule(Player& player, int value);
+    void execute(State&) override;
+    void print() override;
+    void accept(AstVisitor& visitor, State& gameState) override;
+
+private:
+    Player& player;
+    string value;
 };
 #endif
