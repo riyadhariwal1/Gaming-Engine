@@ -3,7 +3,7 @@
 
 #include "State.h"
 #include "Loader.h"
-#include "Helper.h"
+#include "Parser.h"
 
 class StateTest : public ::testing::Test {
 protected:
@@ -63,6 +63,14 @@ protected:
   State* mock_state;
 };
 
+TEST_F(StateTest,test_print) {
+  configuration->print();
+  constant->print();
+  variable->print();
+  per_Player->print();
+  per_Audience->print();
+}
+
 // TEST GETTING LISTS FROM STATE
 TEST_F(StateTest,List_config) {
   // get list
@@ -72,20 +80,20 @@ TEST_F(StateTest,List_config) {
   EXPECT_TRUE(expected == result[0]);
 
   // replace with list element inside {}
-  // GameVariant element = result[0];
-  // string given_value = "Round {round}. Choose your weapon!";
-  // string result_str = replaceInString(given_value, element);
-  //
-  // string expected_str = "Round 10. Choose your weapon!";
-  // EXPECT_TRUE(expected_str == result_str);
+  GameVariant element = result[0];
+  string given_value = "Round {round}. Choose your weapon!";
+  string result_str = replaceInString(given_value, element);
+
+  string expected_str = "Round 10. Choose your weapon!";
+  EXPECT_TRUE(expected_str == result_str);
 }
 
 TEST_F(StateTest, List_weapons){
   // get list
-  string weapons = "weapons";
-  vector<GameVariant> result = mock_state->getStateList(weapons);
+  // string weapons = "weapons";
+  // vector<GameVariant> result = mock_state->getStateList(weapons);
 
-  EXPECT_TRUE(3 == result.size());
+  //EXPECT_TRUE(1 == result.size());
 
 }
 
@@ -101,7 +109,7 @@ TEST_F(StateTest, List_players) {
   EXPECT_TRUE(expected == result.size());
 
   // replace with list element
-  // GameVariant element = result[0];
+  // Player element = result[0];
   // string given_value = "{player.name}, choose your weapon!";
   // string result_str = replaceInString(given_value, element);
   // string expected_str = "Kamala, choose your weapon!";

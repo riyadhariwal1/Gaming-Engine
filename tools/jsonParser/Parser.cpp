@@ -1,9 +1,9 @@
 #include "Parser.h"
-#include <iostream>
 
-unordered_map<string,GameVariant> jsonToMap(json jsonMap){
+unordered_map<string,GameVariant>
+jsonToMap(json jsonMap){
 
-  // GameMap is a map of setup || constants || variables
+  // GameMap is a map of setup || constants || variables...
   unordered_map<string,GameVariant> GameMap;
 
   for ( auto& itrr : jsonMap.items())
@@ -66,4 +66,18 @@ unordered_map<string,GameVariant> jsonToMap(json jsonMap){
 
   return GameMap;
 
+}
+
+string replaceInString(string input, GameVariant value){
+
+  size_t open = input.find("{");
+  size_t close = input.find("}");
+
+// shift through every boost type case
+  string to_replace = to_string(boost::get<int>(value));
+  input.replace(open, close-open+1, to_replace);
+
+  // element.someVar
+
+  return input;
 }

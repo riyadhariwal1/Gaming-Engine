@@ -53,6 +53,7 @@ vector<GameVariant> State::getStateList(string input){
     string substr_input = input.substr(pos, input.length());
     size_t nextPos = substr_input.find(".");
     string config_key = substr_input.substr(0, nextPos);
+    
     GameVariant value = this->configuration.getAtKey(config_key);
     result.push_back(value);
 
@@ -71,6 +72,10 @@ vector<GameVariant> State::getStateList(string input){
   }
   else {
     // search within constants
+    // size_t pos = input.find(".")+1;
+    // string key = input.substr(input.begin(), pos);
+
+    // key for key in various costants
     GameVariant value = this->constants.getAtKey(input);
     result.push_back(value);
 

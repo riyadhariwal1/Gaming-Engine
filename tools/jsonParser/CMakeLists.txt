@@ -18,8 +18,7 @@ target_sources(jsonParsing
         Variables.cpp
         Loader.cpp
         Parser.cpp
-        PlayerSetup.cpp
-        Helper.cpp)
+        PlayerSetup.cpp)
 
 target_include_directories(jsonParsing
   PUBLIC
