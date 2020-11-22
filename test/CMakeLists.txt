@@ -3,7 +3,6 @@ enable_testing()
 
 add_executable(test
   TEST_State.cpp
-  TEST_Parser.cpp
 )
 
 target_link_libraries(test
