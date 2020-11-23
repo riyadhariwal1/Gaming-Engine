@@ -62,7 +62,8 @@ vector<string> splitString(string str){
   return substrings;
 }
 
-// second tokens can just be taken out of first tokens
+// getFromState's job is only to retreive the GameVariant Value from State
+// no lovel of interpretation here
 GameVariant State::getFromState(string input){
 
   GameVariant result;
@@ -74,21 +75,42 @@ GameVariant State::getFromState(string input){
       string second = tokens[1];
       result = this->configuration.getAtKey(second);
     }
+    else if(first=="constants"){
+      //go to second word
+      string second = tokens[1];
+      result = this->constants.getAtKey(second);
+    }
+    else if(first=="variables"){
+      //go to second word
+      string second = tokens[1];
+      result = this->variables.getAtKey(second);
+    }
+    else if(first=="per_player"){
+      //go to second word
+      string second = tokens[1];
+      result = this->per_player.getAtKey(second);
+    }
+    else if(first=="per_audience"){
+      //go to second word
+      string second = tokens[1];
+      result = this->per_audience.getAtKey(second);
+    }
     else {
 
       if(this->constants.checkIfKeyExists(first)){
         result = this->constants.getAtKey(first);
-        if(tokens.size() > 1){
-          string second = tokens[1];
-          // find the nested value like weapon."names"
-        }
       }
       else if (this->variables.checkIfKeyExists(first)){
         result = this->variables.getAtKey(first);
-        if(tokens.size() > 1){
-          string second = tokens[1];
-          // find the nested value like weapon."names"
-        }
+      }
+      else if (this->configuration.checkIfKeyExists(first)){
+        result = this->configuration.getAtKey(first);
+      }
+      else if (this->per_player.checkIfKeyExists(first)){
+        result = this->per_player.getAtKey(first);
+      }
+      else if (this->per_audience.checkIfKeyExists(first)){
+        result = this->per_audience.getAtKey(first);
       }
     }
 

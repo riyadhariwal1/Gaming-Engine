@@ -18,6 +18,13 @@ GameVariant Settings::getAtKey(string key){
   return this->settingsMap[key];
 }
 
+bool Settings::checkIfKeyExists(string key){
+ if(this->settingsMap.count(key)>0){
+   return true;
+ }
+ return false;
+}
+
 
 // Configuration
 Configuration::Configuration(string name, int min, int max, bool audience, Settings setup)
@@ -56,4 +63,8 @@ GameVariant Configuration::getAtKey(string key){
 
   return value_at_key;
 
+}
+
+bool Configuration::checkIfKeyExists(string key){
+ return this->setup.checkIfKeyExists(key);
 }

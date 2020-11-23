@@ -137,9 +137,11 @@ TEST_F(StateTest, get_weapons_list_04){
   EXPECT_TRUE(values.type_vector[0]["name"]=="Rock");
   EXPECT_TRUE(values.type_vector[1]["name"]=="Paper");
 
+
 }
 
-TEST_F(StateTest, get_winners_from_variables_05){
+
+TEST_F(StateTest, get_winners_from_variables_06){
   string list = "winners";
   GameVariant result = mock_state->getFromState(list);
 

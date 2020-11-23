@@ -27,3 +27,27 @@ void PerAudience::print(){
     boost::apply_visitor( printVariant() , itrr.second );
   }
 }
+
+GameVariant PerPlayer::getAtKey(string key){
+  GameVariant value_at_key = this->playerMap[key];
+  return value_at_key;
+}
+
+bool PerPlayer::checkIfKeyExists(string key){
+ if(this->playerMap.count(key)>0){
+   return true;
+ }
+ return false;
+}
+
+GameVariant PerAudience::getAtKey(string key){
+  GameVariant value_at_key = this->audienceMap[key];
+  return value_at_key;
+}
+
+bool PerAudience::checkIfKeyExists(string key){
+ if(this->audienceMap.count(key)>0){
+   return true;
+ }
+ return false;
+}
