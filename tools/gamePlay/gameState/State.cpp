@@ -1,4 +1,5 @@
 #include "State.h"
+//#include <bits/stdc++.h>
 
 // constructor
 State::State(vector<Player> playerList, Configuration configuration,
@@ -25,6 +26,9 @@ void State::UpdateState_PerAudience(PerAudience pa){
 void State::UpdateState_PlayersList(Player& p){
   this->playerList.push_back(p);
 }
+void State::UpdateState_WinnersList(Player& p){
+  this->winnerList.push_back(p);
+}
 
 // Get from State Functions
 vector<Player> State::getPlayers() {
@@ -40,51 +44,55 @@ Constants State::getConstants(){
   return constants;
 }
 
-// unfinished
-// Replace with State Value Functions
-// ignores the unimplemented functions for now
-vector<GameVariant> State::getStateList(string input){
-
-  vector<GameVariant> result;
-
-  // we can get configuration.some_key for now
-  if( input.find("configuration") != string::npos){
-    size_t pos = input.find(".")+1;
-    string substr_input = input.substr(pos, input.length());
-    size_t nextPos = substr_input.find(".");
-    string config_key = substr_input.substr(0, nextPos);
-    
-    GameVariant value = this->configuration.getAtKey(config_key);
-    result.push_back(value);
-
+// only handles rockPaperScissors file for now
+// Interpreter will handle the functions and such
+vector<string> splitString(string str){
+  vector<string> substrings;
+  string word ="";
+  for (auto c : str){
+    if( c != '.' ){
+      word+=c;
+    }
+    else {
+      substrings.push_back(word);
+      word="";
+    }
   }
-  else if( input.find("constants") != string::npos){
-    // none in rockPaperScissors
-  }
-  else if( input.find("variables") != string::npos){
-        // none in rockPaperScissors
-  }
-  else if( input.find("per-player") != string::npos){
-        // none in rockPaperScissors
-  }
-  else if( input.find("per-audience") != string::npos){
-        // none in rockPaperScissors
-  }
-  else {
-    // search within constants
-    // size_t pos = input.find(".")+1;
-    // string key = input.substr(input.begin(), pos);
+  substrings.push_back(word);
+  return substrings;
+}
 
-    // key for key in various costants
-    GameVariant value = this->constants.getAtKey(input);
-    result.push_back(value);
+// second tokens can just be taken out of first tokens
+GameVariant State::getFromState(string input){
 
-    //search within variables
+  GameVariant result;
+  vector<string> tokens = splitString(input);
 
-    // search within per-player, per-audience
+    string first = tokens[0];
+    if(first=="configuration"){
+      //go to second word
+      string second = tokens[1];
+      result = this->configuration.getAtKey(second);
+    }
+    else {
 
-  }
-  // value.replace(open, close, "VARIABLE");
+      if(this->constants.checkIfKeyExists(first)){
+        result = this->constants.getAtKey(first);
+        if(tokens.size() > 1){
+          string second = tokens[1];
+          // find the nested value like weapon."names"
+        }
+      }
+      else if (this->variables.checkIfKeyExists(first)){
+        result = this->variables.getAtKey(first);
+        if(tokens.size() > 1){
+          string second = tokens[1];
+          // find the nested value like weapon."names"
+        }
+      }
+    }
+
+
   return result;
 }
 

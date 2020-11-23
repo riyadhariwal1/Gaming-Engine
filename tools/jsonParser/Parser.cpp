@@ -42,16 +42,7 @@ jsonToMap(json jsonMap){
             case json::value_t::object:
               vec.push_back(val.get<unordered_map<string,string>>());
               break;
-            // case json::value_t::number_integer:
-            // case json::value_t::number_unsigned:
-            //   vec.push_back(val.get<int>());
-            //   break;
-            // case json::value_t::number_float:
-            //   vec.push_back(val.get<double>());
-            // case json::value_t::string:
-            //   vec.push_back(val.get<string>());
-            // case json::value_t::boolean:
-            //   vec.push_back(val.get<bool>());
+            // needs more cases 
             default:
               cout << "";
           }
@@ -68,14 +59,13 @@ jsonToMap(json jsonMap){
 
 }
 
-string replaceInString(string input, GameVariant value){
+string replaceInString(string input, string value){
 
   size_t open = input.find("{");
   size_t close = input.find("}");
 
-// shift through every boost type case
-  string to_replace = to_string(boost::get<int>(value));
-  input.replace(open, close-open+1, to_replace);
+// shift through every boost type case;
+  input.replace(open, close-open+1, value);
 
   // element.someVar
 

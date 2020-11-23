@@ -14,11 +14,12 @@ class Player {
       void playerWins(int count);
       void printPlayer();
       void AddVariable(string givenKey, GameVariant givenValue);
+      string getPlayerName();
       // define player "Type"? -- game-player or audience-player
 
     private:
       int id;
-      std::string& name;
+      std::string name;
       int gameWins;
       // any variant inputs can be placed into this map;
       unordered_map<string,GameVariant> PlayerVariablesMap;

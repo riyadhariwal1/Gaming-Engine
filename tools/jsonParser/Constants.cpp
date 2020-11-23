@@ -13,5 +13,13 @@ void Constants::print(){
 }
 
 GameVariant Constants::getAtKey(string key){
-  this->constantsMap[key];
+  GameVariant value_at_key = this->constantsMap[key];
+  return value_at_key;
+}
+
+bool Constants::checkIfKeyExists(string key){
+ if(this->constantsMap.count(key)>0){
+   return true;
+ }
+ return false;
 }

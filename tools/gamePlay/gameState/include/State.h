@@ -38,9 +38,10 @@ class State
       void UpdateState_PerPlayer(PerPlayer);
       void UpdateState_PerAudience(PerAudience);
       void UpdateState_PlayersList(Player&);
+      void UpdateState_WinnersList(Player& p);
 
       // string manipulations or condition checks
-      vector<GameVariant> getStateList(string);
+      GameVariant getFromState(string);
       bool checkCondition(string);
 
       void print();

@@ -10,6 +10,6 @@ using json = nlohmann::json;
 // json_conversion_into_gameVariant
 unordered_map<string,GameVariant> jsonToMap(json map);
 
-string replaceInString(string input, GameVariant value);
+string replaceInString(string input, string value);
 
 #endif
