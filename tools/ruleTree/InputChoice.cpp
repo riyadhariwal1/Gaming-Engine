@@ -11,6 +11,7 @@ InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, s
 }
 void InputChoiceRule::execute(State& gameState)
 {
+  //Player toPlayer = gameState.
 }
 void InputChoiceRule::print()
 {

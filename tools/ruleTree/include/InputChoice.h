@@ -14,8 +14,10 @@ class InputChoiceRule : public AstNode
     private:
     string rule;
     string to;
+    //Player toPlayer;
     string prompt;
     string choices;
+    vector<GameVariant> choiceList;
     string result;
     string timeout;
 

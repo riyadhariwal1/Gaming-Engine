@@ -12,6 +12,7 @@ target_sources(ruleTree PRIVATE
         Scores.cpp
         WhenRule.cpp
         RuleAstVisitor.cpp
+        MessageParser.cpp
         )
 target_include_directories(ruleTree
         PUBLIC

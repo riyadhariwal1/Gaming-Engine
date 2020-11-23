@@ -12,9 +12,11 @@ public:
     void print() override;
     void accept(AstVisitor& visitor, State& gameState) override;
     string getMessage();
+    string getCompleteMessage();
 
 private:
     string value;
+    string decipheredMsg;
 
 };
 #endif
