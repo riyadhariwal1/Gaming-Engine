@@ -10,7 +10,8 @@
 #include "Scores.h"
 #include <iostream>
 #include <string>
-
+#include <future>         // std::async, std::future
+#include <chrono>
 
 RuleAstVisitor::RuleAstVisitor()
 {}
@@ -43,17 +44,53 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState )
         i->accept(visitor, gameState);
     }
 }
+
+//InputChoice Rule implementation
+string getInputFromUser(){
+    string input;
+    cin>>input;
+    return input;
+}
 void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
 {
     std::cout << "This is InputChoiceRule visit function" << std::endl;
     //TODO: : Somehow ask the player for their input
 
-    vector<Player> list = gameState.getPlayers();
-    // TODO: Loop through the Player list ask for input
-    // and put the input in to the each Player obj
-    
+    //vector<Player> list = gameState.getPlayers();
+    inputChoice.execute(gameState);
+    cout<<inputChoice.getCompletePrompt()<<endl;
+    //TODO: ask for list of choices
 
+    // TODO: Ask for input from chosen one
+    //std::future<string> fut = std::async (std::launch::async,getInputFromUser);
+    // do something while waiting for function to set future:
+    /* std::cout << "checking, please wait";
+    std::chrono::system_clock::time_point timer = std::chrono::system_clock::now() + std::chrono::seconds(inputChoice.getTimeOut());
+ */
+    /* if(fut.wait_until(timer) == future_status::ready){
+        cout<<"user Input: "<<endl;
+    }
+    else {
+        cout <<"User didn't enter input before timeout"<<endl;
+    } */
+     /* std::future_status status;
+    do {
+        status = fut.wait_for(std::chrono::seconds(100));
+        if (status == std::future_status::deferred) {
+            std::cout << "deferred\n";
+        } else if (status == std::future_status::timeout) {
+            std::cout << "timeout\n";
+            break;
+        } else if (status == std::future_status::ready) {
+            std::cout << "ready!\n";
+            break;
+        }
+    } while (status != std::future_status::ready); 
+
+    std::cout << "result is " << fut.get() << '\n'; */
+    //TODO: Map result to variable
 }
+
 void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
 {
     //TODO: Same as foreach
