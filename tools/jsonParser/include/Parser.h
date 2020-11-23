@@ -22,4 +22,4 @@ typedef boost::variant<unordered_map<string,string>, int, double, bool, string, 
 
 unordered_map<string,GameVariant> jsonToMap(json map);
 
-#endif //SOCIAL_GAMING_LOADER_H
+#endif //SOCIAL_GAMING_PARSER_H

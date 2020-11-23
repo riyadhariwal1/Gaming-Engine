@@ -9,6 +9,8 @@ List::List (string value){
 
 void List :: execute(State& state){
     //TODO: get the list from game state
+    vector<GameVariant> result = state.getStateList(value);
+
 }
 
 void List :: accept(AstVisitor& visitor, State& gameState)
