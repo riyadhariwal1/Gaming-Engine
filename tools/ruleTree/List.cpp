@@ -11,9 +11,9 @@ void List :: execute(State& state){
     //TODO: get the list from game state
 }
 
-void List :: accept(AstVisitor& visitor)
+void List :: accept(AstVisitor& visitor, State& gameState)
 {
-    visitor.visit(*this);
+    visitor.visit(*this, gameState);
 }
 
 vector<AstNode*> List:: getList()

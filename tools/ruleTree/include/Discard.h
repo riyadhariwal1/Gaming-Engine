@@ -1,6 +1,7 @@
 #ifndef DISCARD_RULE_H
 #define DISCARD_RULE_H
 #include "AstNode.h"
+#include "Player.h"
 #include <string>
 
 class DiscardRule : public AstNode{
@@ -8,7 +9,7 @@ class DiscardRule : public AstNode{
     DiscardRule(string, string);
     void execute(State&) override;
     void print() override;
-    void accept(AstVisitor& visitor) override;
+    void accept(AstVisitor& visitor, State& gameState) override;
 
     private:
     string from;

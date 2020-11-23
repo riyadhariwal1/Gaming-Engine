@@ -6,8 +6,11 @@
 #include <string>
 using namespace std;
 
-class AddRule {
+class AddRule : public AstNode {
 public:
     AddRule(Player& variable, int count);
+    void execute(State&) override;
+    void print () override;
+    void accept(AstVisitor& visitor, State& gameState) override;
 };
 #endif

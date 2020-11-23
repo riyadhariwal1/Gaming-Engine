@@ -102,4 +102,5 @@ int main()
 
     //Start Game
     Game game(astTree,state);
+    game.execute(state);
 }
