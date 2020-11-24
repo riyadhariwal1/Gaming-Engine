@@ -11,7 +11,7 @@
 #include <iostream>
 #include <string>
 #include <future>         // std::async, std::future
-#include <chrono>
+#include <chrono>         // std::chrono::milliseconds
 
 RuleAstVisitor::RuleAstVisitor()
 {}
@@ -57,37 +57,29 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
     //TODO: : Somehow ask the player for their input
 
     //vector<Player> list = gameState.getPlayers();
-    inputChoice.execute(gameState);
-    cout<<inputChoice.getCompletePrompt()<<endl;
+    //inputChoice.execute(gameState);
+    //cout<<inputChoice.getCompletePrompt()<<endl;
     //TODO: ask for list of choices
 
     // TODO: Ask for input from chosen one
-    //std::future<string> fut = std::async (std::launch::async,getInputFromUser);
-    // do something while waiting for function to set future:
-    /* std::cout << "checking, please wait";
-    std::chrono::system_clock::time_point timer = std::chrono::system_clock::now() + std::chrono::seconds(inputChoice.getTimeOut());
- */
-    /* if(fut.wait_until(timer) == future_status::ready){
-        cout<<"user Input: "<<endl;
+    int timeout = inputChoice.getTimeOut();
+    //cout<<inputChoice.getTimeOut()<<endl;
+    std::future< string> task = std::async(std::launch::async,  getInputFromUser);
+    cout<<"no booo"<<endl;
+    string result;
+    if (std::future_status::ready == task.wait_for(std::chrono::seconds(timeout)))
+    {
+        result = task.get();
+    }
+    else  {
+        cout<<"user doesnt enter input"<<endl;
+    } 
+    /* if(result.empty()){
+        cout<<"user doesnt enter input"<<endl;
     }
     else {
-        cout <<"User didn't enter input before timeout"<<endl;
-    } */
-     /* std::future_status status;
-    do {
-        status = fut.wait_for(std::chrono::seconds(100));
-        if (status == std::future_status::deferred) {
-            std::cout << "deferred\n";
-        } else if (status == std::future_status::timeout) {
-            std::cout << "timeout\n";
-            break;
-        } else if (status == std::future_status::ready) {
-            std::cout << "ready!\n";
-            break;
-        }
-    } while (status != std::future_status::ready); 
-
-    std::cout << "result is " << fut.get() << '\n'; */
+        cout <<"Input: "<<result<<endl;
+    }*/
     //TODO: Map result to variable
 }
 

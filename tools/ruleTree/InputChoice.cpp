@@ -1,6 +1,7 @@
 #include "InputChoice.h"
 #include "MessageParser.h"
-InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, string result)
+#include <iostream>
+InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, string result, int timeout)
 {
   // send promp to a player with list of choices and
   // save choice in given variable "result"
@@ -8,12 +9,13 @@ InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, s
   this->to = to;
   this->choices = choices;
   this->result = result;
-
+  this->timeout = timeout;
+  completePrompt = "";
 }
 void InputChoiceRule::execute(State& gameState)
 {
   //TODO: Retrive infor from State
-  Player toPlayer = gameState.getPlayers()[0];
+  //Player toPlayer = gameState.getPlayers()[0];
   //choiceList = gameState.getVariables(choices);
   MessageParser msgParser(prompt, gameState);
   completePrompt = msgParser.getCompleteString();
@@ -44,7 +46,7 @@ std::string InputChoiceRule::getCompletePrompt(){
   return completePrompt;
 }
 int InputChoiceRule::getTimeOut(){
-  return std::stof(timeout);
+  return timeout;
 }
 std::string InputChoiceRule::getResult(){
   return result;
