@@ -127,7 +127,7 @@ void RuleAstVisitor::visit(List &list, State &gameState)
     std::cout << "This is List visit function" << std::endl;
 }
 
-void RuleAstVisitor::visit(AddRule &addRule, State &gameState)
-{
-    std::cout << "This is AddRule visit function" << std::endl;
-}
+//void RuleAstVisitor::visit(AddRule &addRule, State &gameState)
+//{
+//    std::cout << "This is AddRule visit function" << std::endl;
+//}

@@ -4,8 +4,6 @@
 #include <vector>
 #include "AstNode.h"
 
-
-
 class RuleAstVisitor : public AstVisitor
 {
 public:
