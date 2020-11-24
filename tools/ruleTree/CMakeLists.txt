@@ -11,7 +11,7 @@ target_sources(ruleTree PRIVATE
         ParallelFor.cpp
         Scores.cpp
         WhenRule.cpp
-#        RuleAstVisitor.cpp
+        RuleAstVisitor.cpp
         )
 target_include_directories(ruleTree
         PUBLIC

@@ -11,7 +11,6 @@ void ExtendRule::execute(State& gameState) {
 //TODO: function that parses list. format of the string is: nameOfList.whatYouWantFromIt.function(condition)
     vector<Player> list;
     targetList.insert(targetList.end(), list.begin(), list.end());
-
 }
 
 void ExtendRule::print() {

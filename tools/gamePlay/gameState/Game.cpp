@@ -16,9 +16,9 @@ Game::Game(AstTree astTree, State state): astTree(astTree),state(state) {}
 } */
 
 void Game::execute(State& gameState) {
-//    RuleAstVisitor visitor ;
-//    for (auto i: astTree.getAstTree())
-//    {
-//        i->accept(visitor, gameState);
-//    }
+    RuleAstVisitor visitor ;
+    for (auto i: astTree.getAstTree())
+    {
+        i->accept(visitor, gameState);
+    }
 }

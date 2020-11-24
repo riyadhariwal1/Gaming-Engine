@@ -17,7 +17,6 @@ void AddRule::execute(State& gameState) {
     //todo: parse "to". format is "elementName.field". we have the current element, just need Field
     //todo: maybe have an editField function
     this->player.incrementWinsBy(std::stoi(value));
-
 }
 
 void AddRule::print() {
