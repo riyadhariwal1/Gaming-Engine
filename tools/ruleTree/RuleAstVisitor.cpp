@@ -10,11 +10,12 @@
 #include "Scores.h"
 #include <iostream>
 #include <string>
-#include <future>         // std::async, std::future
-#include <chrono>         // std::chrono::milliseconds
+#include <future> // std::async, std::future
+#include <chrono> // std::chrono::milliseconds
 
 RuleAstVisitor::RuleAstVisitor()
-{}
+{
+}
 void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
 {
     //TODO: Decypher the "{}"
@@ -31,7 +32,7 @@ void RuleAstVisitor::visit(ExtendRule &extend, State &gameState)
 {
     std::cout << "This is ExtendRule visit function" << std::endl;
 }
-void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState )
+void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
 {
     //TODO: turn the "list" and "element" variables into a actual thing we can use
     // this should be done by calling execute funtion in obj Element and List
@@ -46,9 +47,10 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState )
 }
 
 //InputChoice Rule implementation
-string getInputFromUser(){
+string getInputFromUser()
+{
     string input;
-    cin>>input;
+    cin >> input;
     return input;
 }
 void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
@@ -63,23 +65,16 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
 
     // TODO: Ask for input from chosen one
     int timeout = inputChoice.getTimeOut();
-    //cout<<inputChoice.getTimeOut()<<endl;
-    std::future< string> task = std::async(std::launch::async,  getInputFromUser);
-    cout<<"no booo"<<endl;
+    std::future<string> task = std::async(std::launch::async, getInputFromUser);
     string result;
     if (std::future_status::ready == task.wait_for(std::chrono::seconds(timeout)))
     {
         result = task.get();
     }
-    else  {
-        cout<<"user doesnt enter input"<<endl;
-    } 
-    /* if(result.empty()){
-        cout<<"user doesnt enter input"<<endl;
+    else
+    {
+        cout << "user doesnt enter input" << endl;
     }
-    else {
-        cout <<"Input: "<<result<<endl;
-    }*/
     //TODO: Map result to variable
 }
 
