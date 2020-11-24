@@ -19,7 +19,6 @@ target_sources(jsonParsing
         Loader.cpp
         Parser.cpp
         PlayerSetup.cpp
-        Helper.cpp
         AstTree.cpp)
 
 target_include_directories(jsonParsing

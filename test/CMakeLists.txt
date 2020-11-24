@@ -2,6 +2,7 @@ add_subdirectory(gtest)
 enable_testing()
 
 add_executable(test
+  TEST_interpreter.cpp
   TEST_State.cpp
 )
 
