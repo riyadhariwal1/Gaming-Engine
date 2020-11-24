@@ -12,9 +12,9 @@
 #include <iostream>
 #include <string>
 
-//NOT INCLUDED IN THE CMAKEFILE SO UNCOMMENT IT IF YOU NEED TO COMPILE IT
 RuleAstVisitor::RuleAstVisitor()
-{}
+{
+}
 void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
 {
     //TODO: Decipher the "{}"
@@ -29,17 +29,25 @@ void RuleAstVisitor::visit(ExtendRule &extend, State &gameState)
 {
     std::cout << "This is ExtendRule visit function" << std::endl;
 }
-void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState )
+void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
 {
     //TODO: turn the "list" and "element" variables into a actual thing we can use
+    
+    forEachRule.execute(gameState);
     // this should be done by calling execute funtion in obj Element and List
     std::cout << "This is ForEachRule visit function" << std::endl;
-    vector<AstNode *> ruleList = forEachRule.getRuleList();
+    //forEachRule.setNumLoop(forEachRule.getList().getList().size());
+    forEachRule.setNumLoop(forEachRule.getList().getTest().size());
 
-    RuleAstVisitor visitor;
-    for (auto i : ruleList)
+    vector<AstNode *> ruleList = forEachRule.getRuleList();
+    for (int i = 0; i < forEachRule.getNumLoop(); i++)
     {
-        i->accept(visitor, gameState);
+        RuleAstVisitor visitor;
+        for (auto i : ruleList)
+        {
+            i->accept(visitor, gameState);
+        }
+        std::cout << std::endl;
     }
 }
 void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
@@ -50,8 +58,6 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
     vector<Player> list = gameState.getPlayers();
     // TODO: Loop through the Player list ask for input
     // and put the input in to the each Player obj
-
-
 }
 void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
 {
