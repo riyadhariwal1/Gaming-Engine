@@ -47,10 +47,14 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
 }
 
 //InputChoice Rule implementation
-string getInputFromUser()
+string getInputFromUser( atomic_bool &cancelled)
 {
     string input;
-    cin >> input;
+    while (!cancelled)
+    {
+        //ToDo: Get input from user
+        this_thread::sleep_for(chrono::seconds(12));
+    }
     return input;
 }
 void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
@@ -64,16 +68,20 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
     //TODO: ask for list of choices
 
     // TODO: Ask for input from chosen one
+    atomic_bool cancellation_token= ATOMIC_VAR_INIT(false);
     int timeout = inputChoice.getTimeOut();
-    std::future<string> task = std::async(std::launch::async, getInputFromUser);
+    std::chrono::seconds chronoTimeout(timeout);
+    std::future<string> task = std::async(launch::async, getInputFromUser, ref(cancellation_token));
     string result;
-    if (std::future_status::ready == task.wait_for(std::chrono::seconds(timeout)))
+    cout<<std::chrono::seconds(chronoTimeout).count()<<endl;
+    if (std::future_status::ready == task.wait_for(std::chrono::seconds(10)))
     {
         result = task.get();
     }
     else
     {
         cout << "user doesnt enter input" << endl;
+        cancellation_token = ATOMIC_VAR_INIT(true);
     }
     //TODO: Map result to variable
 }
