@@ -10,10 +10,11 @@ List::List (string value){
 void List :: execute(State& state){
     //TODO: get the list from game state
     //testing;
-    vector<int> test (2, 10);
+    vector<int> vect{1,2,3,4,5}; 
     this ->test = test;
-    //vector<GameVariant> result = state.getStateList(value);
+    vector<GameVariant> result = state.getStateList(value);
     //TODO: Interpreter for configuration.Rounds.upfrom(1)
+
 
 
 }

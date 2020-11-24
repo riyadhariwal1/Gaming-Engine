@@ -3,14 +3,15 @@
 
 // template Rule
 
-GlobalMessage::GlobalMessage(string value) : value(value){}
+GlobalMessage::GlobalMessage(string value) : value(value) {}
 
-string GlobalMessage::getMessage(){
+string GlobalMessage::getMessage()
+{
   return value;
 }
 
-void GlobalMessage::execute(State& gameState) {
-
+void GlobalMessage::execute(State &gameState)
+{
 }
 
 void GlobalMessage::print()
@@ -19,6 +20,7 @@ void GlobalMessage::print()
   cout << "   value == " << value << endl;
 }
 
-void GlobalMessage::accept(AstVisitor& visitor, State& gameState) {
-    visitor.visit(*this, gameState);
+void GlobalMessage::accept(AstVisitor &visitor, State &gameState)
+{
+  visitor.visit(*this, gameState);
 }
