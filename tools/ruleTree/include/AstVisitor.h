@@ -12,13 +12,13 @@ class ParallelFor;
 class ScoreRule;
 class WhenRule;
 class Element;
-class AddRule;
+
 
 //visitor interface
 class AstVisitor {
 public:
-    virtual void visit(AddRule& addRule, State& gameState) = 0;
-    virtual void visit(GlobalMessage& globalMessage, State& gameState) = 0;
+    //virtual void visit(AstNode& node) = 0;
+    virtual void visit(GlobalMessage & globalMessage, State& gameState) = 0;
     virtual void visit(DiscardRule& discard, State& gameState) = 0;
     virtual void visit(ExtendRule& extend, State& gameState) = 0;
     virtual void visit(ForEachRule& forEachRule, State& gameState) = 0;

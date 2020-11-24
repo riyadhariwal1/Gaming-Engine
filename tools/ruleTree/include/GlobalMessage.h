@@ -2,6 +2,7 @@
 #define GLOBAL_MESSAGE_RULE_H
 
 #include "AstNode.h"
+
 #include <string>
 
 class GlobalMessage : public AstNode {

@@ -8,7 +8,6 @@
 #include "Player.h"
 #include "InputChoice.h"
 #include "Scores.h"
-#include "Add.h"
 #include <iostream>
 #include <string>
 
@@ -17,7 +16,7 @@ RuleAstVisitor::RuleAstVisitor()
 }
 void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
 {
-    //TODO: Decipher the "{}"
+    //TODO: Decypher the "{}"
     //TO DO: Push the cout statement to a message Queue to throw to server side
     std::cout << globalMessage.getMessage() << endl;
 }
@@ -89,9 +88,4 @@ void RuleAstVisitor::visit(Element &element, State &gameState)
 void RuleAstVisitor::visit(List &list, State &gameState)
 {
     std::cout << "This is List visit function" << std::endl;
-}
-
-void RuleAstVisitor::visit(AddRule &addRule, State &gameState)
-{
-    std::cout << "This is AddRule visit function" << std::endl;
 }
