@@ -8,6 +8,7 @@
 #include "Variables.h"
 #include "State.h"
 #include "AstTree.h"
+#include "RuleAstVisitor.h"
 
 class Game {
 private:
@@ -16,7 +17,7 @@ private:
 public:
     Game (AstTree, State);
     void print();
-    void execute();
+    void execute(State& gameState);
 };
 
 

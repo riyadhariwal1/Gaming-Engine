@@ -19,6 +19,6 @@ void ExtendRule::print()
 }
 
 
-void ExtendRule::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void ExtendRule::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this, gameState);
 }

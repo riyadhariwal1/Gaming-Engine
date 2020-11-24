@@ -2,6 +2,11 @@
 #include <iostream>
 
 // Players Class
+Player::Player(){
+  this->id=1001;
+  this->gameWins=0;
+  this->name = "no-name";
+}
 Player::Player(string name): name(name){
   this->id=1001;
   this->gameWins=0;

@@ -18,7 +18,7 @@ class Case {
 class WhenRule :  public AstNode {
     public:
         WhenRule ();
-        void accept(AstVisitor& visitor) override;
+        void accept(AstVisitor& visitor, State& gameState) override;
         //WhenRule(vector<Case>&);
         void execute(State&) override;
         void addCase(Case*);

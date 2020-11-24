@@ -18,6 +18,6 @@ void ScoreRule:: print() {
 
 }
 
-void ScoreRule::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void ScoreRule::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this,gameState);
 }

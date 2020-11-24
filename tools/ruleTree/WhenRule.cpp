@@ -29,6 +29,6 @@ void WhenRule::print() {
     }
 }
 
-void WhenRule::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void WhenRule::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this,gameState);
 }
