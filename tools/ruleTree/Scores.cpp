@@ -5,12 +5,9 @@ ScoreRule::ScoreRule (string score, bool ascending)
 { }
 
 void ScoreRule::execute (State& gameState) {
-    //TODO: the score should determine what field we should sort by
-    vector<Player> list = gameState.getPlayers();
-    if (this->ascending) {
-        sort(gameState.getWinners().begin(), gameState.getWinners().end(), [] (Player& player1, Player& player2) {
-            return (player1.getGameWins() < player2.getGameWins());
-        });
+    vector<Player> list = gameState.getWinners();
+    if (ascending) {
+//        sort(gameState.getWinners().begin(), gameState.getWinners().end());
     }
 }
 
