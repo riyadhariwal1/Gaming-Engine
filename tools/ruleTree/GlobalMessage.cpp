@@ -1,17 +1,24 @@
 #include "GlobalMessage.h"
+#include "MessageParser.h"
 #include <iostream>
 
 // template Rule
 
-GlobalMessage::GlobalMessage(string value) : value(value) {}
+GlobalMessage::GlobalMessage(string value) : value(value), decipheredMsg("")
+{}
 
 string GlobalMessage::getMessage()
 {
   return value;
 }
 
-void GlobalMessage::execute(State &gameState)
-{
+string GlobalMessage::getCompleteMessage(){
+  return decipheredMsg;
+}
+
+void GlobalMessage::execute(State& gameState) {
+  MessageParser msgParser(value, gameState);
+  decipheredMsg = msgParser.getCompleteString();
 }
 
 void GlobalMessage::print()

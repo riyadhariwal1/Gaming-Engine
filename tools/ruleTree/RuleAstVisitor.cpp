@@ -19,10 +19,12 @@ void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
 {
     //TODO: Decipher the "{}"
     //TO DO: Push the cout statement to a message Queue to throw to server side
-    std::cout << globalMessage.getMessage() << endl;
+    globalMessage.execute(gameState);
+    std::cout << globalMessage.getCompleteMessage() << endl;
 }
 void RuleAstVisitor::visit(DiscardRule &discard, State &gameState)
 {
+    discard.execute(gameState);
     std::cout << "This is DiscardRule visit function" << std::endl;
 }
 void RuleAstVisitor::visit(ExtendRule &extend, State &gameState)
@@ -50,6 +52,13 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
         std::cout << std::endl;
     }
 }
+
+//InputChoice Rule implementation
+string getInputFromUser(){
+    string input;
+    cin>>input;
+    return input;
+}
 void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
 {
     std::cout << "This is InputChoiceRule visit function" << std::endl;
@@ -59,6 +68,7 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
     // TODO: Loop through the Player list ask for input
     // and put the input in to the each Player obj
 }
+
 void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
 {
     //TODO: Same as foreach

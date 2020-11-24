@@ -1,7 +1,8 @@
 #include "include/Discard.h"
 
+
 DiscardRule::DiscardRule(string from, string count)
-: from(from), count(count)
+: from(from), count("0")
 { }
 
 void DiscardRule::accept(AstVisitor& visitor, State& gameState) {
