@@ -30,7 +30,6 @@ void GlobalMessage::print()
   cout << "   value == " << value << endl;
 }
 
-void GlobalMessage::accept(AstVisitor &visitor, State &gameState)
-{
-  visitor.visit(*this, gameState);
+void GlobalMessage::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this, gameState);
 }

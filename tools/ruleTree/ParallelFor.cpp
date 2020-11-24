@@ -3,7 +3,7 @@
 ParallelFor::ParallelFor(string list, string element)
 {
     this->list = List(list);
-    this -> element = Element();
+    this -> element = Element(element);
 }
 
 void ParallelFor::addRule(AstNode *astNode)

@@ -36,7 +36,8 @@ InputChoiceRule *Loader::inputChoiceRule(json rule)
     InputChoiceRule *input = new InputChoiceRule(rule.at("prompt").get<string>(),
                                                  rule.at("choices").get<string>(),
                                                  rule.at("result").get<string>(),
-                                                 rule.at("to").get<string>());
+                                                 rule.at("to").get<string>(),
+                                                 rule.at("timeout").get<int>());
 
     return input;
 }

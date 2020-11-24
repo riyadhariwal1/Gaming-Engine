@@ -3,7 +3,7 @@
 ForEachRule::ForEachRule(string list, string element)
 {
     this->list = List(list);
-    this -> element = Element();
+    this -> element = Element(element);
     this -> numLoop = 0;
 }
 

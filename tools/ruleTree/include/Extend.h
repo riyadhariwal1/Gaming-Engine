@@ -3,14 +3,15 @@
 #include "AstNode.h"
 #include <string>
 
-class ExtendRule : public AstNode {
-public:
+class ExtendRule : public AstNode
+{
+    public:
     ExtendRule(string, string);
     void execute(State&) override;
-    void print() override;
+    void print () override;
     void accept(AstVisitor& visitor, State& gameState) override;
 
-private:
+    private:
     string target;
     string list;
 };
