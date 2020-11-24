@@ -50,3 +50,7 @@ List ForEachRule::getList()
 {
     return list;
 }
+Element ForEachRule::getElement()
+{
+    return element;
+}

@@ -53,23 +53,23 @@ int main()
     Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
-    configuration.print();
+    //configuration.print();
 
     //constants
     Constants constant(jsonToMap(constants));
-    constant.print();
+    //constant.print();
 
     //variables
     Variables variable(jsonToMap(variables));
-    variable.print();
+    //variable.print();
 
 
     //players
     PerPlayer perPlayer(jsonToMap(per_player));
-    perPlayer.print();
+    //perPlayer.print();
 
     PerAudience perAudience(jsonToMap(per_audience));
-    perAudience.print();
+    //perAudience.print();
 
     // Loop through the rules!
     AstTree astTree;

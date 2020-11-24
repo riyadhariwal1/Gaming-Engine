@@ -11,6 +11,7 @@ public:
     void print();
     void accept(AstVisitor& visitor, State& gameState) override;
     void indexIncrement();
+    int getIndex();
 
 };
 

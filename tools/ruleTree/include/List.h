@@ -6,19 +6,16 @@ using namespace std;
 class List : public AstNode{
 private:
     string value;
-    vector <AstNode*> list;
-
-    vector<int> test;
-
+    vector <GameVariant> list;
 
 public:
     List();
-    vector<AstNode*> getList();
-    vector<int> getTest(); // testing
+    vector<GameVariant> getList();
     List(string);
     void accept(AstVisitor& visitor, State& gameState) override;
     void execute(State&);
     void print();
+    string getValue();
 
 };
 #endif

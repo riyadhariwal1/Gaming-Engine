@@ -7,6 +7,7 @@
 GlobalMessage::GlobalMessage(string value) : value(value), decipheredMsg("")
 {}
 
+
 string GlobalMessage::getMessage()
 {
   return value;
@@ -17,7 +18,9 @@ string GlobalMessage::getCompleteMessage(){
 }
 
 void GlobalMessage::execute(State& gameState) {
-  MessageParser msgParser(value, gameState);
+  vector<GameVariant> list = gameState.getStateList(value);
+  int convert = boost::get<int>(list.at(gameState.getCurrentRounds()-1));
+  MessageParser msgParser(value, gameState, to_string(convert));
   decipheredMsg = msgParser.getCompleteString();
 }
 

@@ -21,6 +21,7 @@ void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
     //TO DO: Push the cout statement to a message Queue to throw to server side
     globalMessage.execute(gameState);
     std::cout << globalMessage.getCompleteMessage() << endl;
+
 }
 void RuleAstVisitor::visit(DiscardRule &discard, State &gameState)
 {
@@ -38,18 +39,18 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
     forEachRule.execute(gameState);
     // this should be done by calling execute funtion in obj Element and List
     std::cout << "This is ForEachRule visit function" << std::endl;
-    //forEachRule.setNumLoop(forEachRule.getList().getList().size());
-    forEachRule.setNumLoop(forEachRule.getList().getTest().size());
-
+    forEachRule.setNumLoop(forEachRule.getList().getList().size());
     vector<AstNode *> ruleList = forEachRule.getRuleList();
-    for (int i = 0; i < forEachRule.getNumLoop(); i++)
+    for (int y = 0; y < forEachRule.getNumLoop(); y++)
     {
+        
         RuleAstVisitor visitor;
         for (auto i : ruleList)
         {
             i->accept(visitor, gameState);
         }
         std::cout << std::endl;
+        gameState.incrementCurrentRound();
     }
 }
 
@@ -93,7 +94,6 @@ void RuleAstVisitor::visit(WhenRule &whenRule, State &gameState)
 
 void RuleAstVisitor::visit(Element &element, State &gameState)
 {
-    //TODO
     std::cout << "This is Element visit function" << std::endl;
 }
 void RuleAstVisitor::visit(List &list, State &gameState)

@@ -9,7 +9,6 @@ using json = nlohmann::json;
 /* -- */
 GlobalMessage* Loader::globalMessageRule(json rule)
 {
-    cout << "Global Message" << endl;
     GlobalMessage *globalMessage = new GlobalMessage(rule.at("value").get<string>());
 
     return globalMessage;

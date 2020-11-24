@@ -4,7 +4,8 @@
 State::State(vector<Player> playerList, Configuration configuration,
              Constants constants, Variables variables, PerPlayer perPlayer, PerAudience perAudience)
     : playerList(playerList), configuration(configuration), constants(constants), variables(variables),
-    per_player(perPlayer), per_audience(perAudience){}
+    per_player(perPlayer), per_audience(perAudience), currentRound(1)
+    {}
 
 // Update State Functions
 void State::UpdateState_Config(Configuration c){
@@ -25,6 +26,11 @@ void State::UpdateState_PerAudience(PerAudience pa){
 void State::UpdateState_PlayersList(Player& p){
   this->playerList.push_back(p);
 }
+void State::incrementCurrentRound()
+{
+  currentRound++;
+}
+
 
 // Get from State Functions
 vector<Player> State::getPlayers() {
@@ -38,6 +44,14 @@ Configuration State::getConfiguration(){
 }
 Constants State::getConstants(){
   return constants;
+}
+vector<GameVariant> State::getRounds()
+{
+  return rounds;
+}
+int State::getCurrentRounds()
+{
+  return currentRound;
 }
 
 // unfinished
@@ -54,8 +68,16 @@ vector<GameVariant> State::getStateList(string input){
     size_t nextPos = substr_input.find(".");
     string config_key = substr_input.substr(0, nextPos);
     GameVariant value = this->configuration.getAtKey(config_key);
-    result.push_back(value);
+    
+    for(int i = 1; i <= boost::get<int>(value); i++)
+    {
+      result.push_back(i);
+    }
 
+    rounds = result;
+  }
+  else if( input.find("round") != string::npos){
+    return this->getRounds();
   }
   else if( input.find("constants") != string::npos){
     // none in rockPaperScissors
@@ -67,6 +89,9 @@ vector<GameVariant> State::getStateList(string input){
         // none in rockPaperScissors
   }
   else if( input.find("per-audience") != string::npos){
+        // none in rockPaperScissors
+  }
+  else if( input.find("weapons") != string::npos){
         // none in rockPaperScissors
   }
   else {

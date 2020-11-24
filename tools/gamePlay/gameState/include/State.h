@@ -16,7 +16,9 @@ private:
   Variables variables;
   PerPlayer per_player;
   PerAudience per_audience;
+  vector<GameVariant> rounds;
   bool isGameEnd;
+  int currentRound;
 
 public:
   State(vector<Player> playerList, Configuration configuration,
@@ -24,11 +26,13 @@ public:
 
   vector<Player> getPlayers();
   vector<Player> getWinners();
+  vector<GameVariant> getRounds();
   Configuration getConfiguration();
   Constants getConstants();
   Variables getVariables();
   PerPlayer getPlayerSetp();
   PerAudience getAudienceSetup();
+  int getCurrentRounds();
 
   // update state
   void UpdateState_Config(Configuration);
@@ -37,6 +41,7 @@ public:
   void UpdateState_PerPlayer(PerPlayer);
   void UpdateState_PerAudience(PerAudience);
   void UpdateState_PlayersList(Player&);
+  void incrementCurrentRound();
 
   // string manipulations or condition checks
   vector<GameVariant> getStateList(string);

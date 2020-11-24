@@ -17,7 +17,10 @@ void Element :: execute(State& state){
 }
 
 
-
+int Element::getIndex()
+{
+    return index;
+}
 void Element::print() {
     cout << index;
 }

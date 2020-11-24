@@ -19,6 +19,8 @@ class ForEachRule : public AstNode
         List getList();
         int getNumLoop();
         void setNumLoop(int);
+        Element getElement();
+        
     private:
         vector <AstNode*> ruleList;
         List list;

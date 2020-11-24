@@ -5,6 +5,7 @@
 #include <optional>
 class MessageParser {
     public:
+    MessageParser(string,State&, string);
     MessageParser(string,State&);
     bool containDecipheredVariable();
     std::string getVariableString();
@@ -18,6 +19,7 @@ class MessageParser {
     string varValue;
     string completeMsg;
     bool hasDecipheredVariable;
+    string value;
 
 };
 #endif
