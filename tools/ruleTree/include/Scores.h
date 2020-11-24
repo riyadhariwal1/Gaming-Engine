@@ -9,7 +9,7 @@ class ScoreRule :  public AstNode {
     ScoreRule(string, bool);
     void execute(State&) override;
     void print()override;
-    void accept(AstVisitor& visitor) override;
+    void accept(AstVisitor& visitor, State& gameState) override;
     private:
     string score;
     bool ascending;

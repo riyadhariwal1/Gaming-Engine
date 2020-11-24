@@ -9,7 +9,7 @@ class ExtendRule : public AstNode
     ExtendRule(string, string);
     void execute(State&) override;
     void print () override;
-    void accept(AstVisitor& visitor) override;
+    void accept(AstVisitor& visitor, State& gameState) override;
 
     private:
     string target;

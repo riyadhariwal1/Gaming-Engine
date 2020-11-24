@@ -10,11 +10,13 @@ public:
     GlobalMessage(string value);
     void execute(State&) override ;
     void print() override;
-    void accept(AstVisitor& visitor) override;
+    void accept(AstVisitor& visitor, State& gameState) override;
     string getMessage();
+    string getCompleteMessage();
 
 private:
     string value;
+    string decipheredMsg;
 
 };
 #endif
