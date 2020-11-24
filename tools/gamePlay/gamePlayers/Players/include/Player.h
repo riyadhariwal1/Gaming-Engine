@@ -14,6 +14,8 @@ class Player {
       void playerWins(int count);
       void printPlayer();
       void AddVariable(string givenKey, GameVariant givenValue);
+      int getGameWins();
+      void incrementWinsBy(int num);
       // define player "Type"? -- game-player or audience-player
 
     private:

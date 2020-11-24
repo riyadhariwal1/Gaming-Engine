@@ -16,8 +16,16 @@ void Player::playerWins(int count) {
   this->gameWins+=count;
 }
 
+int Player::getGameWins() {
+    return this->gameWins;
+}
+
 void Player::printPlayer(){
   cout << this->name << " has points: " << this->gameWins << endl;
+}
+
+void Player::incrementWinsBy(int num) {
+    this->gameWins += 1;
 }
 
 void Player::AddVariable(string givenKey, GameVariant givenValue){

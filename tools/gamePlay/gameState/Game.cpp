@@ -1,9 +1,6 @@
 #include "include/Game.h"
 
-Game::Game(AstTree astTree, State state): astTree(astTree),state(state)
-{
-    
-}
+Game::Game(AstTree astTree, State state): astTree(astTree),state(state) {}
 
 //no ruleList
 // Game::Game(State state, vector<AstNode*> ruleList)
@@ -18,8 +15,7 @@ Game::Game(AstTree astTree, State state): astTree(astTree),state(state)
     return constants.getList();
 } */
 
-void Game::execute(State& gameState)
-{
+void Game::execute(State& gameState) {
     RuleAstVisitor visitor ;
     for (auto i: astTree.getAstTree())
     {

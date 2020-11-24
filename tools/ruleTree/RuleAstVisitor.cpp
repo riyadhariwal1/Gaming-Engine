@@ -8,16 +8,16 @@
 #include "Player.h"
 #include "InputChoice.h"
 #include "Scores.h"
+#include "Add.h"
 #include <iostream>
 #include <string>
-#include <future>         // std::async, std::future
-#include <chrono>
 
 RuleAstVisitor::RuleAstVisitor()
-{}
+{
+}
 void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
 {
-    //TODO: Decypher the "{}"
+    //TODO: Decipher the "{}"
     //TO DO: Push the cout statement to a message Queue to throw to server side
     globalMessage.execute(gameState);
     std::cout << globalMessage.getCompleteMessage() << endl;
@@ -31,17 +31,25 @@ void RuleAstVisitor::visit(ExtendRule &extend, State &gameState)
 {
     std::cout << "This is ExtendRule visit function" << std::endl;
 }
-void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState )
+void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
 {
     //TODO: turn the "list" and "element" variables into a actual thing we can use
+    
+    forEachRule.execute(gameState);
     // this should be done by calling execute funtion in obj Element and List
     std::cout << "This is ForEachRule visit function" << std::endl;
-    vector<AstNode *> ruleList = forEachRule.getRuleList();
+    //forEachRule.setNumLoop(forEachRule.getList().getList().size());
+    forEachRule.setNumLoop(forEachRule.getList().getTest().size());
 
-    RuleAstVisitor visitor;
-    for (auto i : ruleList)
+    vector<AstNode *> ruleList = forEachRule.getRuleList();
+    for (int i = 0; i < forEachRule.getNumLoop(); i++)
     {
-        i->accept(visitor, gameState);
+        RuleAstVisitor visitor;
+        for (auto i : ruleList)
+        {
+            i->accept(visitor, gameState);
+        }
+        std::cout << std::endl;
     }
 }
 
@@ -56,39 +64,9 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
     std::cout << "This is InputChoiceRule visit function" << std::endl;
     //TODO: : Somehow ask the player for their input
 
-    //vector<Player> list = gameState.getPlayers();
-    inputChoice.execute(gameState);
-    cout<<inputChoice.getCompletePrompt()<<endl;
-    //TODO: ask for list of choices
-
-    // TODO: Ask for input from chosen one
-    //std::future<string> fut = std::async (std::launch::async,getInputFromUser);
-    // do something while waiting for function to set future:
-    /* std::cout << "checking, please wait";
-    std::chrono::system_clock::time_point timer = std::chrono::system_clock::now() + std::chrono::seconds(inputChoice.getTimeOut());
- */
-    /* if(fut.wait_until(timer) == future_status::ready){
-        cout<<"user Input: "<<endl;
-    }
-    else {
-        cout <<"User didn't enter input before timeout"<<endl;
-    } */
-     /* std::future_status status;
-    do {
-        status = fut.wait_for(std::chrono::seconds(100));
-        if (status == std::future_status::deferred) {
-            std::cout << "deferred\n";
-        } else if (status == std::future_status::timeout) {
-            std::cout << "timeout\n";
-            break;
-        } else if (status == std::future_status::ready) {
-            std::cout << "ready!\n";
-            break;
-        }
-    } while (status != std::future_status::ready); 
-
-    std::cout << "result is " << fut.get() << '\n'; */
-    //TODO: Map result to variable
+    vector<Player> list = gameState.getPlayers();
+    // TODO: Loop through the Player list ask for input
+    // and put the input in to the each Player obj
 }
 
 void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
@@ -121,4 +99,9 @@ void RuleAstVisitor::visit(Element &element, State &gameState)
 void RuleAstVisitor::visit(List &list, State &gameState)
 {
     std::cout << "This is List visit function" << std::endl;
+}
+
+void RuleAstVisitor::visit(AddRule &addRule, State &gameState)
+{
+    std::cout << "This is AddRule visit function" << std::endl;
 }
