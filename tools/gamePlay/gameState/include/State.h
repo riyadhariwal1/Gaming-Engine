@@ -42,9 +42,13 @@ public:
   void UpdateState_PerAudience(PerAudience);
   void UpdateState_PlayersList(Player&);
   void incrementCurrentRound();
+  void UpdateState_WinnersList(Player& p);
 
   // string manipulations or condition checks
   vector<GameVariant> getStateList(string);
+  bool checkCondition(string);
+  // string manipulations or condition checks
+  GameVariant getFromState(string);
   bool checkCondition(string);
 
   void print();

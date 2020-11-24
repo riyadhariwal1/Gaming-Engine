@@ -20,6 +20,10 @@ void Player::printPlayer(){
   cout << this->name << " has points: " << this->gameWins << endl;
 }
 
+string Player::getPlayerName(){
+  return this->name;
+}
+
 void Player::AddVariable(string givenKey, GameVariant givenValue){
   this->PlayerVariablesMap[givenKey] = givenValue;
 }

@@ -16,6 +16,7 @@ private:
 public:
     Constants(unordered_map<string,GameVariant> constantsMap);
     GameVariant getAtKey(string);
+    bool checkIfKeyExists(string);
     void print();
 
 };

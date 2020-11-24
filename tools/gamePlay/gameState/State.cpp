@@ -31,6 +31,9 @@ void State::incrementCurrentRound()
   currentRound++;
 }
 
+void State::UpdateState_WinnersList(Player& p){
+  this->winnerList.push_back(p);
+}
 
 // Get from State Functions
 vector<Player> State::getPlayers() {
@@ -54,57 +57,77 @@ int State::getCurrentRounds()
   return currentRound;
 }
 
-// unfinished
-// Replace with State Value Functions
-// ignores the unimplemented functions for now
-vector<GameVariant> State::getStateList(string input){
+// only handles rockPaperScissors file for now
+// Interpreter will handle the functions and such
+vector<string> splitString(string str){
+  vector<string> substrings;
+  string word ="";
+  for (auto c : str){
+    if( c != '.' ){
+      word+=c;
+    }
+    else {
+      substrings.push_back(word);
+      word="";
+    }
+  }
+  substrings.push_back(word);
+  return substrings;
+}
 
-  vector<GameVariant> result;
+// getFromState's job is only to retreive the GameVariant Value from State
+// no lovel of interpretation here
+GameVariant State::getFromState(string input){
 
-  // we can get configuration.some_key for now
-  if( input.find("configuration") != string::npos){
-    size_t pos = input.find(".")+1;
-    string substr_input = input.substr(pos, input.length());
-    size_t nextPos = substr_input.find(".");
-    string config_key = substr_input.substr(0, nextPos);
-    GameVariant value = this->configuration.getAtKey(config_key);
-    
-    for(int i = 1; i <= boost::get<int>(value); i++)
-    {
-      result.push_back(i);
+  GameVariant result;
+  vector<string> tokens = splitString(input);
+
+    string first = tokens[0];
+    if(first=="configuration"){
+      //go to second word
+      string second = tokens[1];
+      result = this->configuration.getAtKey(second);
+    }
+    else if(first=="constants"){
+      //go to second word
+      string second = tokens[1];
+      result = this->constants.getAtKey(second);
+    }
+    else if(first=="variables"){
+      //go to second word
+      string second = tokens[1];
+      result = this->variables.getAtKey(second);
+    }
+    else if(first=="per_player"){
+      //go to second word
+      string second = tokens[1];
+      result = this->per_player.getAtKey(second);
+    }
+    else if(first=="per_audience"){
+      //go to second word
+      string second = tokens[1];
+      result = this->per_audience.getAtKey(second);
+    }
+    else {
+
+      if(this->constants.checkIfKeyExists(first)){
+        result = this->constants.getAtKey(first);
+      }
+      else if (this->variables.checkIfKeyExists(first)){
+        result = this->variables.getAtKey(first);
+      }
+      else if (this->configuration.checkIfKeyExists(first)){
+        result = this->configuration.getAtKey(first);
+      }
+      else if (this->per_player.checkIfKeyExists(first)){
+        result = this->per_player.getAtKey(first);
+      }
+      else if (this->per_audience.checkIfKeyExists(first)){
+        result = this->per_audience.getAtKey(first);
+      }
     }
 
-    rounds = result;
-  }
-  else if( input.find("round") != string::npos){
-    return this->getRounds();
-  }
-  else if( input.find("constants") != string::npos){
-    // none in rockPaperScissors
-  }
-  else if( input.find("variables") != string::npos){
-        // none in rockPaperScissors
-  }
-  else if( input.find("per-player") != string::npos){
-        // none in rockPaperScissors
-  }
-  else if( input.find("per-audience") != string::npos){
-        // none in rockPaperScissors
-  }
-  else if( input.find("weapons") != string::npos){
-        // none in rockPaperScissors
-  }
-  else {
-    // search within constants
-    GameVariant value = this->constants.getAtKey(input);
-    result.push_back(value);
 
-    //search within variables
-
-    // search within per-player, per-audience
-
-  }
-  // value.replace(open, close, "VARIABLE");
   return result;
 }
 
