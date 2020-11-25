@@ -33,13 +33,9 @@
 	},
 	"per-audience": {},
 	"rules": [{
-		"rule": "foreach",
-		"list": "configuration.Rounds.upfrom(1)",
-		"element": "round",
-		"rules": [{
 			"rule": "global-message",
-			"value": "Round {player}. Choose your weapon!"
-		}]
-
+			"value": "Round. Choose your weapon!"
 	}]
+
+	
 }

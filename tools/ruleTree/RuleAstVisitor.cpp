@@ -78,11 +78,10 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
     // TODO: Ask for input from chosen one
     atomic_bool cancellation_token= ATOMIC_VAR_INIT(false);
     int timeout = inputChoice.getTimeOut();
-    std::chrono::seconds chronoTimeout(timeout);
+    cout<<"Enter input:"<<endl;
     std::future<string> task = std::async(launch::async, getInputFromUser, ref(cancellation_token));
     string result;
-    cout<<std::chrono::seconds(chronoTimeout).count()<<endl;
-    if (std::future_status::ready == task.wait_for(std::chrono::seconds(10)))
+    if (std::future_status::ready == task.wait_for(std::chrono::seconds(timeout)))
     {
         result = task.get();
     }
