@@ -61,7 +61,7 @@ string getInputFromUser( atomic_bool &cancelled)
     while (!cancelled)
     {
         //ToDo: Get input from user
-        this_thread::sleep_for(chrono::seconds(12));
+        //this_thread::sleep_for(chrono::seconds(12));
     }
     return input;
 }
