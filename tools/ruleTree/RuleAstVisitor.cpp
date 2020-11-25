@@ -10,11 +10,12 @@
 #include "Scores.h"
 #include <iostream>
 #include <string>
-#include <future>         // std::async, std::future
-#include <chrono>
+#include <future> // std::async, std::future
+#include <chrono> // std::chrono::milliseconds
 
 RuleAstVisitor::RuleAstVisitor()
-{}
+{
+}
 void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
 {
     //TODO: Decypher the "{}"
@@ -31,7 +32,7 @@ void RuleAstVisitor::visit(ExtendRule &extend, State &gameState)
 {
     std::cout << "This is ExtendRule visit function" << std::endl;
 }
-void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState )
+void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
 {
     //TODO: turn the "list" and "element" variables into a actual thing we can use
     // this should be done by calling execute funtion in obj Element and List
@@ -46,9 +47,14 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState )
 }
 
 //InputChoice Rule implementation
-string getInputFromUser(){
+string getInputFromUser( atomic_bool &cancelled)
+{
     string input;
-    cin>>input;
+    while (!cancelled)
+    {
+        //ToDo: Get input from user
+        this_thread::sleep_for(chrono::seconds(12));
+    }
     return input;
 }
 void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
@@ -57,37 +63,26 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState)
     //TODO: : Somehow ask the player for their input
 
     //vector<Player> list = gameState.getPlayers();
-    inputChoice.execute(gameState);
-    cout<<inputChoice.getCompletePrompt()<<endl;
+    //inputChoice.execute(gameState);
+    //cout<<inputChoice.getCompletePrompt()<<endl;
     //TODO: ask for list of choices
 
     // TODO: Ask for input from chosen one
-    //std::future<string> fut = std::async (std::launch::async,getInputFromUser);
-    // do something while waiting for function to set future:
-    /* std::cout << "checking, please wait";
-    std::chrono::system_clock::time_point timer = std::chrono::system_clock::now() + std::chrono::seconds(inputChoice.getTimeOut());
- */
-    /* if(fut.wait_until(timer) == future_status::ready){
-        cout<<"user Input: "<<endl;
+    atomic_bool cancellation_token= ATOMIC_VAR_INIT(false);
+    int timeout = inputChoice.getTimeOut();
+    std::chrono::seconds chronoTimeout(timeout);
+    std::future<string> task = std::async(launch::async, getInputFromUser, ref(cancellation_token));
+    string result;
+    cout<<std::chrono::seconds(chronoTimeout).count()<<endl;
+    if (std::future_status::ready == task.wait_for(std::chrono::seconds(10)))
+    {
+        result = task.get();
     }
-    else {
-        cout <<"User didn't enter input before timeout"<<endl;
-    } */
-     /* std::future_status status;
-    do {
-        status = fut.wait_for(std::chrono::seconds(100));
-        if (status == std::future_status::deferred) {
-            std::cout << "deferred\n";
-        } else if (status == std::future_status::timeout) {
-            std::cout << "timeout\n";
-            break;
-        } else if (status == std::future_status::ready) {
-            std::cout << "ready!\n";
-            break;
-        }
-    } while (status != std::future_status::ready); 
-
-    std::cout << "result is " << fut.get() << '\n'; */
+    else
+    {
+        cout << "user doesnt enter input" << endl;
+        cancellation_token = ATOMIC_VAR_INIT(true);
+    }
     //TODO: Map result to variable
 }
 

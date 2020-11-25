@@ -6,7 +6,7 @@
 class InputChoiceRule : public AstNode
 {
     public:
-    InputChoiceRule(string, string, string, string);
+    InputChoiceRule(string, string, string, string,int);
     void execute(State&) override;
     void print() override;
     void accept(AstVisitor& visitor, State& gameState) override;
@@ -24,7 +24,7 @@ class InputChoiceRule : public AstNode
     string choices;
     vector<GameVariant> choiceList;
     string result;
-    string timeout;
+    int timeout;
 
 };
 #endif
