@@ -157,11 +157,11 @@ GameVariant State::getFromState(string input){
 }
 
 // others
-void State::print(){
-  this->configuration.print();
-  this->constants.print();
-  this->variables.print();
-  this->per_player.print();
-  this->per_audience.print();
-  return;
-}
+// void State::print(){
+//   this->configuration.print();
+//   this->constants.print();
+//   this->variables.print();
+//   this->per_player.print();
+//   this->per_audience.print();
+//   return;
+// }

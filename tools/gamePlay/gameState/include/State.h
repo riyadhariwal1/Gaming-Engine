@@ -52,7 +52,7 @@ class State
       vector<GameVariant> getStateList(string input);
       bool checkCondition(string);
 
-      void print();
+      //void print();
 
 
 };
