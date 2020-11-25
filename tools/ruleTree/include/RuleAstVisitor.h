@@ -6,8 +6,7 @@
 
 
 
-class RuleAstVisitor : public AstVisitor
-{
+class RuleAstVisitor : public AstVisitor {
 public:
 
     RuleAstVisitor();
@@ -21,6 +20,7 @@ public:
     void visit(WhenRule &whenRule, State& gameState);
     void visit(Element &element, State& gameState);
     void visit(List &list, State& gameState);
+    void visit(AddRule &addRule, State& gameState);
 };
 
 #endif

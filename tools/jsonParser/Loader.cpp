@@ -15,6 +15,7 @@ GlobalMessage* Loader::globalMessageRule(json rule)
     return globalMessage;
 }
 
+//TODO: this
 void Loader::addRule(json rule)
 {
     //   cout << " im in add" << endl;
