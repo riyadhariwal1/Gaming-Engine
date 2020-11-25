@@ -65,5 +65,5 @@ protected:
 };
 
 TEST_F(InterpreterTest, test_print) {
-  mock_state->print();
+  //mock_state->print();
 }

@@ -13,6 +13,7 @@ target_sources(ruleTree PRIVATE
         WhenRule.cpp
         RuleAstVisitor.cpp
         MessageParser.cpp
+        Interpreter.cpp
         )
 target_include_directories(ruleTree
         PUBLIC

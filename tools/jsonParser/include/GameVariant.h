@@ -29,6 +29,7 @@ struct GameVariant_Types {
   vector<unordered_map<string,string>> type_vector{};
 };
 
+// mostly just for debugging
 class conversion
   : public boost::static_visitor<GameVariant_Types> {
     public:

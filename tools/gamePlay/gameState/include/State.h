@@ -7,6 +7,9 @@
 #include "Variables.h"
 #include "PlayerSetup.h"
 
+// helper function 
+vector<string> splitString(string str);
+
 class State
 {
   private:
