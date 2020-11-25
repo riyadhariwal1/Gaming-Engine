@@ -19,6 +19,26 @@ void WhenRule::execute(State& gameState) {
 
 }
 
+//enum Outcome { Success, Failure };
+//
+//Outcome isConditionTrue(Case* condition) {
+//    if (condition.condition){
+//        return Outcome::Success;
+//    } else {
+//        Outcome::Failure;
+//    }
+//}
+//
+//void WhenRule::execute(State& gameState) {
+//    Outcome outcome;
+//    for (Case condition : caseList) {
+//        outcome = isConditionTrue(condition);
+//        if (outcome == Outcome::Success) {
+//            executeHelper(gameState, condition);
+//        }
+//    }
+//}
+
 void WhenRule::addCase (Case* condition) {
     caseList.push_back(condition);
 }
