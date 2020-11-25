@@ -5,7 +5,7 @@
 State::State(vector<Player> playerList, Configuration configuration,
              Constants constants, Variables variables, PerPlayer perPlayer, PerAudience perAudience)
     : playerList(playerList), configuration(configuration), constants(constants), variables(variables),
-    per_player(perPlayer), per_audience(perAudience){}
+    per_player(perPlayer), per_audience(perAudience) , currentRound(1){}
 
 // Update State Functions
 void State::UpdateState_Config(Configuration c){
@@ -29,6 +29,15 @@ void State::UpdateState_PlayersList(Player& p){
 void State::UpdateState_WinnersList(Player& p){
   this->winnerList.push_back(p);
 }
+void State::incrementCurrentRound()
+{
+  currentRound++;
+}
+vector<GameVariant> State::getRounds()
+{
+  return rounds;
+}
+
 
 // Get from State Functions
 vector<Player> State::getPlayers() {
@@ -42,6 +51,9 @@ Configuration State::getConfiguration(){
 }
 Constants State::getConstants(){
   return constants;
+}
+int State::getCurrentRound(){
+  return currentRound;
 }
 
 // only handles rockPaperScissors file for now
@@ -61,6 +73,32 @@ vector<string> splitString(string str){
   substrings.push_back(word);
   return substrings;
 }
+vector<GameVariant> State::getStateList(string input){
+
+  vector<GameVariant> result;
+
+  if( input.find("configuration") != string::npos){
+    size_t pos = input.find(".")+1;
+    string substr_input = input.substr(pos, input.length());
+    size_t nextPos = substr_input.find(".");
+    string config_key = substr_input.substr(0, nextPos);
+    GameVariant value = this->configuration.getAtKey(config_key);
+    
+    for(int i = 1; i <= boost::get<int>(value); i++)
+    {
+      result.push_back(i);
+    }
+
+    rounds = result;
+  }
+  else if( input.find("round") != string::npos){
+    return this->getRounds();
+  }
+
+  return result;
+
+}
+
 
 // getFromState's job is only to retreive the GameVariant Value from State
 // no lovel of interpretation here

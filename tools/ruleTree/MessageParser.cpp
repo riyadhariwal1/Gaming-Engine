@@ -22,13 +22,37 @@ MessageParser::MessageParser(string msg, State &state)
     }
     replaceVariableWithValue();
 };
+MessageParser::MessageParser(string msg, State &state, string value)
+{
+    // Check whether variable is in msg
+    //hasDecipheredVariable = false;
+    originalMsg = msg;
+    completeMsg = "";
+    varString = "";
+    varValue = "";
+    this-> value = value;
+    std::size_t start = msg.find('{');
+    std::size_t end = msg.find('}');
+    if (start != std::string::npos && end != std::string::npos && start < end)
+    {
+        hasDecipheredVariable = true;
+        varString = msg.substr(start + 1, end - start - 1);
+        findVariableInState(state);
+    }
+    else
+    {
+        hasDecipheredVariable = false;
+    }
+    replaceVariableWithValue();
+}
+
 std::string MessageParser::getVariableString()
 {
     return varString;
 }
 void MessageParser::findVariableInState(State &state)
 {
-    //ToDo: Find the value of variable in the State and let varValue = value
+     varValue = value;
 }
 void MessageParser::replaceVariableWithValue()
 {

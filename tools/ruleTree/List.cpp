@@ -9,6 +9,7 @@ List::List (string value){
 
 void List :: execute(State& state){
     //TODO: get the list from game state
+    list = state.getStateList(value);
 }
 
 void List :: accept(AstVisitor& visitor, State& gameState)
@@ -16,7 +17,7 @@ void List :: accept(AstVisitor& visitor, State& gameState)
     visitor.visit(*this, gameState);
 }
 
-vector<AstNode*> List:: getList()
+vector<GameVariant> List:: getList()
 {
     return list;
 }

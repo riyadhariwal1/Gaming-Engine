@@ -12,6 +12,7 @@ void ForEachRule::addRule(AstNode *rule)
 }
 void ForEachRule::execute(State &gameState)
 {
+    list.execute(gameState);
 }
 void ForEachRule::print()
 {
@@ -34,4 +35,21 @@ void ForEachRule::accept(AstVisitor& visitor, State& gameState) {
 vector <AstNode*> ForEachRule ::getRuleList()
 {
     return ruleList;
+}
+int ForEachRule::getNumLoop()
+{
+    return numLoop;
+}
+void ForEachRule::setNumLoop(int num)
+{
+    numLoop = num;
+}
+
+List ForEachRule::getList()
+{
+    return list;
+}
+Element ForEachRule::getElement()
+{
+    return element;
 }
