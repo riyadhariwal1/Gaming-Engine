@@ -81,23 +81,62 @@ TEST_F(InterpreterTest, element_player) {
   string value = "{player.name}, choose your weapon!";
 
   string result = INTERPRETER::InterpretString(value, e_round, *mock_state);
-  cout << result << endl;
 
   EXPECT_TRUE(result == "Kamala, choose your weapon!");
 
 }
 
 TEST_F(InterpreterTest, noElement_choices_weapons) {
+  // don't need use any elements in string
   Element no_element("none");
   string value = "weapons.name";
 
-  string result = INTERPRETER::InterpretString(value,no_element, *mock_state);
-  cout << result << endl;
+  string result = INTERPRETER::InterpretString(value, no_element, *mock_state);
 
   EXPECT_TRUE(result == "Rock Paper Scissors ");
 
 }
 
-TEST_F(InterpreterTest, noElement_count_winner) {
+TEST_F(InterpreterTest, noElement_winners_size) {
+  // don't need use any elements in string
+  Player new_player("Kamala");
+  mock_state->UpdateState_WinnersList(new_player);
+  Element no_element("");
 
+  string value = "winners.size";
+
+  string result = INTERPRETER::InterpretString(value, no_element, *mock_state);
+
+  EXPECT_TRUE(result == "1");
+
+}
+
+TEST_F(InterpreterTest, condition_simple_equality) {
+  // here (weapon.name) is actually a weapons element
+  Player new_player("Kamala");
+  mock_state->UpdateState_WinnersList(new_player);
+
+  Element no_element("");
+  string value = "winners.size == players.size";
+
+  bool result = INTERPRETER::InterpretCondition(value,no_element, *mock_state);
+
+  EXPECT_TRUE(result==false);
+
+  mock_state->UpdateState_PlayersList(new_player);
+  result = INTERPRETER::InterpretCondition(value,no_element, *mock_state);
+  EXPECT_TRUE(result==true);
+
+}
+
+
+TEST_F(InterpreterTest, condition_weapon_element) {
+  // here (weapon.name) is actually a weapons element
+  // need to insert weapon in first
+  Element weapon("Rock");
+  string value = "!players.elements.weapon.contains(weapon.name)";
+
+  bool result = INTERPRETER::InterpretCondition(value, weapon, *mock_state);
+
+  // EXPECT_TRUE(result==false);
 }

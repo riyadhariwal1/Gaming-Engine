@@ -5,12 +5,16 @@
 
 class Element: public AstNode{
 private:
+  //element is ETIHER element
     string value;
     Player player;
+
     AstNode* target;
     int index;
 
 public:
+    GameVariant someVariable;
+    
     Element();
     Element(string);
     Element(Player);

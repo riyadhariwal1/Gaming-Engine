@@ -4,12 +4,6 @@
 #include "State.h"
 #include "Element.h"
 
-namespace HELPER {
-  // anything with {} is using element
-  string InterpretString(string& msg, Element& element);
-  string InterpretString(string& msg, State& state);
-}
-
 
 namespace INTERPRETER {
 
@@ -19,7 +13,7 @@ namespace INTERPRETER {
 
   string InterpretString(string&, Element&, State&);
 
-  bool InterpretCondition(string&);
+  bool InterpretCondition(string&, Element&, State&);
 
 }
 #endif

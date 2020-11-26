@@ -46,11 +46,11 @@ Constants State::getConstants(){
 
 // only handles rockPaperScissors file for now
 // Interpreter will handle the functions and such
-vector<string> splitString(string str){
+vector<string> splitString(string str, char val){
   vector<string> substrings;
   string word ="";
   for (auto c : str){
-    if( c != '.' ){
+    if( c != val ){
       word+=c;
     }
     else {
@@ -67,7 +67,7 @@ vector<string> splitString(string str){
 GameVariant State::getFromState(string input){
 
   GameVariant result;
-  vector<string> tokens = splitString(input);
+  vector<string> tokens = splitString(input, '.');
 
     string first = tokens[0];
     if(first=="configuration"){
