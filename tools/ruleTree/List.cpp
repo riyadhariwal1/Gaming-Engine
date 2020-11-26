@@ -8,7 +8,7 @@ List::List (string value){
 }
 
 void List :: execute(State& state){
-    //TODO: get the list from game state
+  
 }
 
 void List :: accept(AstVisitor& visitor, State& gameState)
@@ -18,6 +18,7 @@ void List :: accept(AstVisitor& visitor, State& gameState)
 
 vector<AstNode*> List:: getList()
 {
+  // how would I define a list of multiple types as an ASTNode???
     return list;
 }
 

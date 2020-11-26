@@ -53,23 +53,18 @@ int main()
     Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
-    configuration.print();
 
     //constants
     Constants constant(jsonToMap(constants));
-    constant.print();
 
     //variables
     Variables variable(jsonToMap(variables));
-    variable.print();
-
 
     //players
     PerPlayer perPlayer(jsonToMap(per_player));
-    perPlayer.print();
 
     PerAudience perAudience(jsonToMap(per_audience));
-    perAudience.print();
+
 
     // Loop through the rules!
     AstTree astTree;
@@ -78,7 +73,8 @@ int main()
     AllPlayers allPlayer;
 
     State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
-
+    //state.print();
+    cout << endl << endl;
     // rules!
     // change this up using AST
     Loader loader;

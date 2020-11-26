@@ -37,6 +37,7 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
     //TODO: turn the "list" and "element" variables into a actual thing we can use
     // this should be done by calling execute funtion in obj Element and List
     std::cout << "This is ForEachRule visit function" << std::endl;
+    //forEachRule.print();
     vector<AstNode *> ruleList = forEachRule.getRuleList();
 
     RuleAstVisitor visitor;
@@ -116,4 +117,6 @@ void RuleAstVisitor::visit(Element &element, State &gameState)
 void RuleAstVisitor::visit(List &list, State &gameState)
 {
     std::cout << "This is List visit function" << std::endl;
+    list.execute(gameState);
+
 }

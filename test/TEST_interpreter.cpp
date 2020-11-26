@@ -1,14 +1,15 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include <string>
+#include <fstream>
+#include <sstream>
 
+#include "Element.h"
 #include "Interpreter.h"
-#include "Loader.h"
-#include "Parser.h"
+#include "Player.h"
 
 class InterpreterTest : public ::testing::Test {
 protected:
-
   virtual void SetUp() override {
     string filePath = "rockPaperScissors.json";
     ifstream ifs(filePath, std::ifstream::binary);
@@ -64,6 +65,39 @@ protected:
   State* mock_state;
 };
 
-TEST_F(InterpreterTest, test_print) {
-  //mock_state->print();
+TEST_F(InterpreterTest, element_round) {
+  Element e_round("10");
+  string value = "Round {round}. Choose your weapon!";
+
+  string result = INTERPRETER::InterpretString(value, e_round, *mock_state);
+
+  EXPECT_TRUE(result == "Round 10. Choose your weapon!");
+
+}
+
+TEST_F(InterpreterTest, element_player) {
+  Player new_player("Kamala");
+  Element e_round(new_player);
+  string value = "{player.name}, choose your weapon!";
+
+  string result = INTERPRETER::InterpretString(value, e_round, *mock_state);
+  cout << result << endl;
+
+  EXPECT_TRUE(result == "Kamala, choose your weapon!");
+
+}
+
+TEST_F(InterpreterTest, noElement_choices_weapons) {
+  Element no_element("none");
+  string value = "weapons.name";
+
+  string result = INTERPRETER::InterpretString(value,no_element, *mock_state);
+  cout << result << endl;
+
+  EXPECT_TRUE(result == "Rock Paper Scissors ");
+
+}
+
+TEST_F(InterpreterTest, noElement_count_winner) {
+
 }

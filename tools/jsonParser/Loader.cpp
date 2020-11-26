@@ -1,4 +1,5 @@
 #include "Loader.h"
+#include "Element.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -149,14 +150,11 @@ ParallelFor *Loader::parallelForRule(json rule)
     return parallelFor;
 }
 
-// Note: we cannot treat this recursive function that
-// loops through all rules the same as rule=="foreach"
-// "foreach" class will need to receive list + element
-// and apply some rules specifically to that
-ForEachRule *Loader::forEachRule(json element)
+ForEachRule *Loader::forEachRule(json foreach_rule)
 {
-    ForEachRule *forEach = new ForEachRule(element.at("list").get<string>(), element.at("element").get<string>());
-    json rules = element["rules"];
+    ForEachRule *forEach = new ForEachRule(foreach_rule.at("list").get<string>(), foreach_rule.at("element").get<string>());
+    json rules = foreach_rule["rules"];
+
     for (const json rule : rules)
     {
         auto ruleName = rule.at("rule").get<string>();

@@ -2,6 +2,7 @@
 
 ForEachRule::ForEachRule(string list, string element)
 {
+
     this->list = List(list);
     this -> element = Element(element);
 }

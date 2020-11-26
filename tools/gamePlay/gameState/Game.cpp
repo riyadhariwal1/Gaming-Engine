@@ -2,7 +2,7 @@
 
 Game::Game(AstTree astTree, State state): astTree(astTree),state(state)
 {
-    
+
 }
 
 //no ruleList

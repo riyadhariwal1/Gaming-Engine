@@ -65,7 +65,7 @@ protected:
 };
 
 TEST_F(StateTest, test_print) {
-  mock_state->print();
+  //mock_state->print();
 }
 
 TEST_F(StateTest, get_configuration_rounds_01) {

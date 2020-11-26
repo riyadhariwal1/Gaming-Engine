@@ -20,6 +20,18 @@ void Player::printPlayer(){
   cout << this->name << " has points: " << this->gameWins << endl;
 }
 
+string Player::getWithKey(string key){
+  string convert_to_string;
+  if(key=="name"){
+    return this->name;
+  }
+  else {
+    GameVariant value = this->PlayerVariablesMap[key];
+    string convert_to_string = boost::apply_visitor( gameVariant_to_string(), value);
+  }
+  return convert_to_string;
+}
+
 string Player::getPlayerName(){
   return this->name;
 }
