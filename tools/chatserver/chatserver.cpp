@@ -18,6 +18,10 @@
 #include "User.h"
 #include "Room.h"
 #include "chatserver.h"
+#include "Commands.h"
+#include "Store.h"
+#include "runGame.h"
+
 using networking::Connection;
 using networking::Message;
 using networking::Server;
@@ -45,6 +49,10 @@ void onConnect(Connection c)
   User newUser(c);
   clients.push_back(newUser);
   rooms.at(0).addUser(newUser);
+
+  // _store
+  store.addUser(newUser);
+  store.getRooms().at(0).addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -60,6 +68,9 @@ void onDisconnect(Connection c)
       clients.erase(eraseBegin, std::end(clients));
     }
   }
+
+  // _store
+  store.removeUser(c);
 }
 
 //shouldShutdown is set to true, if the message's text was "Shutdown". If shouldShutdown is true, the main function's while loop will break.
@@ -72,7 +83,7 @@ struct MessageResult
 User*
 getUser(const Connection& c)
 {
-  for (auto& client : clients)
+  for (auto &client : clients)
   {
     if (client.connection == c)
       return &client;
@@ -166,9 +177,11 @@ std::deque<Message> command_createRoom(const Message& message){
     auto tokens = tokenizeMessage(message.text);
     try
     {
-        targetRoomName = tokens.at(1);
+      roomPin = tokens.at(2);
     }
-    catch (const std::exception &e)
+
+    // apply pin to room
+    if (!roomPin.empty())
     {
         std::cout << "DEV DEBUG: Room name is not provided for /create" << '\n';
         std::cout << e.what() << "\n";
@@ -179,20 +192,17 @@ std::deque<Message> command_createRoom(const Message& message){
         return output;
     }
 
-    // check if the room already exists
-    Room *existingRoom = getRoomByName(targetRoomName);
+    // leave the user's current room
+    Room *currentRoom = getRoomById(user->getRoom());
+    std::cout << currentRoom->getRoomId();
 
-    if (existingRoom != nullptr)
+    if (currentRoom != nullptr)
     {
         std::ostringstream text;
         text << "The room " << targetRoomName << "already exists. Please use /join " << targetRoomName << " to join the room.";
         auto messages = processForUser(message.c,text.str());
         output.insert(output.end(),messages.begin(),messages.end());
     }
-    else
-    {
-        Room newRoom(rooms.size(), targetRoomName);
-        User* user = getUser(message.c);
 
         // leave the user's current room
         Room* currentRoom = getRoomById(user->getRoom());
@@ -215,11 +225,38 @@ std::deque<Message> command_joinRoom(const Message& message){
     std::string targetRoomName;
     std::vector<std::string> tokens;
 
-    try
+std::string command_joinRoom(Message message)
+{
+  std::ostringstream result;
+  std::string targetRoomName;
+  std::vector<std::string> tokens;
+
+  try
+  {
+    tokens = tokenizeMessage(message.text);
+  }
+  catch (const std::exception &e)
+  {
+    std::cout << e.what() << "\n";
+  }
+
+  try
+  {
+    targetRoomName = tokens.at(1);
+
+    User *user = getUser(message.c);
+    Room *existingRoom = getRoomByName(targetRoomName);
+
+    // We check the target room exists before kicking the user out of their room
+    if (existingRoom == nullptr)
     {
-        tokens = tokenizeMessage(message.text);
+      result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
+      return result.str();
     }
-    catch (const std::exception &e)
+
+    std::string pin;
+    // check if the room is private and user provided a pin
+    if (existingRoom->isPrivate())
     {
         std::cout << e.what() << "\n";
         std::ostringstream text;
@@ -281,6 +318,7 @@ std::deque<Message> command_leaveRoom(const Message& message){
     }
     return output;
 }
+
 // print the available rooms to the user
 // also print detailed room into the console
 // todo: show lock icon next to private rooms
@@ -435,9 +473,10 @@ quoted(std::string& text){
   std::istringstream newText(text);
   std::string s;
 
-  while (newText >> std::quoted(s)){
-      v.push_back(s);
-    }
+  while (newText >> std::quoted(s))
+  {
+    v.push_back(s);
+  }
   return v;
 }
 
@@ -602,6 +641,9 @@ int main(int argc, char *argv[])
   Room newRoom(0, "Main");
   rooms.push_back(newRoom);
 
+  // _store
+  store.addRoom(newRoom);
+
   while (true)
   {
     bool errorWhileUpdating = false;
@@ -615,6 +657,14 @@ int main(int argc, char *argv[])
                 << " " << e.what() << "\n\n";
       errorWhileUpdating = true;
     }
+
+    bool isGameRunning = true;
+    while (isGameRunning) {
+      auto [messages, isRunning] = run();
+      std::cout << messages.at(0) << "\n";
+      sleep(1);
+    }
+
 
     auto incoming = server.receive();
     auto outgoing = processMessages(incoming);

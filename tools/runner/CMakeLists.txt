@@ -1,5 +1,5 @@
 add_executable(runner main.cpp)
-target_link_libraries(runner jsonParsing gameState ruleClasses Players)
+target_link_libraries(runner jsonParsing gameState ruleTree Players)
 
 
 install(TARGETS runner

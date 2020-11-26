@@ -2,17 +2,17 @@
 #define SOCIAL_GAMING_VARIABLES_H
 
 #include <iostream>
-#include <vector>
+#include "Parser.h"
 using namespace std;
 
 class Variables {
 private:
-    vector<string>winners;
+    unordered_map<string,GameVariant> variablesMap;
 
 public:
-    Variables();
-    void addWinner (string);
+    Variables(unordered_map<string,GameVariant> variablesMap);
     void print();
+    void addWinner (string);
 };
 
 
