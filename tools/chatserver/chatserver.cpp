@@ -53,7 +53,7 @@ void onConnect(Connection c)
 
   // _store
   store.addUser(newUser);
-  store.getRooms().at(0).addUser(newUser);
+  store.getLobby()->addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -81,7 +81,8 @@ struct MessageResult
 };
 
 //given a Connection, return that user;
-User *
+// in store.h
+User*
 getUser(Connection c)
 {
   for (auto &client : clients)
@@ -96,13 +97,11 @@ getUser(Connection c)
 }
 
 // given a string of a user name, return a user
-User *
-getUserByName(std::string name)
-{
-  std::cout << "you are whisper to "
-            << "\"" << name << "\""
-            << "\n";
-  for (auto &client : clients)
+// in store.h
+User*
+getUserByName(std::string name){
+  std::cout<<"you are whisper to "<<"\""<<name<<"\""<<"\n";
+  for (auto& client : clients)
   {
     std::string tempString = client.userName.substr(0, client.userName.length() - 1);
     bool whisperUser = name.compare(tempString) == 0;
@@ -118,6 +117,7 @@ getUserByName(std::string name)
 }
 
 // given a room name, return a pointer to that Room otherwise return nullptr
+// in store.h
 Room *
 getRoomByName(std::string roomName)
 {
@@ -133,7 +133,8 @@ getRoomByName(std::string roomName)
 }
 
 // given a room id, return a pointer to that Room otherwise return nullptr
-Room *
+// in store.h
+Room*
 getRoomById(int roomId)
 {
   for (auto &room : rooms)
@@ -519,25 +520,6 @@ processMessages(const std::deque<Message> &incoming)
   return outgoing;
 }
 
-//Takes in one long processed string,
-//Creates a new dequeue of 'Messages' (defined in Server.h).
-//Each Message is as follows: {
-//                              connection =RECIPIENT_ID
-//                              text = RESULT }
-//note that RESULT will be the same string of text as defined in processMessages();
-//The end result is one big list of 'Messages', with a recipient ID, and a line of text to send to that recipient's client.
-// REPLACED WITH POSTOFFICE
-std::deque<Message>
-buildOutgoing(const std::string &log)
-{
-  std::deque<Message> outgoing;
-  for (auto client : clients)
-  {
-    outgoing.push_back({client.connection, log, 0});
-  }
-  return outgoing;
-}
-
 // takes the the messages from processMessages()
 // and creates a deque of output Messages assigned to the appropriate room members
 // returns deque of messages in the form of
@@ -609,11 +591,9 @@ int main(int argc, char *argv[])
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
 
   // create the main lobby
+  // _store handles this internally
   Room newRoom(0, "Main");
   rooms.push_back(newRoom);
-
-  // _store
-  store.addRoom(newRoom);
 
   while (true)
   {
@@ -658,7 +638,6 @@ int main(int argc, char *argv[])
     auto incoming = server.receive();
     auto messages = processMessages(incoming);
 
-    // auto outgoing = buildOutgoing(log);
     auto outgoing = postOffice(messages);
     server.send(outgoing);
 
