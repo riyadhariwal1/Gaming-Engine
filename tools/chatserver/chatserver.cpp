@@ -629,13 +629,31 @@ int main(int argc, char *argv[])
       errorWhileUpdating = true;
     }
 
-    bool isGameRunning = true;
-    while (isGameRunning) {
-      auto [messages, isRunning] = run();
-      std::cout << messages.at(0) << "\n";
-      sleep(1);
-    }
+    // bool isGameRunning = true;
+    // while (isGameRunning)
+    // {
+    //   std::cout << "In a game..."
+    //             << "\n";
 
+    //   auto [gameMessages, isRunning] = run();
+
+    //   std::deque<Message> parsedMessages;
+    //   for (const auto& m : gameMessages) {
+    //     Message newMessage;
+    //     newMessage.sendersRoomId = 0;
+    //     newMessage.text = m;
+
+    //     parsedMessages.push_back(newMessage);
+    //   }
+
+    //   auto outgoing = postOffice(gameMessages);
+    //   server.send(outgoing);
+
+    //   isGameRunning = isRunning;
+    //   sleep(1);
+    // }
+    // std::cout << "Not in a game"
+    //           << "\n";
 
     auto incoming = server.receive();
     auto messages = processMessages(incoming);
