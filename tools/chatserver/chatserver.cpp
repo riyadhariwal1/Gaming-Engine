@@ -18,10 +18,10 @@
 #include "User.h"
 #include "Room.h"
 #include "chatserver.h"
-#include "Commands.h"
 #include "Store.h"
 #include "Dispatch.h"
 #include "runGame.h"
+#include "Game.h"
 
 using networking::Connection;
 using networking::Message;
@@ -38,6 +38,7 @@ std::map<std::string, std::string (*)(Message)> commands = {
     {"roomlist", command_printRoomList},
     {"name", command_changeName},
     {"whisper", command_whisper},
+    {"start", command_startGame},
     {"cmds", command_showCommands}};
 
 Store store;
@@ -201,6 +202,7 @@ std::string command_createRoom(Message message)
     std::cout << "Room name is not provided for /create" << '\n';
     std::cout << e.what() << "\n";
     result << "Please provide a room name.\n";
+    return result.str();
   }
 
   // check if the room already exists
@@ -218,9 +220,13 @@ std::string command_createRoom(Message message)
 
     // check if the user provided a pin to make the room private
     // Make sure not to throw an error here
-    if (tokens.size() > 2)
-    {
-      roomPin = tokens.at(2);
+    try {
+      if (tokens.size() > 2)
+      {
+        roomPin = tokens.at(2);
+      }
+    } catch (const std::out_of_range &err) {
+      std::cout << err.what() << "\n";
     }
 
     // apply pin to room
@@ -239,7 +245,6 @@ std::string command_createRoom(Message message)
 
     // leave the user's current room
     Room *currentRoom = getRoomById(user->getRoom());
-    std::cout << currentRoom->getRoomId();
 
     if (currentRoom != nullptr)
     {
@@ -354,6 +359,20 @@ std::string command_leaveRoom(Message message)
     rooms.at(0).addUser(*user);
     result << "Sending User:" << user->getConnection().id << " to main lobby.\n";
   }
+  return result.str();
+}
+
+std::string command_startGame(Message message)
+{
+  std::ostringstream result;
+  User *user = getUser(message.c);
+  Room* room = getRoomById(message.sendersRoomId);
+
+  Game& game = createGame();
+  room->setGame(&game);
+
+  result << "Game started for room " << room->getRoomId() << "\n";
+
   return result.str();
 }
 
@@ -607,6 +626,8 @@ int main(int argc, char *argv[])
       errorWhileUpdating = true;
     }
 
+    // keeping state of game in a room
+
     // bool isGameRunning = true;
     // while (isGameRunning)
     // {
@@ -636,7 +657,7 @@ int main(int argc, char *argv[])
     auto incoming = server.receive();
     auto messages = processMessages(incoming); // TODO: should be in Dispatch too?
 
-    auto outgoing = dispatch.postOffice(messages);
+    auto outgoing = postOffice(messages);
     server.send(outgoing);
 
     if (errorWhileUpdating)

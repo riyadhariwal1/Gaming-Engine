@@ -10,7 +10,6 @@ add_library(networking
   src/GameManager.cpp
   src/Store.cpp
   src/Dispatch.cpp
-  src/Commands.cpp
 )
 
 find_package(Boost 1.72 COMPONENTS system REQUIRED)

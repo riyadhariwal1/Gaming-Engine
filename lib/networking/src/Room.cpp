@@ -73,3 +73,12 @@ bool Room::verifyPin(std::string input) {
 
     return this->getPin() == sanitizedPin;
 }
+
+void Room::setGame(Game* game) {
+    this->currentGame = game;
+}
+
+std::deque<networking::Message>
+Room::getGameMessages() {
+
+};

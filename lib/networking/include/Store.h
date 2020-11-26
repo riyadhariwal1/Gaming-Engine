@@ -35,7 +35,7 @@ public:
   User* getUserByName(std::string name);
   Room* getLobby() { return &rooms.at(0); };
   Room* getRoomByName(std::string roomName);
-  Room * getRoomById(int roomId);
+  Room* getRoomById(int roomId);
   // DEBUG
   // prints all the rooms and their users
   void print();

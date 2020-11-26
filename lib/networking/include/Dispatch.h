@@ -13,8 +13,8 @@ using namespace networking;
  * @brief Handles processing and sending messages to the correct rooms/users
  *
  * The Dispatch class takes in the deque of unprocessed messages and processes
- * them to be sent out to the correct rooms/users. This can also be reused in
- * a Game instance.
+ * them to be sent out to the correct rooms/users. This can also be used to get
+ * the messages from a Game instance and send them to the client.
  *
  * @todo find out if server.receive and work here as well
  */

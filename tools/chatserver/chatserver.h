@@ -21,6 +21,7 @@ std::string command_leaveRoom(Message message);
 std::string command_printRoomList(Message message);
 std::string command_changeName(Message message);
 std::string command_whisper(Message message);
+std::string command_startGame(Message message);
 std::string command_showCommands(Message message);
 std::deque<Message> processMessages(const std::deque<Message> &incoming);
 std::deque<Message> buildOutgoing(const std::string &log);
