@@ -20,6 +20,7 @@
 #include "chatserver.h"
 #include "Commands.h"
 #include "Store.h"
+#include "Dispatch.h"
 #include "runGame.h"
 
 using networking::Connection;
@@ -533,10 +534,6 @@ postOffice(const std::deque<Message> &processedMessages)
   {
     auto sendersRoom = getRoomById(message.sendersRoomId);
 
-    // check if message.whisperId exists
-    // if true, push_back one message object to the whisperId
-    // else, send message to all rooms members as normal
-
     if (message.whisperID.id != 0)
     {
       output.push_back({message.c, message.text, message.sendersRoomId});
@@ -589,6 +586,7 @@ int main(int argc, char *argv[])
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
+  Dispatch dispatch{server, store};
 
   // create the main lobby
   // _store handles this internally
@@ -636,9 +634,9 @@ int main(int argc, char *argv[])
     //           << "\n";
 
     auto incoming = server.receive();
-    auto messages = processMessages(incoming);
+    auto messages = processMessages(incoming); // TODO: should be in Dispatch too?
 
-    auto outgoing = postOffice(messages);
+    auto outgoing = dispatch.postOffice(messages);
     server.send(outgoing);
 
     if (errorWhileUpdating)

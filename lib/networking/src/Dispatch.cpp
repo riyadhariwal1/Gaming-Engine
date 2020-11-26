@@ -6,16 +6,12 @@
 //                              Connection: Recipient ID  	(where recipient = a user who's in the same room as the sender)
 //                              Text: USER_ID> MESSAGE_TEXT
 std::deque<Message>
-Dispatch::postOffice(const std::deque<Message> &processedMessages, Store &store)
+Dispatch::postOffice(const std::deque<Message> &processedMessages)
 {
   std::deque<Message> output;
   for (auto &message : processedMessages)
   {
     auto sendersRoom = store.getRoomById(message.sendersRoomId);
-
-    // check if message.whisperId exists
-    // if true, push_back one message object to the whisperId
-    // else, send message to all rooms members as normal
 
     if (message.whisperID.id != 0)
     {

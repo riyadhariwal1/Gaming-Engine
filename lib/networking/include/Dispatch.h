@@ -21,8 +21,14 @@ using namespace networking;
 class Dispatch
 {
 public:
-  Dispatch() {}
-  std::deque<Message> postOffice(const std::deque<Message> &processedMessages, Store &store);
+  Server &server;
+  Store& store;
+
+  Dispatch(Server& server, Store& store)
+  : server{server},
+    store{store}
+  {};
+  std::deque<Message> postOffice(const std::deque<Message> &processedMessages);
 };
 
 #endif
