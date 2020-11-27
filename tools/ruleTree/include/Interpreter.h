@@ -11,6 +11,9 @@ namespace INTERPRETER {
 
   vector<unordered_map<string,string>> InterpretList(string&, State&);
 
+  // like rounds.upfrom(1); ??
+  // vector<int> InterpretFunction(string&, State&);
+
   string InterpretString(string&, Element&, State&);
 
   bool InterpretCondition(string&, Element&, State&);

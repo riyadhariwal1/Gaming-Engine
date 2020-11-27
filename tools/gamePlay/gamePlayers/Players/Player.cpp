@@ -21,13 +21,16 @@ void Player::printPlayer(){
 }
 
 string Player::getWithKey(string key){
-  string convert_to_string;
+  string convert_to_string="";
   if(key=="name"){
     return this->name;
   }
   else {
     GameVariant value = this->PlayerVariablesMap[key];
-    string convert_to_string = boost::apply_visitor( gameVariant_to_string(), value);
+    if(!value.empty()){
+      convert_to_string = boost::apply_visitor( gameVariant_to_string(), value);
+    }
+
   }
   return convert_to_string;
 }
