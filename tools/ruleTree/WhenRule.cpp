@@ -1,6 +1,6 @@
 #include "include/When.h"
 
-Case :: Case(string condition): stringCondition(condition){}
+Case::Case(string condition): stringCondition(condition){}
 
 void Case::addRule (AstNode* rule){
     ruleList.push_back(rule);
@@ -15,29 +15,33 @@ void Case::print() {
 
 WhenRule::WhenRule(){}
 
+//WhenRule::WhenRule(vector<Case*> &caseList)
+//: caseList(caseList)
+//{}
+
 void WhenRule::execute(State& gameState) {
 
 }
 
-//enum Outcome { Success, Failure };
-//
-//Outcome isConditionTrue(Case* condition) {
-//    if (condition.condition){
-//        return Outcome::Success;
-//    } else {
-//        Outcome::Failure;
-//    }
-//}
-//
-//void WhenRule::execute(State& gameState) {
-//    Outcome outcome;
-//    for (Case condition : caseList) {
-//        outcome = isConditionTrue(condition);
-//        if (outcome == Outcome::Success) {
-//            executeHelper(gameState, condition);
-//        }
-//    }
-//}
+enum Outcome { Success, Failure };
+
+Outcome isConditionTrue(Case* condition) {
+    if (condition.condition){
+        return Outcome::Success;
+    } else {
+        return Outcome::Failure;
+    }
+}
+
+void WhenRule::execute(State& gameState) {
+    Outcome outcome;
+    for (Case condition : caseList) {
+        outcome = isConditionTrue(condition);
+        if (outcome == Outcome::Success) {
+            executeHelper(gameState, condition);
+        }
+    }
+}
 
 void WhenRule::addCase (Case* condition) {
     caseList.push_back(condition);

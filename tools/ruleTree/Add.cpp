@@ -4,11 +4,6 @@ AddRule::AddRule(string to, string value, Player& player)
         : to(to), value(value), player(player)
 { }
 
-////called in forEach loop to get current element
-//AddRule::AddRule(Player& player)
-//: player(player)
-//{ }
-
 void AddRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this, gameState);
 }
