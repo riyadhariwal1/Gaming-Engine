@@ -1,7 +1,8 @@
 #ifndef WEBSOCKETNETWORKING_ROOM_H
 #define WEBSOCKETNETWORKING_ROOM_H
 #include "User.h"
-
+#include "Game.h"
+#include "Server.h"
 
 class Room {
 private:
@@ -9,6 +10,7 @@ private:
     std::string name;
     std::vector<User> users;
     std::string pin;
+    Game* currentGame;
 
 public:
     Room(){
@@ -31,7 +33,8 @@ public:
     bool verifyPin(std::string input);
     static std::string sanitizePin(std::string dirtyPin);
     bool isPrivate() {return pin != "";}
+    void setGame(Game*);
+    std::deque<networking::Message> getGameMessages();
 };
-
 
 #endif //WEBSOCKETNETWORKING_ROOM_H
