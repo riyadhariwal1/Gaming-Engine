@@ -605,7 +605,7 @@ int main(int argc, char *argv[])
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
-  Dispatch dispatch{server, store};
+  Dispatch dispatch{server, store}; // ignore
 
   // create the main lobby
   // _store handles this internally
@@ -625,34 +625,6 @@ int main(int argc, char *argv[])
                 << " " << e.what() << "\n\n";
       errorWhileUpdating = true;
     }
-
-    // keeping state of game in a room
-
-    // bool isGameRunning = true;
-    // while (isGameRunning)
-    // {
-    //   std::cout << "In a game..."
-    //             << "\n";
-
-    //   auto [gameMessages, isRunning] = run();
-
-    //   std::deque<Message> parsedMessages;
-    //   for (const auto& m : gameMessages) {
-    //     Message newMessage;
-    //     newMessage.sendersRoomId = 0;
-    //     newMessage.text = m;
-
-    //     parsedMessages.push_back(newMessage);
-    //   }
-
-    //   auto outgoing = postOffice(gameMessages);
-    //   server.send(outgoing);
-
-    //   isGameRunning = isRunning;
-    //   sleep(1);
-    // }
-    // std::cout << "Not in a game"
-    //           << "\n";
 
     auto incoming = server.receive();
     auto messages = processMessages(incoming); // TODO: should be in Dispatch too?
