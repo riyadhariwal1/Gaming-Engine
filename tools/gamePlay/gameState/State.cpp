@@ -26,21 +26,12 @@ void State::UpdateState_PerAudience(PerAudience pa){
 void State::UpdateState_PlayersList(Player& p){
   this->playerList.push_back(p);
 }
-void State::incrementCurrentRound()
-{
-  currentRound++;
-}
-
 void State::UpdateState_WinnersList(Player& p){
   this->winnerList.push_back(p);
 }
 void State::incrementCurrentRound()
 {
   currentRound++;
-}
-vector<GameVariant> State::getRounds()
-{
-  return rounds;
 }
 
 

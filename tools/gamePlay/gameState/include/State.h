@@ -49,7 +49,7 @@ public:
   bool checkCondition(string);
   // string manipulations or condition checks
   GameVariant getFromState(string);
-  bool checkCondition(string);
+  
 
   void print();
 

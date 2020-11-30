@@ -5,7 +5,6 @@
 #include <optional>
 class MessageParser {
     public:
-    MessageParser(string,State&, string);
     MessageParser(string,State&);
     MessageParser(string,State&, string);
     bool containDecipheredVariable();
@@ -21,7 +20,6 @@ class MessageParser {
     string completeMsg;
     string value;
     bool hasDecipheredVariable;
-    string value;
 
 };
 #endif
