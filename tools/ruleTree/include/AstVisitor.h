@@ -12,7 +12,7 @@ class ParallelFor;
 class ScoreRule;
 class WhenRule;
 class Element;
-
+class AddRule;
 
 //visitor interface
 class AstVisitor {
@@ -28,8 +28,7 @@ public:
     virtual void visit(WhenRule& whenRule, State& gameState) = 0;
     virtual void visit(Element& element, State& gameState) = 0;
     virtual void visit(List& list, State& gameState) = 0;
-
-
+    virtual void visit(AddRule& addRule, State& gameState) = 0;
 
 };
 

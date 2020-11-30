@@ -39,12 +39,14 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
     
     forEachRule.execute(gameState);
     // this should be done by calling execute funtion in obj Element and List
+    forEachRule.execute(gameState);
+    // this should be done by calling execute funtion in obj Element and List
     std::cout << "This is ForEachRule visit function" << std::endl;
     forEachRule.setNumLoop(forEachRule.getList().getList().size());
     vector<AstNode *> ruleList = forEachRule.getRuleList();
     for (int y = 0; y < forEachRule.getNumLoop(); y++)
     {
-
+        
         RuleAstVisitor visitor;
         for (auto i : ruleList)
         {
@@ -62,7 +64,7 @@ string getInputFromUser( atomic_bool &cancelled)
     while (!cancelled)
     {
         //ToDo: Get input from user
-        this_thread::sleep_for(chrono::seconds(12));
+        //this_thread::sleep_for(chrono::seconds(12));
     }
     return input;
 }
@@ -127,7 +129,6 @@ void RuleAstVisitor::visit(List &list, State &gameState)
     std::cout << "This is List visit function" << std::endl;
 }
 
-//void RuleAstVisitor::visit(AddRule &addRule, State &gameState)
-//{
-//    std::cout << "This is AddRule visit function" << std::endl;
-//}
+void RuleAstVisitor::visit(AddRule &addRule, State& gameState) {
+    std::cout << "This is Add Rule visit function" << std::endl;
+}

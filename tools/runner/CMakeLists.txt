@@ -18,5 +18,5 @@ install(TARGETS runner
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
         DESTINATION ${CMAKE_BINARY_DIR}/bin)
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/players.json
         DESTINATION ${CMAKE_BINARY_DIR})

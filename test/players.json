@@ -38,7 +38,7 @@
 		"element": "round",
 		"rules": [{
 			"rule": "global-message",
-			"value": "Round {player}. Choose your weapon!"
+			"value": "Round {round}. Choose your weapon!"
 		}]
 
 	}]

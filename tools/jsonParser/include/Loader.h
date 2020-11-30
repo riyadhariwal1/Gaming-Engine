@@ -35,6 +35,7 @@ public:
     ExtendRule* extendRule (json rule);
     ScoreRule * scoreRule(json rule);
 
+
 };
 
 #endif //SOCIAL_GAMING_LOADER_H

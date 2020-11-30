@@ -34,6 +34,15 @@ void State::incrementCurrentRound()
 void State::UpdateState_WinnersList(Player& p){
   this->winnerList.push_back(p);
 }
+void State::incrementCurrentRound()
+{
+  currentRound++;
+}
+vector<GameVariant> State::getRounds()
+{
+  return rounds;
+}
+
 
 // Get from State Functions
 vector<Player> State::getPlayers() {
@@ -74,6 +83,32 @@ vector<string> splitString(string str){
   substrings.push_back(word);
   return substrings;
 }
+vector<GameVariant> State::getStateList(string input){
+
+  vector<GameVariant> result;
+
+  if( input.find("configuration") != string::npos){
+    size_t pos = input.find(".")+1;
+    string substr_input = input.substr(pos, input.length());
+    size_t nextPos = substr_input.find(".");
+    string config_key = substr_input.substr(0, nextPos);
+    GameVariant value = this->configuration.getAtKey(config_key);
+    
+    for(int i = 1; i <= boost::get<int>(value); i++)
+    {
+      result.push_back(i);
+    }
+
+    rounds = result;
+  }
+  else if( input.find("round") != string::npos){
+    return this->getRounds();
+  }
+
+  return result;
+
+}
+
 
 // getFromState's job is only to retreive the GameVariant Value from State
 // no lovel of interpretation here
@@ -132,11 +167,11 @@ GameVariant State::getFromState(string input){
 }
 
 // others
-void State::print(){
-  this->configuration.print();
-  this->constants.print();
-  this->variables.print();
-  this->per_player.print();
-  this->per_audience.print();
-  return;
-}
+// void State::print(){
+//   this->configuration.print();
+//   this->constants.print();
+//   this->variables.print();
+//   this->per_player.print();
+//   this->per_audience.print();
+//   return;
+// }

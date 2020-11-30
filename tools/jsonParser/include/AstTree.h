@@ -8,6 +8,7 @@ private:
     std::vector<AstNode *> ruleTree;
 
 public:
+    AstTree(json);
     std::vector<AstNode*> getAstTree();
     void pushNode(AstNode *);
 };

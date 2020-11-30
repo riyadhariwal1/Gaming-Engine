@@ -20,11 +20,11 @@ class ForEachRule : public AstNode
         int getNumLoop();
         void setNumLoop(int);
         Element getElement();
-
     private:
         vector <AstNode*> ruleList;
         List list;
         Element element;
         int numLoop;
 };
+
 #endif
