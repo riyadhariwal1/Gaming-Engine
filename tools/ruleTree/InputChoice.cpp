@@ -51,3 +51,4 @@ int InputChoiceRule::getTimeOut(){
 std::string InputChoiceRule::getResult(){
   return result;
 }
+void InputChoiceRule::accept(AstVisitor& visitor, State& , List&, Element&) {}

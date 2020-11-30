@@ -4,7 +4,7 @@
 State::State(vector<Player> playerList, Configuration configuration,
              Constants constants, Variables variables, PerPlayer perPlayer, PerAudience perAudience)
     : playerList(playerList), configuration(configuration), constants(constants), variables(variables),
-    per_player(perPlayer), per_audience(perAudience), currentRound(1)
+    per_player(perPlayer), per_audience(perAudience)
     {}
 
 // Update State Functions
@@ -29,10 +29,7 @@ void State::UpdateState_PlayersList(Player& p){
 void State::UpdateState_WinnersList(Player& p){
   this->winnerList.push_back(p);
 }
-void State::incrementCurrentRound()
-{
-  currentRound++;
-}
+
 
 
 // Get from State Functions
@@ -48,14 +45,7 @@ Configuration State::getConfiguration(){
 Constants State::getConstants(){
   return constants;
 }
-vector<GameVariant> State::getRounds()
-{
-  return rounds;
-}
-int State::getCurrentRounds()
-{
-  return currentRound;
-}
+
 
 // only handles rockPaperScissors file for now
 // Interpreter will handle the functions and such
@@ -89,11 +79,6 @@ vector<GameVariant> State::getStateList(string input){
     {
       result.push_back(i);
     }
-
-    rounds = result;
-  }
-  else if( input.find("round") != string::npos){
-    return this->getRounds();
   }
 
   return result;

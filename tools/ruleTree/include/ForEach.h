@@ -15,11 +15,13 @@ class ForEachRule : public AstNode
         void addRule(AstNode*);
         void print() override;
         void accept(AstVisitor& visitor, State& gameState) override;
+        void accept(AstVisitor& visitor, State& , List&, Element&) override;
+
         vector <AstNode*> getRuleList();
         List getList();
         int getNumLoop();
         void setNumLoop(int);
-        Element getElement();
+        Element& getElement();
     private:
         vector <AstNode*> ruleList;
         List list;

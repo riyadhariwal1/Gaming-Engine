@@ -13,6 +13,7 @@ public:
     vector<GameVariant> getList();
     List(string);
     void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
     void execute(State&);
     void print();
     string getValue();

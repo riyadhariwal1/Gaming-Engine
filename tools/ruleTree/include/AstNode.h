@@ -14,6 +14,7 @@
 class AstNode {
 public:
     virtual void accept(AstVisitor& visitor, State& ) = 0;
+    virtual void accept(AstVisitor& visitor, State& , List&, Element&) = 0;
     virtual void execute(State&) = 0;
     virtual void print () = 0;
 };

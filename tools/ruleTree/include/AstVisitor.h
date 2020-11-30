@@ -19,6 +19,7 @@ class AstVisitor {
 public:
     //virtual void visit(AstNode& node) = 0;
     virtual void visit(GlobalMessage & globalMessage, State& gameState) = 0;
+    virtual void visit(GlobalMessage & globalMessage, State& gameState, List& list , Element& element) = 0;
     virtual void visit(DiscardRule& discard, State& gameState) = 0;
     virtual void visit(ExtendRule& extend, State& gameState) = 0;
     virtual void visit(ForEachRule& forEachRule, State& gameState) = 0;

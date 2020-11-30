@@ -24,6 +24,13 @@ void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
     globalMessage.execute(gameState);
     std::cout << globalMessage.getCompleteMessage() << endl;
 }
+void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState, List& list, Element& element)
+{
+    //TODO: Decipher the "{}"
+    //TO DO: Push the cout statement to a message Queue to throw to server side
+    globalMessage.execute(gameState, list, element);
+    std::cout << globalMessage.getCompleteMessage() << endl;
+}
 void RuleAstVisitor::visit(DiscardRule &discard, State &gameState)
 {
     discard.execute(gameState);
@@ -39,22 +46,33 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
     
     forEachRule.execute(gameState);
     // this should be done by calling execute funtion in obj Element and List
-    forEachRule.execute(gameState);
-    // this should be done by calling execute funtion in obj Element and List
     std::cout << "This is ForEachRule visit function" << std::endl;
-    forEachRule.setNumLoop(forEachRule.getList().getList().size());
+    //testing
+
+    List list = forEachRule.getList();
+
+    // end testing 
+    forEachRule.setNumLoop(list.getList().size());
     vector<AstNode *> ruleList = forEachRule.getRuleList();
     for (int y = 0; y < forEachRule.getNumLoop(); y++)
     {
-        
+        Element element = forEachRule.getElement();
         RuleAstVisitor visitor;
-        for (auto i : ruleList)
+        //for (auto i : ruleList)
+        for (int y = 0 ; y < 1 ;y++)
         {
-            i->accept(visitor, gameState);
+            auto i = ruleList.at(0);
+            i->accept(visitor, gameState, list, element);
         }
         std::cout << std::endl;
-        gameState.incrementCurrentRound();
+        forEachRule.getElement().indexIncrement();
+
+        std::cout << " outside loop forEach.Element == " << forEachRule.getElement().getIndex() << std::endl;
+        std::cout << " index == " << element.getIndex() << std::endl;
+
     }
+
+    
 }
 
 //InputChoice Rule implementation

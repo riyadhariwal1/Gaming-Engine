@@ -23,3 +23,5 @@ void ExtendRule::print() {
 void ExtendRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this, gameState);
 }
+void ExtendRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+

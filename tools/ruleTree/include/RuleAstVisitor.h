@@ -10,6 +10,7 @@ public:
 
     RuleAstVisitor();
     void visit(GlobalMessage &globalMessage, State& gameState);
+    void visit(GlobalMessage &globalMessage, State& gameState, List& list, Element& element);
     void visit(DiscardRule &discard, State& gameState);
     void visit(ExtendRule &extend, State& gameState);
     void visit(ForEachRule &forEachRule, State& gameState);

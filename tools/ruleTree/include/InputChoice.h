@@ -10,6 +10,8 @@ class InputChoiceRule : public AstNode
     void execute(State&) override;
     void print() override;
     void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+
     Player getPlayer();
     vector<GameVariant> getChoiceList();
     std::string getCompletePrompt();

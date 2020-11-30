@@ -17,6 +17,8 @@ void List :: accept(AstVisitor& visitor, State& gameState)
 {
     visitor.visit(*this, gameState);
 }
+void List::accept(AstVisitor& visitor, State& , List&, Element&) {}
+
 
 vector<GameVariant> List:: getList()
 {

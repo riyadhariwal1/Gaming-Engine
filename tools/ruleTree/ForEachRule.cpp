@@ -33,6 +33,8 @@ void ForEachRule::print()
 void ForEachRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this,gameState);
 }
+void ForEachRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+
 vector <AstNode*> ForEachRule ::getRuleList()
 {
     return ruleList;
@@ -50,7 +52,7 @@ List ForEachRule::getList()
 {
     return list;
 }
-Element ForEachRule::getElement()
+Element& ForEachRule::getElement()
 {
     return element;
 }

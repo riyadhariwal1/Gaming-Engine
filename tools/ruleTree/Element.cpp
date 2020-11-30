@@ -15,6 +15,8 @@ void Element :: accept(AstVisitor& visitor, State& gameState)
 {
     visitor.visit(*this,gameState);
 }
+void Element::accept(AstVisitor& visitor, State& , List&, Element&) {}
+
 
 void Element :: execute(State& state){
     //TODO: figure out what the data is and copy it into target variable

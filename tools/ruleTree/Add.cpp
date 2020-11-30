@@ -12,6 +12,8 @@ AddRule::AddRule(string to, string value, Player& player)
 void AddRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this, gameState);
 }
+void AddRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+
 
 void AddRule::execute(State& gameState) {
     //todo: parse "to". format is "elementName.field". we have the current element, just need Field
