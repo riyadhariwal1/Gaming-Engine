@@ -1,4 +1,4 @@
-#include "include/When.h"
+#include "When.h"
 
 Case::Case(string condition): stringCondition(condition){}
 
@@ -19,9 +19,6 @@ WhenRule::WhenRule(){}
 //: caseList(caseList)
 //{}
 
-void WhenRule::execute(State& gameState) {
-
-}
 
 enum Outcome { Success, Failure };
 

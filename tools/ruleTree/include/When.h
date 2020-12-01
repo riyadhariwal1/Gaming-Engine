@@ -15,6 +15,7 @@ public:
     void addRule(AstNode* );
     void print();
 };
+
 class WhenRule :  public AstNode {
     public:
         WhenRule ();
@@ -28,5 +29,5 @@ class WhenRule :  public AstNode {
     private:
         vector<Case*> caseList;
 
-
+};
 #endif
