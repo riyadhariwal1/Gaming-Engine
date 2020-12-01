@@ -1,6 +1,3 @@
-//
-// Created by Riya on 2020-10-18.
-//
 
 #ifndef SOCIAL_GAMING_GAME_H
 #define SOCIAL_GAMING_GAME_H
@@ -11,6 +8,7 @@
 #include "Variables.h"
 #include "State.h"
 #include "AstTree.h"
+#include "RuleAstVisitor.h"
 
 class Game {
 private:
@@ -19,7 +17,7 @@ private:
 public:
     Game (AstTree, State);
     void print();
-    void execute();
+    void execute(State& gameState);
 };
 
 

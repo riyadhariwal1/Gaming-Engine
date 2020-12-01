@@ -1,6 +1,7 @@
 #include "InputChoice.h"
-
-InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, string result)
+#include "MessageParser.h"
+#include <iostream>
+InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, string result, int timeout)
 {
   // send promp to a player with list of choices and
   // save choice in given variable "result"
@@ -8,10 +9,26 @@ InputChoiceRule::InputChoiceRule(string player, string prompt, string choices, s
   this->to = to;
   this->choices = choices;
   this->result = result;
+  this->timeout = timeout;
+  completePrompt = "";
 }
 void InputChoiceRule::execute(State& gameState)
 {
+  //TODO: Retrive infor from State
+  //Player toPlayer = gameState.getPlayers()[0];
+  //choiceList = gameState.getVariables(choices);
+  MessageParser msgParser(prompt, gameState);
+  completePrompt = msgParser.getCompleteString();
 }
+void InputChoiceRule::execute(State& gameState, List& list, Element& element)
+{
+  //TODO: Retrive infor from State
+  //Player toPlayer = gameState.getPlayers()[0];
+  //choiceList = gameState.getVariables(choices);
+  MessageParser msgParser(prompt, gameState);
+  completePrompt = msgParser.getCompleteString();
+}
+
 void InputChoiceRule::print()
 {
   cout << "InputChoice: " << endl;
@@ -23,6 +40,26 @@ void InputChoiceRule::print()
 
 }
 
-void InputChoiceRule::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void InputChoiceRule::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this, gameState );
+}
+
+Player InputChoiceRule::getPlayer(){
+  return toPlayer;
+}
+
+vector<GameVariant> InputChoiceRule::getChoiceList() {
+  return choiceList;
+}
+std::string InputChoiceRule::getCompletePrompt(){
+  return completePrompt;
+}
+int InputChoiceRule::getTimeOut(){
+  return timeout;
+}
+std::string InputChoiceRule::getResult(){
+  return result;
+}
+void InputChoiceRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
 }

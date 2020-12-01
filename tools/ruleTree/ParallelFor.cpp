@@ -14,6 +14,10 @@ void ParallelFor::execute(State &gameState)
 {
 }
 
+vector<AstNode*> ParallelFor::getRuleList()
+{
+    return ruleList;
+}
 void ParallelFor::print()
 {
     cout << "ParallelFor: " << endl;
@@ -29,6 +33,8 @@ void ParallelFor::print()
     }
 }
 
-void ParallelFor::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void ParallelFor::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this, gameState);
 }
+void ParallelFor::accept(AstVisitor& visitor, State& , List&, Element&) {}
+

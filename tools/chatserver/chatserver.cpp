@@ -14,15 +14,9 @@
 #include <unistd.h>
 #include <vector>
 #include <iomanip>
-#include <map>
+
 #include "User.h"
 #include "Room.h"
-#include "chatserver.h"
-#include "Store.h"
-#include "Dispatch.h"
-#include "runGame.h"
-#include "Game.h"
-
 using networking::Connection;
 using networking::Message;
 using networking::Server;
@@ -30,19 +24,6 @@ using networking::Server;
 //list of client IDs
 std::vector<User> clients;
 std::vector<Room> rooms;
-
-std::map<std::string, std::string (*)(Message)> commands = {
-    {"join", command_joinRoom},
-    {"create", command_createRoom},
-    {"leave", command_leaveRoom},
-    {"roomlist", command_printRoomList},
-    {"name", command_changeName},
-    {"whisper", command_whisper},
-    {"start", command_startGame},
-    {"cmds", command_showCommands}};
-
-Store store;
-
 //ran by Server.h every time a new connection is made.
 //adds a new connection (i.e client ID) to the clients vector.
 void onConnect(Connection c)
@@ -52,10 +33,6 @@ void onConnect(Connection c)
   User newUser(c);
   clients.push_back(newUser);
   rooms.at(0).addUser(newUser);
-
-  // _store
-  store.addUser(newUser);
-  store.getLobby()->addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -71,9 +48,6 @@ void onDisconnect(Connection c)
       clients.erase(eraseBegin, std::end(clients));
     }
   }
-
-  // _store
-  store.removeUser(c);
 }
 
 //shouldShutdown is set to true, if the message's text was "Shutdown". If shouldShutdown is true, the main function's while loop will break.
@@ -83,11 +57,10 @@ struct MessageResult
 };
 
 //given a Connection, return that user;
-// in store.h
 User*
 getUser(Connection c)
 {
-  for (auto &client : clients)
+  for (auto& client : clients)
   {
     if (client.connection == c)
       return &client;
@@ -99,16 +72,14 @@ getUser(Connection c)
 }
 
 // given a string of a user name, return a user
-// in store.h
 User*
 getUserByName(std::string name){
   std::cout<<"you are whisper to "<<"\""<<name<<"\""<<"\n";
   for (auto& client : clients)
   {
-    std::string tempString = client.userName.substr(0, client.userName.length() - 1);
+    std::string tempString = client.userName.substr(0, client.userName.length()-1);
     bool whisperUser = name.compare(tempString) == 0;
-    if (whisperUser)
-    {
+    if (whisperUser){
       return &client;
     }
   }
@@ -119,7 +90,6 @@ getUserByName(std::string name){
 }
 
 // given a room name, return a pointer to that Room otherwise return nullptr
-// in store.h
 Room *
 getRoomByName(std::string roomName)
 {
@@ -135,7 +105,6 @@ getRoomByName(std::string roomName)
 }
 
 // given a room id, return a pointer to that Room otherwise return nullptr
-// in store.h
 Room*
 getRoomById(int roomId)
 {
@@ -186,250 +155,6 @@ tokenizeMessage(std::string message)
   return tokens;
 }
 
-std::string command_createRoom(Message message)
-{
-  std::ostringstream result;
-  std::string targetRoomName;
-  std::string roomPin = "";
-  auto tokens = tokenizeMessage(message.text);
-
-  try
-  {
-    targetRoomName = tokens.at(1);
-  }
-  catch (const std::exception &e)
-  {
-    std::cout << "Room name is not provided for /create" << '\n';
-    std::cout << e.what() << "\n";
-    result << "Please provide a room name.\n";
-    return result.str();
-  }
-
-  // check if the room already exists
-  Room *existingRoom = getRoomByName(targetRoomName);
-
-  if (existingRoom != nullptr)
-  {
-    result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName
-           << " to join the room.";
-  }
-  else
-  {
-    Room newRoom(rooms.size(), targetRoomName);
-    User *user = getUser(message.c);
-
-    // check if the user provided a pin to make the room private
-    // Make sure not to throw an error here
-    try {
-      if (tokens.size() > 2)
-      {
-        roomPin = tokens.at(2);
-      }
-    } catch (const std::out_of_range &err) {
-      std::cout << err.what() << "\n";
-    }
-
-    // apply pin to room
-    if (!roomPin.empty())
-    {
-      try
-      {
-        newRoom.setPin(roomPin);
-      }
-      catch (const char *err)
-      {
-        result << err << "Please provide a 4 digit numerical pin.";
-        return result.str();
-      }
-    }
-
-    // leave the user's current room
-    Room *currentRoom = getRoomById(user->getRoom());
-
-    if (currentRoom != nullptr)
-    {
-      currentRoom->removeUser(*user);
-    }
-
-    newRoom.addUser(*user);
-    rooms.push_back(newRoom);
-    result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").";
-  }
-
-  return result.str();
-}
-
-std::string command_joinRoom(Message message)
-{
-  std::ostringstream result;
-  std::string targetRoomName;
-  std::vector<std::string> tokens;
-
-  try
-  {
-    tokens = tokenizeMessage(message.text);
-  }
-  catch (const std::exception &e)
-  {
-    std::cout << e.what() << "\n";
-  }
-
-  try
-  {
-    targetRoomName = tokens.at(1);
-
-    User *user = getUser(message.c);
-    Room *existingRoom = getRoomByName(targetRoomName);
-
-    // We check the target room exists before kicking the user out of their room
-    if (existingRoom == nullptr)
-    {
-      result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
-      return result.str();
-    }
-
-    std::string pin;
-    // check if the room is private and user provided a pin
-    if (existingRoom->isPrivate())
-    {
-      try
-      {
-        pin = tokens.at(2);
-      }
-      catch (std::exception &e)
-      {
-        result << "This room is private. Please provide a valid pin.\n";
-        return result.str();
-      }
-
-      const auto doesPinMatch = existingRoom->verifyPin(pin);
-
-      if (doesPinMatch)
-      {
-        existingRoom->addUser(*user);
-      }
-      else
-      {
-        result << "The pin does not match.\n";
-        return result.str();
-      }
-    }
-    else
-    {
-      // no password required
-      existingRoom->addUser(*user);
-    }
-
-    Room *currentRoom = getRoomById(user->getRoom());
-
-    if (currentRoom != nullptr)
-    {
-      // remove the user from their current room
-      currentRoom->removeUser(*user);
-    }
-
-    result << "Joining room " << existingRoom->getRoomName();
-  }
-  catch (const std::exception &e)
-  {
-    // room name is not provided
-    std::cout << "No room provided for /join"
-              << "\n";
-    std::cout << e.what() << "\n";
-    result << "Please provide a room name.\n";
-  }
-
-  return result.str();
-}
-
-std::string command_leaveRoom(Message message)
-{
-  std::ostringstream result;
-  User *user = getUser(message.c);
-
-  if (user->roomId == 0)
-  {
-    result << "You are already in the Main Lobby.\n";
-  }
-  else
-  {
-    Room *room = getRoomById(user->getRoom()); // this shouldn't fail...
-
-    room->removeUser(*user);
-    rooms.at(0).addUser(*user);
-    result << "Sending User:" << user->getConnection().id << " to main lobby.\n";
-  }
-  return result.str();
-}
-
-std::string command_startGame(Message message)
-{
-  std::ostringstream result;
-  User *user = getUser(message.c);
-  Room* room = getRoomById(message.sendersRoomId);
-
-  Game& game = createGame();
-  room->setGame(&game);
-
-  result << "Game started for room " << room->getRoomId() << "\n";
-
-  return result.str();
-}
-
-// print the available rooms to the user
-// also print detailed room into the console
-// todo: show lock icon next to private rooms
-std::string command_printRoomList(Message message)
-{
-  std::ostringstream result;
-  result << "Here are the available rooms.\n";
-  result << "(Please check the console for debug information.)\n";
-  result << "\n";
-  std::cout << "\n";
-
-  User *user = getUser(message.c);
-  for (auto room : rooms)
-  {
-
-    result << room.getRoomName() << (user->getRoom() == room.getRoomId() ? " (current)" : "") << "\n";
-    room.printUsers();
-  }
-}
-
-std::string command_changeName(Message message)
-{
-  std::string targetName;
-  auto tokens = tokenizeMessage(message.text);
-
-  for (size_t i = 1; i < tokens.size(); i++)
-  {
-    targetName += tokens.at(i);
-    targetName += " ";
-  }
-
-  User *user = getUser(message.c);
-  user->setUserName(targetName);
-  std::cout << "You changed your name to " << targetName << std::endl;
-  return "";
-}
-
-std::string command_whisper(Message message)
-{
-  return "Will be implemented later.";
-}
-
-std::string command_showCommands(Message message)
-{
-  std::ostringstream result;
-  result << "List of Commands:"
-         << "\n";
-  for (auto pair : commands)
-  {
-    result << pair.first << "\n";
-  }
-  return result.str();
-}
-
 const char commandPrefix = '/';
 
 std::string
@@ -438,32 +163,163 @@ runCommand(Message message)
   std::ostringstream result;
   std::string commandName = strToLower(extractCommand(message.text));
   std::cout << "Attempting to call command:" << commandName << "\n";
-  auto search = commands.find(commandName);
-  if (search != commands.end())
+
+  if (commandName == "join")
   {
-    result << search->second(message);
+    std::string targetRoomName;
+    std::vector<std::string> tokens;
+
+    try
+    {
+      tokens = tokenizeMessage(message.text);
+    }
+    catch (const std::exception &e)
+    {
+      std::cout << e.what() << "\n";
+    }
+
+    try
+    {
+      targetRoomName = tokens.at(1);
+
+      User* user = getUser(message.c);
+      Room* existingRoom = getRoomByName(targetRoomName);
+
+      // We check the target room exists before kicking the user out of their room
+      if (existingRoom == nullptr)
+      {
+        result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
+      }
+      else
+      {
+        Room *currentRoom = getRoomById(user->getRoom());
+
+        if (currentRoom != nullptr)
+        {
+          // remove the user from their current room
+          currentRoom->removeUser(*user);
+        }
+
+        existingRoom->addUser(*user);
+        result << "Sending User:" << message.c.id << " to room " << existingRoom->getRoomName() << ".\n";
+      }
+    }
+    catch (const std::exception &e)
+    {
+      // room name is not provided
+      std::cout << "No room provided for /join"
+                << "\n";
+      std::cout << e.what() << "\n";
+      result << "Please provide a room name.\n";
+    }
+  }
+  else if (commandName == "leave")
+  {
+    User* user = getUser(message.c);
+
+    if (user->roomId == 0) {
+      result << "You are already in the Main Lobby.\n";
+    } else {
+      Room *room = getRoomById(user->getRoom()); // this shouldn't fail...
+
+      room->removeUser(*user);
+      rooms.at(0).addUser(*user);
+      result << "Sending User:" << user->getConnection().id << " to main lobby.\n";
+    }
+  }
+  else if (commandName == "roomlist")
+  {
+    // print the available rooms to the user
+    // also print detailed room into the console
+    // todo: show lock icon next to private rooms
+    result << "Here are the available rooms.\n";
+    result << "(Please check the console for debug information.)\n";
+    result << "\n";
+    std::cout << "\n";
+
+    User* user = getUser(message.c);
+
+    for (auto room : rooms)
+    {
+      result << room.getRoomName() << (user->getRoom() == room.getRoomId() ? " (current)" : "") << "\n";
+      room.printUsers();
+    }
+  }
+  else if (commandName == "create")
+  {
+    std::string targetRoomName;
+    auto tokens = tokenizeMessage(message.text);
+
+    try
+    {
+      targetRoomName = tokens.at(1);
+    }
+    catch (const std::exception &e)
+    {
+      std::cout << "Room name is not provided for /create" << '\n';
+      std::cout << e.what() << "\n";
+      result << "Please provide a room name.\n";
+    }
+
+    // check if the room already exists
+    Room *existingRoom = getRoomByName(targetRoomName);
+
+    if (existingRoom != nullptr)
+    {
+      result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName
+             << " to join the room.\n";
+    }
+    else
+    {
+      Room newRoom(rooms.size(), targetRoomName);
+      User* user = getUser(message.c);
+
+      // leave the user's current room
+      Room* currentRoom = getRoomById(user->getRoom());
+      std::cout << currentRoom->getRoomId() << "\n";
+
+      if (currentRoom != nullptr) {
+        currentRoom->removeUser(*user);
+      }
+
+      newRoom.addUser(*user);
+      rooms.push_back(newRoom);
+      result << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").\n";
+    }
+  }
+  else if (commandName == "name"){
+    std::string targetName;
+    auto tokens = tokenizeMessage(message.text);
+    
+    for (size_t i=1;i<tokens.size();i++){
+      targetName += tokens.at(i);
+      targetName += " ";
+    }
+
+    User* user = getUser(message.c);
+    user->setUserName(targetName);
+    std::cout << "You changed your name to " << targetName << std::endl;
+  }
+  else if (commandName == "whisper"){
   }
   else
   {
     std::cout << "Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
               << "\n";
-    result << "Error: " << commandName << " is not a valid command. Please type /cmds for a list of commands.";
   }
   return result.str();
 }
 
 // extract content by way of quotation marks
 std::vector<std::string>
-quoted(std::string text)
-{
+quoted(std::string text){
   std::vector<std::string> v;
   std::istringstream newText(text);
   std::string s;
 
-  while (newText >> std::quoted(s))
-  {
-    v.push_back(s);
-  }
+  while (newText >> std::quoted(s)){
+      v.push_back(s);
+    }
   return v;
 }
 
@@ -515,10 +371,9 @@ processMessages(const std::deque<Message> &incoming)
     Message tempMessage = {message.c, result.str(), sendersRoomId};
 
     auto v = quoted(message.text);
-    bool isCommandWhisper = v.size() != 0 && v.at(0) == "/whisper";
+    bool isCommandWhisper = v.size() !=0 && v.at(0) == "/whisper";
 
-    if (isCommandWhisper)
-    {
+    if (isCommandWhisper){
       if (user->getUserName() != "")
       {
         result << user->getUserName() << "> " << v[2] << "\n";
@@ -528,7 +383,7 @@ processMessages(const std::deque<Message> &incoming)
         result << message.c.id << "> " << v[2] << "\n";
       }
       tempMessage.text = result.str();
-      User *user = getUserByName(v.at(1));
+      User* user = getUserByName(v.at(1));
       tempMessage.whisperID = user->getConnection();
     }
     // 1. extract the command and parameters again here using quoted(message.text)
@@ -540,34 +395,53 @@ processMessages(const std::deque<Message> &incoming)
   return outgoing;
 }
 
+//Takes in one long processed string,
+//Creates a new dequeue of 'Messages' (defined in Server.h).
+//Each Message is as follows: {
+//                              connection =RECIPIENT_ID
+//                              text = RESULT }
+//note that RESULT will be the same string of text as defined in processMessages();
+//The end result is one big list of 'Messages', with a recipient ID, and a line of text to send to that recipient's client.
+// REPLACED WITH POSTOFFICE
+std::deque<Message>
+buildOutgoing(const std::string &log)
+{
+  std::deque<Message> outgoing;
+  for (auto client : clients)
+  {
+    outgoing.push_back({client.connection, log, 0});
+  }
+  return outgoing;
+}
+
 // takes the the messages from processMessages()
 // and creates a deque of output Messages assigned to the appropriate room members
 // returns deque of messages in the form of
 //                              Connection: Recipient ID  	(where recipient = a user who's in the same room as the sender)
 //                              Text: USER_ID> MESSAGE_TEXT
 std::deque<Message>
-postOffice(const std::deque<Message> &processedMessages)
-{
-  std::deque<Message> output;
-  for (auto &message : processedMessages)
-  {
-    auto sendersRoom = getRoomById(message.sendersRoomId);
+postOffice(const std::deque<Message>& processedMessages){
+   std::deque<Message> output;
+   for (auto& message : processedMessages) {
+        auto sendersRoom = getRoomById(message.sendersRoomId);
 
-    if (message.whisperID.id != 0)
-    {
-      output.push_back({message.c, message.text, message.sendersRoomId});
-      output.push_back({message.whisperID, message.text, message.sendersRoomId});
-    }
-    else
-    {
-      for (auto user : sendersRoom->getUsers())
-      {
-        output.push_back({user.connection, message.text, message.sendersRoomId});
-      }
-    }
-  }
+        // check if message.whisperId exists
+        // if true, push_back one message object to the whisperId
+        // else, send message to all rooms members as normal
 
-  return output;
+        if (message.whisperID.id != 0){
+          output.push_back({ message.c, message.text, message.sendersRoomId});
+          output.push_back({ message.whisperID, message.text, message.sendersRoomId});
+
+        }
+        else{
+          for (auto user : sendersRoom->getUsers()) {
+            output.push_back({ user.connection, message.text, message.sendersRoomId});
+          }
+        }
+   }
+
+   return output;
 }
 
 std::string
@@ -605,10 +479,8 @@ int main(int argc, char *argv[])
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
-  Dispatch dispatch{server, store}; // ignore
 
   // create the main lobby
-  // _store handles this internally
   Room newRoom(0, "Main");
   rooms.push_back(newRoom);
 
@@ -627,8 +499,9 @@ int main(int argc, char *argv[])
     }
 
     auto incoming = server.receive();
-    auto messages = processMessages(incoming); // TODO: should be in Dispatch too?
+    auto messages = processMessages(incoming);
 
+    // auto outgoing = buildOutgoing(log);
     auto outgoing = postOffice(messages);
     server.send(outgoing);
 

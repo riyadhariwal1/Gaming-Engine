@@ -1,9 +1,9 @@
 #include "Parser.h"
-#include <iostream>
 
-unordered_map<string,GameVariant> jsonToMap(json jsonMap){
+unordered_map<string,GameVariant>
+jsonToMap(json jsonMap){
 
-  // GameMap is a map of setup || constants || variables
+  // GameMap is a map of setup || constants || variables...
   unordered_map<string,GameVariant> GameMap;
 
   for ( auto& itrr : jsonMap.items())
@@ -42,16 +42,7 @@ unordered_map<string,GameVariant> jsonToMap(json jsonMap){
             case json::value_t::object:
               vec.push_back(val.get<unordered_map<string,string>>());
               break;
-            // case json::value_t::number_integer:
-            // case json::value_t::number_unsigned:
-            //   vec.push_back(val.get<int>());
-            //   break;
-            // case json::value_t::number_float:
-            //   vec.push_back(val.get<double>());
-            // case json::value_t::string:
-            //   vec.push_back(val.get<string>());
-            // case json::value_t::boolean:
-            //   vec.push_back(val.get<bool>());
+            // needs more cases 
             default:
               cout << "";
           }
@@ -66,4 +57,17 @@ unordered_map<string,GameVariant> jsonToMap(json jsonMap){
 
   return GameMap;
 
+}
+
+string replaceInString(string input, string value){
+
+  size_t open = input.find("{");
+  size_t close = input.find("}");
+
+// shift through every boost type case;
+  input.replace(open, close-open+1, value);
+
+  // element.someVar
+
+  return input;
 }

@@ -12,7 +12,8 @@ private:
 public:
     Variables(unordered_map<string,GameVariant> variablesMap);
     void print();
-    void addWinner (string);
+    GameVariant getAtKey(string);
+    bool checkIfKeyExists(string);
 };
 
 
