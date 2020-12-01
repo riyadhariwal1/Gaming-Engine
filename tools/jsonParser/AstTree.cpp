@@ -1,28 +1,27 @@
 #include "AstTree.h"
 #include "Loader.h"
+
 AstTree::AstTree(json rules){
-    for (const json element : rules)
-    {
+    for (const json element : rules) {
         Loader loader;
         //cout << i++ << endl;
         auto rulesName = element.at("rule").get<string>();
         //cout << rulesName << endl;
-        if (rulesName == "foreach")
-        {
-            ForEachRule *ruleIndex = loader.forEachRule(element);
-            this->pushNode(ruleIndex);
+        if (rulesName == "foreach") {
+            std::unique_ptr<ForEachRule> ruleIndex = loader.forEachRule(element);
+            this->pushNode(std::move(ruleIndex));
         }
-
-        else if (rulesName == "scores")
-        {
-            ScoreRule *ruleIndex = loader.scoreRule(element);
-            this->pushNode(ruleIndex);
+        else if (rulesName == "scores") {
+            std::unique_ptr<ScoreRule> ruleIndex = loader.scoreRule(element);
+            this->pushNode(std::move(ruleIndex));
         }
     }
 }
-std::vector<AstNode *> AstTree::getAstTree(){
+
+vector<std::unique_ptr<AstNode>> const& AstTree::getAstTree(){
     return ruleTree;
-} 
-void AstTree::pushNode(AstNode* rule){
-    ruleTree.push_back(rule);
+}
+
+void AstTree::pushNode(std::unique_ptr<AstNode> rule){
+    ruleTree.push_back(std::move(rule));
 }

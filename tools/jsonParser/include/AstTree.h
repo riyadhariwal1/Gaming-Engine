@@ -2,14 +2,14 @@
 #define SOCIAL_GAMING_AStTree_H
 #include "AstNode.h"
 #pragma once
-class AstTree
-{
+
+class AstTree {
 private:
-    std::vector<AstNode *> ruleTree;
+    vector<std::unique_ptr<AstNode>> ruleTree;
 
 public:
     AstTree(json);
-    std::vector<AstNode*> getAstTree();
-    void pushNode(AstNode *);
+    vector<std::unique_ptr<AstNode>> const& getAstTree();
+    void pushNode(std::unique_ptr<AstNode> rule);
 };
 #endif

@@ -62,16 +62,16 @@ Loader::whenRule(json rule) {
         for (const json element : ruleList) {
             auto ruleName = element.at("rule").get<string>();
             if (ruleName == "extend") {
-                std::unique_ptr<ExtendRule> ruleIndex = std::make_unique<ExtendRule>(element);
-                condition->addRule(ruleIndex);
+                std::unique_ptr<ExtendRule> ruleIndex = extendRule(element);
+                condition->addRule(std::move(ruleIndex));
             }
             else if (ruleName == "global-message") {
-                std::unique_ptr<GlobalMessage> ruleIndex = std::make_unique<GlobalMessage>(element);
-                condition->addRule(ruleIndex);
+                std::unique_ptr<GlobalMessage> ruleIndex = globalMessageRule(element);
+                condition->addRule(std::move(ruleIndex));
             }
             else if (ruleName == "foreach") {
-                std::unique_ptr<ForEachRule> ruleIndex = std::make_unique<ForEachRule>(element);
-                condition->addRule(ruleIndex);
+                std::unique_ptr<ForEachRule> ruleIndex = forEachRule(element);
+                condition->addRule(std::move(ruleIndex));
             }
         }
         cout << endl;
@@ -98,8 +98,8 @@ Loader::parallelForRule(json rule) {
         auto ruleName = rule.at("rule").get<string>();
 
         if (ruleName == "global-message") {
-            std::unique_ptr<GlobalMessage> ruleIndex = std::make_unique<GlobalMessage>(rule);
-            parallelFor->addRule(ruleIndex);
+            std::unique_ptr<GlobalMessage> ruleIndex = globalMessageRule(rule);
+            parallelFor->addRule(std::move(ruleIndex));
         }
         // else if (ruleName == "foreach")
         // {
@@ -110,16 +110,16 @@ Loader::parallelForRule(json rule) {
         //     ruleIndex = parallelForRule(rule);
         // }
         else if (ruleName == "discard") {
-            std::unique_ptr<DiscardRule> ruleIndex = std::make_unique<DiscardRule>(rule);
-            parallelFor->addRule(ruleIndex);
+            std::unique_ptr<DiscardRule> ruleIndex = discardRule(rule);
+            parallelFor->addRule(std::move(ruleIndex));
         }
         else if (ruleName == "when") {
-            std::unique_ptr<WhenRule> ruleIndex = std::make_unique<WhenRule>(rule);
-            parallelFor->addRule(when);
+            std::unique_ptr<WhenRule> ruleIndex = whenRule(rule);
+            parallelFor->addRule(std::move(ruleIndex));
         }
         else if (ruleName == "input-choice") {
-            std::unique_ptr<InputChoiceRule> ruleIndex = std::make_unique<InputChoiceRule>(rule);
-            parallelFor->addRule(ruleIndex);
+            std::unique_ptr<InputChoiceRule> ruleIndex = inputChoiceRule(rule);
+            parallelFor->addRule(std::move(ruleIndex));
         }
     }
     return parallelFor;
@@ -139,28 +139,28 @@ Loader::forEachRule(json element) {
         auto ruleName = rule.at("rule").get<string>();
 
         if (ruleName == "global-message") {
-            std::unique_ptr<GlobalMessage> ruleIndex = std::make_unique<GlobalMessage>(rule);
-            forEach->addRule(ruleIndex);
+            std::unique_ptr<GlobalMessage> ruleIndex = globalMessageRule(rule);
+            forEach->addRule(std::move(ruleIndex));
         }
         else if (ruleName == "parallelfor") {
-            std::unique_ptr<ParallelFor> ruleIndex = std::make_unique<ParallelFor>(rule);
-            forEach->addRule(ruleIndex);
+            std::unique_ptr<ParallelFor> ruleIndex = parallelForRule(rule);
+            forEach->addRule(std::move(ruleIndex));
         }
         else if (ruleName == "discard") {
-            std::unique_ptr<DiscardRule> ruleIndex = std::make_unique<DiscardRule>(rule);
-            forEach->addRule(ruleIndex);
+            std::unique_ptr<DiscardRule> ruleIndex = discardRule(rule);
+            forEach->addRule(std::move(ruleIndex));
         }
         else if (ruleName == "when") {
-            std::unique_ptr<WhenRule> ruleIndex = std::make_unique<WhenRule>(rule);
-            forEach->addRule(when);
+            std::unique_ptr<WhenRule> ruleIndex = whenRule(rule);
+            forEach->addRule(std::move(ruleIndex));
         }
         else if (ruleName == "foreach") {
-            std::unique_ptr<ForEachRule> ruleIndex = std::make_unique<ForEachRule>(rule);
-            forEach->addRule(ruleIndex);
+            std::unique_ptr<ForEachRule> ruleIndex = forEachRule(rule);
+            forEach->addRule(std::move(ruleIndex));
         }
         else if (ruleName == "input-choice") {
-            std::unique_ptr<InputChoiceRule> ruleIndex = std::make_unique<InputChoiceRule>(rule);
-            forEach->addRule(ruleIndex);
+            std::unique_ptr<InputChoiceRule> ruleIndex = inputChoiceRule(rule);
+            forEach->addRule(std::move(ruleIndex));
         }
     }
     //forEach->print();
