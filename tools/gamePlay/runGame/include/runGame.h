@@ -3,5 +3,4 @@
 #include <tuple>
 #include "Game.h"
 
-Game& createGame();
-std::tuple<std::deque<std::string>, bool> run();
+Game& createGame(std::vector<User>);

@@ -30,7 +30,7 @@ using namespace std;
 using json = nlohmann::json;
 
 Game&
-createGame() {
+createGame(std::vector<User> players) {
   // from main.cpp
   string filePath = "rockPaperScissors.json";
   ifstream ifs(filePath, std::ifstream::binary);
@@ -74,7 +74,13 @@ createGame() {
   // Loop through the rules!
   AstTree astTree;
 
+  // add all the players to the list
   AllPlayers allPlayer;
+  for (auto player : players)
+  {
+    Player newPlayer{player};
+    allPlayer.addPlayer(newPlayer);
+  }
 
   State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
 
@@ -85,10 +91,11 @@ createGame() {
   {
     //cout << i++ << endl;
     auto rulesName = element.at("rule").get<string>();
-    //cout << rulesName << endl;
+    cout << "In the loop" << rulesName << endl;
     if (rulesName == "foreach")
     {
       ForEachRule *ruleIndex = loader.forEachRule(element);
+      ruleIndex->print();
       astTree.pushNode(ruleIndex);
     }
 
@@ -103,18 +110,4 @@ createGame() {
   Game game(astTree, state);
 
   return game;
-}
-
-std::tuple<std::deque<std::string>, bool>
-run()
-{
-  // testing sending messages back
-  std::deque<std::string> queue;
-  GlobalMessage message{"ANNOUNCEMENT: How do I provide Connection?"};
-
-  queue.push_back(message.getMessage());
-
-  bool isRunning = true;
-
-  return std::make_tuple(queue, isRunning);
 }

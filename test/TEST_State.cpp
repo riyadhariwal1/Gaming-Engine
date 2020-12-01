@@ -4,6 +4,7 @@
 #include "State.h"
 #include "Loader.h"
 #include "Helper.h"
+#include "User.h"
 
 class StateTest : public ::testing::Test {
 protected:
@@ -91,8 +92,21 @@ TEST_F(StateTest, List_weapons){
 
 TEST_F(StateTest, List_players) {
   // get list
-  Player m("Michelle");
-  Player k("Kamala");
+  Connection mc{0};
+  mc.id = 1;
+  User userM{mc};
+  userM.setUserName("Michelle");
+
+  Connection kc{1};
+  kc.id = 2;
+  User userK{kc};
+  userM.setUserName("Kamala");
+
+  Player m{userM};
+  Player k(userK);
+
+  // Player m("Michelle");
+  // Player k("Kamala");
   mock_state->UpdateState_PlayersList(m);
   mock_state->UpdateState_PlayersList(k);
 

@@ -58,7 +58,7 @@
             {
               "rule": "input-choice",
               "to": "player",
-              "prompt": "{player.name}, choose your weapon!",
+              "prompt": "{player.user.userName}, choose your weapon!",
               "choices": "weapons.name",
               "result": "player.weapon",
               "timeout": 10

@@ -6,8 +6,6 @@ add_library(networking
   src/Client.cpp
   src/Room.cpp
   src/User.cpp
-  src/Game.cpp
-  src/GameManager.cpp
   src/Store.cpp
   src/Dispatch.cpp
 )
@@ -24,6 +22,7 @@ target_include_directories(networking
 
 target_link_libraries(networking
   PRIVATE
+    gameState
     ${Boost_LIBRARIES}
 )
 

@@ -368,7 +368,7 @@ std::string command_startGame(Message message)
   User *user = getUser(message.c);
   Room* room = getRoomById(message.sendersRoomId);
 
-  Game& game = createGame();
+  Game& game = createGame(room->getUsers());
   room->setGame(&game);
 
   result << "Game started for room " << room->getRoomId() << "\n";

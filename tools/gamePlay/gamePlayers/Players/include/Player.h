@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "Parser.h"
+#include "User.h"
 
 using namespace std;
 
@@ -10,7 +11,8 @@ using namespace std;
 class Player {
     public:
       Player();
-      Player(string name);
+      // Player(string name);
+      Player(const User &user);
       void playerWins(int count);
       void printPlayer();
       void AddVariable(string givenKey, GameVariant givenValue);
@@ -18,10 +20,12 @@ class Player {
 
     private:
       int id;
-      std::string& name;
+      // std::string name;
       int gameWins;
       // any variant inputs can be placed into this map;
       unordered_map<string,GameVariant> PlayerVariablesMap;
+
+      const User& user; // Player should not modify User information
 };
 
 // All-Players Classs
