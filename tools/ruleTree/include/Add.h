@@ -8,9 +8,11 @@ using namespace std;
 
 class AddRule : public AstNode {
 public:
+    //TODO: Unsure of how to give the current player object to the add rule when going through the for each loop.
+    // All we have now is a setter function which doesnt seem to be the right answer.
     AddRule(string to, string value, Player& player);
-    AddRule(string to, string value);
-    AddRule(Player& player);
+    void setPlayer(Player& player);
+
     void execute(State&) override;
     void print() override;
     void accept(AstVisitor& visitor, State& gameState) override;
@@ -18,8 +20,6 @@ public:
 
 
 private:
-    //just to parse, i think it would make it easier to store the current element rather
-    // than the name of the element, idk though
     Player& player;
     string to;
     string value;

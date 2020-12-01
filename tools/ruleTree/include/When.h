@@ -6,14 +6,14 @@
 using namespace std;
 
 class Case {
-    private:
-        string stringCondition;
-        vector<AstNode*> ruleList;
-    public:
-        Case(string);
-        Case(bool);
-        void addRule(AstNode* );
-        void print();
+private:
+    string stringCondition;
+    vector<AstNode*> ruleList;
+public:
+    Case(string);
+    Case(bool);
+    void addRule(AstNode* );
+    void print();
 };
 class WhenRule :  public AstNode {
     public:
@@ -29,5 +29,4 @@ class WhenRule :  public AstNode {
         vector<Case*> caseList;
 
 
-};
 #endif
