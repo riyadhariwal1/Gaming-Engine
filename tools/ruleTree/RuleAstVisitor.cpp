@@ -180,21 +180,17 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
     // end testing 
     forEachRule.setNumLoop(list.getList().size());
     std::cout << "Numloop == " << forEachRule.getNumLoop() << std:: endl;
-    vector<AstNode *> ruleList = forEachRule.getRuleList();
+    std::vector<std::unique_ptr<AstNode>> const& ruleList = forEachRule.getRuleList();
     std::cout << "Rule list == " << ruleList.size() << std:: endl;
 
-    for (int y = 0; y < forEachRule.getNumLoop(); y++)
-    {
+    for (int y = 0; y < forEachRule.getNumLoop(); y++) {
         Element element = forEachRule.getElement();
         RuleAstVisitor visitor;
-        for (auto i : ruleList)
-        {
+        for (auto & i : ruleList) {
             i->accept(visitor, gameState, list, element);
         }
         std::cout << std::endl;
         forEachRule.getElement().indexIncrement();
-
-
     }    
 }
 
@@ -202,10 +198,10 @@ void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
 {
     //TODO: Same as foreach
     std::cout << "This is ParallelFor visit function" << std::endl;
-    vector<AstNode *> ruleList = parallelFor.getRuleList();
+    std::vector<std::unique_ptr<AstNode>> const& ruleList = parallelFor.getRuleList();
 
     RuleAstVisitor visitor;
-    for (auto i : ruleList)
+    for (auto & i : ruleList)
     {
         i->accept(visitor, gameState);
     }

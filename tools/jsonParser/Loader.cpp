@@ -7,11 +7,9 @@ using json = nlohmann::json;
 //ForEachRule* forEachRule(json element);
 
 /* -- */
-GlobalMessage* Loader::globalMessageRule(json rule)
-{
-    GlobalMessage *globalMessage = new GlobalMessage(rule.at("value").get<string>());
-
-    return globalMessage;
+std::unique_ptr<GlobalMessage>
+Loader::globalMessageRule(json rule) {
+    return std::make_unique<GlobalMessage>(rule.at("value").get<string>());
 }
 
 //TODO: this
@@ -30,70 +28,54 @@ void Loader::addRule(json rule)
     //   cout << "\n";
 }
 
-InputChoiceRule *Loader::inputChoiceRule(json rule)
-{
-    //cout << "Im in input" << endl;
-
-    InputChoiceRule *input = new InputChoiceRule(rule.at("prompt").get<string>(),
-                                                 rule.at("choices").get<string>(),
-                                                 rule.at("result").get<string>(),
-                                                 rule.at("to").get<string>(),
-                                                 rule.at("timeout").get<int>());
-
-    return input;
-}
-DiscardRule *Loader::discardRule(json rule)
-{
-    //cout << "Im in discard" << endl;
-    DiscardRule *discard = new DiscardRule(rule.at("from").get<string>(), rule.at("count").get<string>());
-
-    return discard;
-}
-ExtendRule* Loader::extendRule (json rule)
-{
-    //cout << "Im in extend" << endl;
-    ExtendRule* extend = new ExtendRule(rule.at("list").get<string>(), rule.at("target").get<string>());
-    return extend;
+std::unique_ptr<InputChoiceRule>
+Loader::inputChoiceRule(json rule) {
+    return std::make_unique<InputChoiceRule>(rule.at("prompt").get<string>(),
+                                            rule.at("choices").get<string>(),
+                                            rule.at("result").get<string>(),
+                                            rule.at("to").get<string>(),
+                                            rule.at("timeout").get<int>());
 }
 
-WhenRule *Loader::whenRule(json rule)
-{
-    //cout << " im in when" << endl;
-    //cout << rule << "\n" << endl;
+std::unique_ptr<DiscardRule>
+Loader::discardRule(json rule) {
+    return std::make_unique<DiscardRule>(rule.at("from").get<string>(), rule.at("count").get<string>());
+}
+
+std::unique_ptr<ExtendRule>
+Loader::extendRule (json rule) {
+    return std::make_unique<ExtendRule>(rule.at("list").get<string>(), rule.at("target").get<string>());
+}
+
+std::unique_ptr<WhenRule>
+Loader::whenRule(json rule) {
 
     json conditions = rule["cases"];
 
-    WhenRule *whenRule = new WhenRule();
-    for (const json ele : conditions)
-    {
+    std::unique_ptr<WhenRule> whenRule = std::make_unique<WhenRule>();
+    for (const json ele : conditions) {
         string check = ele["condition"].dump();
-        Case* cas = new Case(check);
-
+        std::unique_ptr<Case> condition = std::make_unique<Case>(check);
 
         json ruleList = ele["rules"];
 
-        for (const json element : ruleList)
-        {
+        for (const json element : ruleList) {
             auto ruleName = element.at("rule").get<string>();
-            if (ruleName == "extend")
-            {
-                ExtendRule* ruleIndex = extendRule(element);
-                cas -> addRule(ruleIndex);
+            if (ruleName == "extend") {
+                std::unique_ptr<ExtendRule> ruleIndex = std::make_unique<ExtendRule>(element);
+                condition->addRule(ruleIndex);
             }
-            else if (ruleName == "global-message")
-            {
-                GlobalMessage *ruleIndex = globalMessageRule(element);
-                cas -> addRule(ruleIndex);
+            else if (ruleName == "global-message") {
+                std::unique_ptr<GlobalMessage> ruleIndex = std::make_unique<GlobalMessage>(element);
+                condition->addRule(ruleIndex);
             }
-            else if (ruleName == "foreach")
-            {
-                ForEachRule *ruleIndex = forEachRule(element);
-                cas -> addRule(ruleIndex);
+            else if (ruleName == "foreach") {
+                std::unique_ptr<ForEachRule> ruleIndex = std::make_unique<ForEachRule>(element);
+                condition->addRule(ruleIndex);
             }
-
         }
         cout << endl;
-        whenRule -> addCase(cas);
+        whenRule->addCase(std::move(condition));
         //parse the given condition
         //if condition is true: extract element["rules"]
     }
@@ -101,25 +83,22 @@ WhenRule *Loader::whenRule(json rule)
     return whenRule;
 }
 
-
-ScoreRule * Loader::scoreRule(json rule)
-{
-    ScoreRule* scoreRule = new ScoreRule (rule.at("score").get<string>(), rule.at("ascending").get<bool>());
-    return scoreRule;
-
+std::unique_ptr<ScoreRule>
+Loader::scoreRule(json rule) {
+    return std::make_unique<ScoreRule>(rule.at("score").get<string>(), rule.at("ascending").get<bool>());
 }
-ParallelFor *Loader::parallelForRule(json rule)
-{
+
+std::unique_ptr<ParallelFor>
+Loader::parallelForRule(json rule) {
     //cout << " im in parrallel" << endl;
-    ParallelFor *parallelFor = new ParallelFor(rule.at("list").get<string>(), rule.at("element").get<string>());
+    std::unique_ptr<ParallelFor> parallelFor = std::make_unique<ParallelFor>(rule.at("list").get<string>(),
+                                                                             rule.at("element").get<string>());
     json rules = rule["rules"];
-    for (const json rule : rules)
-    {
+    for (const json rule : rules) {
         auto ruleName = rule.at("rule").get<string>();
 
-        if (ruleName == "global-message")
-        {
-            GlobalMessage *ruleIndex = globalMessageRule(rule);
+        if (ruleName == "global-message") {
+            std::unique_ptr<GlobalMessage> ruleIndex = std::make_unique<GlobalMessage>(rule);
             parallelFor->addRule(ruleIndex);
         }
         // else if (ruleName == "foreach")
@@ -130,19 +109,16 @@ ParallelFor *Loader::parallelForRule(json rule)
         // {
         //     ruleIndex = parallelForRule(rule);
         // }
-        else if (ruleName == "discard")
-        {
-            DiscardRule *ruleIndex = discardRule(rule);
+        else if (ruleName == "discard") {
+            std::unique_ptr<DiscardRule> ruleIndex = std::make_unique<DiscardRule>(rule);
             parallelFor->addRule(ruleIndex);
         }
-        else if (ruleName == "when")
-        {
-            WhenRule *when = whenRule(rule);
+        else if (ruleName == "when") {
+            std::unique_ptr<WhenRule> ruleIndex = std::make_unique<WhenRule>(rule);
             parallelFor->addRule(when);
         }
-        else if (ruleName == "input-choice")
-        {
-            InputChoiceRule *ruleIndex = inputChoiceRule(rule);
+        else if (ruleName == "input-choice") {
+            std::unique_ptr<InputChoiceRule> ruleIndex = std::make_unique<InputChoiceRule>(rule);
             parallelFor->addRule(ruleIndex);
         }
     }
@@ -153,42 +129,37 @@ ParallelFor *Loader::parallelForRule(json rule)
 // loops through all rules the same as rule=="foreach"
 // "foreach" class will need to receive list + element
 // and apply some rules specifically to that
-ForEachRule *Loader::forEachRule(json element)
-{
-    ForEachRule *forEach = new ForEachRule(element.at("list").get<string>(), element.at("element").get<string>());
+std::unique_ptr<ForEachRule>
+Loader::forEachRule(json element) {
+
+    std::unique_ptr<ForEachRule> forEach = std::make_unique<ForEachRule>(element.at("list").get<string>(),
+                                                                         element.at("element").get<string>());
     json rules = element["rules"];
-    for (const json rule : rules)
-    {
+    for (const json rule : rules) {
         auto ruleName = rule.at("rule").get<string>();
 
-        if (ruleName == "global-message")
-        {
-            GlobalMessage *ruleIndex = globalMessageRule(rule);
+        if (ruleName == "global-message") {
+            std::unique_ptr<GlobalMessage> ruleIndex = std::make_unique<GlobalMessage>(rule);
             forEach->addRule(ruleIndex);
         }
-        else if (ruleName == "parallelfor")
-        {
-            ParallelFor *ruleIndex = parallelForRule(rule);
+        else if (ruleName == "parallelfor") {
+            std::unique_ptr<ParallelFor> ruleIndex = std::make_unique<ParallelFor>(rule);
             forEach->addRule(ruleIndex);
         }
-        else if (ruleName == "discard")
-        {
-            DiscardRule *ruleIndex = discardRule(rule);
+        else if (ruleName == "discard") {
+            std::unique_ptr<DiscardRule> ruleIndex = std::make_unique<DiscardRule>(rule);
             forEach->addRule(ruleIndex);
         }
-        else if (ruleName == "when")
-        {
-            WhenRule *when = whenRule(rule);
+        else if (ruleName == "when") {
+            std::unique_ptr<WhenRule> ruleIndex = std::make_unique<WhenRule>(rule);
             forEach->addRule(when);
         }
-        else if (ruleName == "foreach")
-        {
-            ForEachRule *ruleIndex = forEachRule(rule);
+        else if (ruleName == "foreach") {
+            std::unique_ptr<ForEachRule> ruleIndex = std::make_unique<ForEachRule>(rule);
             forEach->addRule(ruleIndex);
         }
-        else if (ruleName == "input-choice")
-        {
-            InputChoiceRule *ruleIndex = inputChoiceRule(rule);
+        else if (ruleName == "input-choice") {
+            std::unique_ptr<InputChoiceRule> ruleIndex = std::make_unique<InputChoiceRule>(rule);
             forEach->addRule(ruleIndex);
         }
     }
