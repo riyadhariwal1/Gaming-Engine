@@ -7,7 +7,9 @@ AddRule::AddRule(string to, string value, Player& player)
 void AddRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this, gameState);
 }
-void AddRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+void AddRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
+}
 
 
 void AddRule::execute(State& gameState) {

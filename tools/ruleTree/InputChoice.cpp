@@ -20,6 +20,15 @@ void InputChoiceRule::execute(State& gameState)
   MessageParser msgParser(prompt, gameState);
   completePrompt = msgParser.getCompleteString();
 }
+void InputChoiceRule::execute(State& gameState, List& list, Element& element)
+{
+  //TODO: Retrive infor from State
+  //Player toPlayer = gameState.getPlayers()[0];
+  //choiceList = gameState.getVariables(choices);
+  MessageParser msgParser(prompt, gameState);
+  completePrompt = msgParser.getCompleteString();
+}
+
 void InputChoiceRule::print()
 {
   cout << "InputChoice: " << endl;
@@ -51,4 +60,6 @@ int InputChoiceRule::getTimeOut(){
 std::string InputChoiceRule::getResult(){
   return result;
 }
-void InputChoiceRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+void InputChoiceRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
+}

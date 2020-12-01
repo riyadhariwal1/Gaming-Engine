@@ -24,5 +24,7 @@ void ScoreRule:: print() {
 void ScoreRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this,gameState);
 }
-void ScoreRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+void ScoreRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
+}
 

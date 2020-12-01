@@ -24,6 +24,7 @@ class WhenRule :  public AstNode {
 
         //WhenRule(vector<Case>&);
         void execute(State&) override;
+        void execute(State&, List&, Element&);
         void addCase(Case*);
         void print();
     private:
