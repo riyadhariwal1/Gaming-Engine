@@ -18,16 +18,17 @@ public:
 
 class WhenRule : public AstNode {
 public:
-//    WhenRule(vector<Case*> &caseList);
     WhenRule();
+    WhenRule(std::vector<Case*> &caseList);
     void accept(AstVisitor& visitor, State& gameState) override;
+    void executeHelper(State& gameState, Case* condition);
     //WhenRule(vector<Case>&);
     void execute(State&) override;
     void addCase(Case*);
     void print();
 
 private:
-    vector<Case*> caseList;
+    std::vector<Case*> caseList;
 };
 
 #endif

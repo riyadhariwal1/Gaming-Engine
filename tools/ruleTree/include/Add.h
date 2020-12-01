@@ -10,7 +10,8 @@ class AddRule : public AstNode {
 public:
     //TODO: Unsure of how to give the current player object to the add rule when going through the for each loop.
     // All we have now is a setter function which doesnt seem to be the right answer.
-    AddRule(string to, string value, Player& player);
+//    AddRule(string to, string value, Player& player);
+    AddRule(string to, string value);
     void setPlayer(Player& player);
 
     void execute(State&) override;
@@ -18,7 +19,7 @@ public:
     void accept(AstVisitor& visitor, State& gameState) override;
 
 private:
-    Player& player;
+//    Player& player;
     string to;
     string value;
 };

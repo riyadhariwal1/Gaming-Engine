@@ -15,18 +15,15 @@ void Case::print() {
 
 WhenRule::WhenRule(){}
 
-//WhenRule::WhenRule(vector<Case*> &caseList)
-//: caseList(caseList)
-//{}
-
-void WhenRule::execute(State& gameState) {
-
-}
+WhenRule::WhenRule(std::vector<Case*> &caseList)
+: caseList(caseList)
+{}
 
 enum Outcome { Success, Failure };
 
 Outcome isConditionTrue(Case* condition) {
-    if (condition.condition){
+    bool conditionParsed = true; // TODO: interpreter
+    if (conditionParsed){
         return Outcome::Success;
     } else {
         return Outcome::Failure;
@@ -35,12 +32,16 @@ Outcome isConditionTrue(Case* condition) {
 
 void WhenRule::execute(State& gameState) {
     Outcome outcome;
-    for (Case condition : caseList) {
+    for (Case* condition : caseList) {
         outcome = isConditionTrue(condition);
         if (outcome == Outcome::Success) {
             executeHelper(gameState, condition);
         }
     }
+}
+
+void WhenRule::executeHelper(State& gameState, Case* condition) {
+
 }
 
 void WhenRule::addCase (Case* condition) {
