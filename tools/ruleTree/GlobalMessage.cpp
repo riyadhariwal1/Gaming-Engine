@@ -19,7 +19,11 @@ string GlobalMessage::getCompleteMessage(){
 }
 
 void GlobalMessage::execute(State& gameState) {
-
+  GameVariant obj = gameState.getFromState("configuration.Rounds.upfrom(1)");
+  int convert = boost::get<int>(obj);
+  std::cout << "it is working " << convert << std::endl;
+  MessageParser msgParser(value, gameState, to_string(convert));
+  decipheredMsg = msgParser.getCompleteString();
 }
 
 void GlobalMessage::execute(State& gameState, List& list, Element& element) {

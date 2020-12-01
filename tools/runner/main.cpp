@@ -31,7 +31,7 @@ using json = nlohmann::json;
 
 int main()
 {
-    string filePath = "rockPaperScissors.json";
+    string filePath = "players.json";
     ifstream ifs(filePath, std::ifstream::binary);
     if (ifs.fail())
     {

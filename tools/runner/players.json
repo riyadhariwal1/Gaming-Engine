@@ -11,7 +11,8 @@
 		}
 	},
 	"constants": {
-		"weapons": [{
+		"weapons": [
+			{
 				"name": "Rock",
 				"beats": "Scissors"
 			},
@@ -32,14 +33,10 @@
 		"wins": 0
 	},
 	"per-audience": {},
-	"rules": [{
-		"rule": "foreach",
-		"list": "configuration.Rounds.upfrom(1)",
-		"element": "round",
-		"rules": [{
+	"rules": [
+		{
 			"rule": "global-message",
-			"value": "Round {player}. Choose your weapon!"
-		}]
-
-	}]
+			"value": "Round {round}. Choose your weapon!"
+		}
+	]
 }

@@ -21,6 +21,7 @@ Game::Game(AstTree astTree, State state): astTree(astTree),state(state)
 void Game::execute(State& gameState)
 {
     RuleAstVisitor visitor ;
+    std::cout << "tree deepth == " << astTree.getAstTree().size() << std::endl;
     for (auto i: astTree.getAstTree())
     {
         i->accept(visitor, gameState);

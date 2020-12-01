@@ -22,6 +22,7 @@ void RuleAstVisitor::visit(GlobalMessage &globalMessage, State &gameState)
 {
     //TODO: Decipher the "{}"
     //TO DO: Push the cout statement to a message Queue to throw to server side
+    
     globalMessage.execute(gameState);
     std::cout << globalMessage.getCompleteMessage() << endl;
 }
