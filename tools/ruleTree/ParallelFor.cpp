@@ -33,5 +33,7 @@ void ParallelFor::print() {
 void ParallelFor::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this, gameState);
 }
-void ParallelFor::accept(AstVisitor& visitor, State& , List&, Element&) {}
+void ParallelFor::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
+}
 

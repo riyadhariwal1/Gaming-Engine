@@ -14,6 +14,7 @@ void ForEachRule::addRule(std::unique_ptr<AstNode> rule){
 void ForEachRule::execute(State &gameState)
 {
     list.execute(gameState);
+    setNumLoop(list.getList().size());
 }
 void ForEachRule::print()
 {
@@ -33,7 +34,9 @@ void ForEachRule::print()
 void ForEachRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this,gameState);
 }
-void ForEachRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+void ForEachRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
+}
 
 vector<std::unique_ptr<AstNode>> const& ForEachRule::getRuleList() {
     return ruleList;
