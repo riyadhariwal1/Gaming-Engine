@@ -22,7 +22,7 @@ public:
     void setNumLoop(int);
     Element& getElement();
 private:
-std::vector<std::unique_ptr<AstNode>> ruleList;
+    std::vector<std::unique_ptr<AstNode>> ruleList;
     List list;
     Element element;
     int numLoop;

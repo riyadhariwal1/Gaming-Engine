@@ -8,6 +8,7 @@ private:
     vector<std::unique_ptr<AstNode>> ruleTree;
 
 public:
+    AstTree(const AstTree&) = delete;
     AstTree(json);
     vector<std::unique_ptr<AstNode>> const& getAstTree();
     void pushNode(std::unique_ptr<AstNode> rule);

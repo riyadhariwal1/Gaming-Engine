@@ -2,7 +2,7 @@
 #include "Loader.h"
 
 AstTree::AstTree(json rules){
-    for (const json element : rules) {
+    for (const json & element : rules) {
         Loader loader;
         //cout << i++ << endl;
         auto rulesName = element.at("rule").get<string>();

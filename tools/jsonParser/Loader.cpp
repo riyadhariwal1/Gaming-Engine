@@ -3,18 +3,13 @@
 using namespace std;
 using json = nlohmann::json;
 
-/* DECLARATIONS */
-//ForEachRule* forEachRule(json element);
-
-/* -- */
 std::unique_ptr<GlobalMessage>
 Loader::globalMessageRule(json rule) {
     return std::make_unique<GlobalMessage>(rule.at("value").get<string>());
 }
 
 //TODO: this
-void Loader::addRule(json rule)
-{
+void Loader::addRule(json rule) {
     //   cout << " im in add" << endl;
     //   // example player to be removed with
     //   // rule["to"] when real players are used
