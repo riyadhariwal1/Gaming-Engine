@@ -20,7 +20,7 @@ public:
     User(Connection connection){
         this->connection = connection;
         roomId = 0;
-        userName = "";
+        userName = std::to_string(connection.id);
     }
 
     void
