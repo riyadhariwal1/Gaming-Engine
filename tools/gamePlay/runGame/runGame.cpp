@@ -95,7 +95,6 @@ createGame(std::vector<User> players) {
     if (rulesName == "foreach")
     {
       ForEachRule *ruleIndex = loader.forEachRule(element);
-      ruleIndex->print();
       astTree.pushNode(ruleIndex);
     }
 

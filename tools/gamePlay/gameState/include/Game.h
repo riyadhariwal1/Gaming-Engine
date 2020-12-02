@@ -16,10 +16,14 @@ class Game {
 private:
     AstTree astTree;
     State state;
+    std::vector<std::string> outgoing;
+
 public:
     Game (AstTree, State);
     void print();
     void execute();
+    void addToMessageQueue(std::string message);
+    std::vector<std::string> getOutgoing();
 };
 
 
