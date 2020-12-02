@@ -18,7 +18,6 @@
 #include "Add.h"
 #include "Loader.h"
 #include "State.h"
-#include "Game.h"
 #include "Parser.h"
 #include "PlayerSetup.h"
 #include "AstTree.h"
@@ -30,15 +29,8 @@
 using namespace std;
 using json = nlohmann::json;
 
-std::tuple<std::deque<std::string>, bool>
-run()
-{
-  // testing sending messages back
-  std::deque<std::string> queue;
-  GlobalMessage message{"ANNOUNCEMENT: How do I provide Connection?"};
-
-  queue.push_back(message.getMessage());
-
+Game&
+createGame() {
   // from main.cpp
   string filePath = "rockPaperScissors.json";
   ifstream ifs(filePath, std::ifstream::binary);
@@ -109,6 +101,18 @@ run()
 
   //Start Game
   Game game(astTree, state);
+
+  return game;
+}
+
+std::tuple<std::deque<std::string>, bool>
+run()
+{
+  // testing sending messages back
+  std::deque<std::string> queue;
+  GlobalMessage message{"ANNOUNCEMENT: How do I provide Connection?"};
+
+  queue.push_back(message.getMessage());
 
   bool isRunning = true;
 

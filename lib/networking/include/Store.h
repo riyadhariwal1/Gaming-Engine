@@ -23,13 +23,22 @@ private:
   std::vector<Room> rooms;
 
 public:
-  Store() {}
-  std::vector<User> getUsers() { return users; }
-  std::vector<Room> getRooms() { return rooms; }
+  Store() {
+    rooms.push_back(Room{0, "Main"});
+  }
+  std::vector<User>* getUsers() { return &users; }
+  std::vector<Room>* getRooms() { return &rooms; }
   void addUser(User&);
   void removeUser(networking::Connection c);
   void addRoom(Room&);
   User* getUserByConnection(networking::Connection c);
+  User* getUserByName(std::string name);
+  Room* getLobby() { return &rooms.at(0); };
+  Room* getRoomByName(std::string roomName);
+  Room* getRoomById(int roomId);
+  // DEBUG
+  // prints all the rooms and their users
+  void print();
 };
 
 #endif

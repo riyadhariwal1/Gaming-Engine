@@ -52,7 +52,6 @@ struct Message {
 
 };
 
-
 /** A compilation firewall for the server. */
 class ServerImpl;
 

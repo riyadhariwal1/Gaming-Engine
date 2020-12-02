@@ -18,9 +18,10 @@
 #include "User.h"
 #include "Room.h"
 #include "chatserver.h"
-#include "Commands.h"
 #include "Store.h"
+#include "Dispatch.h"
 #include "runGame.h"
+#include "Game.h"
 
 using networking::Connection;
 using networking::Message;
@@ -30,15 +31,17 @@ using networking::Server;
 std::vector<User> clients;
 std::vector<Room> rooms;
 
-std::map<std::string, std::deque<Message> (*)(const Message& )> commands = {
-    {"join",command_joinRoom},
-    {"create",command_createRoom},
-    {"leave",command_leaveRoom},
-    {"roomlist",command_printRoomList},
-    {"name",command_changeName},
-    {"whisper",command_whisper},
-    {"cmds",command_showCommands}
-};
+std::map<std::string, std::string (*)(Message)> commands = {
+    {"join", command_joinRoom},
+    {"create", command_createRoom},
+    {"leave", command_leaveRoom},
+    {"roomlist", command_printRoomList},
+    {"name", command_changeName},
+    {"whisper", command_whisper},
+    {"start", command_startGame},
+    {"cmds", command_showCommands}};
+
+Store store;
 
 //ran by Server.h every time a new connection is made.
 //adds a new connection (i.e client ID) to the clients vector.
@@ -52,7 +55,7 @@ void onConnect(Connection c)
 
   // _store
   store.addUser(newUser);
-  store.getRooms().at(0).addUser(newUser);
+  store.getLobby()->addUser(newUser);
 }
 
 //remove a given Id from the clients vector.
@@ -80,8 +83,9 @@ struct MessageResult
 };
 
 //given a Connection, return that user;
+// in store.h
 User*
-getUser(const Connection& c)
+getUser(Connection c)
 {
   for (auto &client : clients)
   {
@@ -95,8 +99,10 @@ getUser(const Connection& c)
 }
 
 // given a string of a user name, return a user
+// in store.h
 User*
-getUserByName(const std::string& name){
+getUserByName(std::string name){
+  std::cout<<"you are whisper to "<<"\""<<name<<"\""<<"\n";
   for (auto& client : clients)
   {
     if (client.userName == name){
@@ -111,6 +117,7 @@ getUserByName(const std::string& name){
 }
 
 // given a room name, return a pointer to that Room otherwise return nullptr
+// in store.h
 Room *
 getRoomByName(const std::string& roomName)
 {
@@ -126,8 +133,9 @@ getRoomByName(const std::string& roomName)
 }
 
 // given a room id, return a pointer to that Room otherwise return nullptr
+// in store.h
 Room*
-getRoomById(const int& roomId)
+getRoomById(int roomId)
 {
   for (auto &room : rooms)
   {
@@ -171,13 +179,47 @@ tokenizeMessage(const std::string& message)
   return tokens;
 }
 
-std::deque<Message> command_createRoom(const Message& message){
-    std::deque<Message> output;
-    std::string targetRoomName;
-    auto tokens = tokenizeMessage(message.text);
-    try
-    {
-      roomPin = tokens.at(2);
+std::string command_createRoom(Message message)
+{
+  std::ostringstream result;
+  std::string targetRoomName;
+  std::string roomPin = "";
+  auto tokens = tokenizeMessage(message.text);
+
+  try
+  {
+    targetRoomName = tokens.at(1);
+  }
+  catch (const std::exception &e)
+  {
+    std::cout << "Room name is not provided for /create" << '\n';
+    std::cout << e.what() << "\n";
+    result << "Please provide a room name.\n";
+    return result.str();
+  }
+
+  // check if the room already exists
+  Room *existingRoom = getRoomByName(targetRoomName);
+
+  if (existingRoom != nullptr)
+  {
+    result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName
+           << " to join the room.";
+  }
+  else
+  {
+    Room newRoom(rooms.size(), targetRoomName);
+    User *user = getUser(message.c);
+
+    // check if the user provided a pin to make the room private
+    // Make sure not to throw an error here
+    try {
+      if (tokens.size() > 2)
+      {
+        roomPin = tokens.at(2);
+      }
+    } catch (const std::out_of_range &err) {
+      std::cout << err.what() << "\n";
     }
 
     // apply pin to room
@@ -194,7 +236,6 @@ std::deque<Message> command_createRoom(const Message& message){
 
     // leave the user's current room
     Room *currentRoom = getRoomById(user->getRoom());
-    std::cout << currentRoom->getRoomId();
 
     if (currentRoom != nullptr)
     {
@@ -317,6 +358,20 @@ std::deque<Message> command_leaveRoom(const Message& message){
         output.insert(output.end(),messages.begin(),messages.end());
     }
     return output;
+}
+
+std::string command_startGame(Message message)
+{
+  std::ostringstream result;
+  User *user = getUser(message.c);
+  Room* room = getRoomById(message.sendersRoomId);
+
+  Game& game = createGame();
+  room->setGame(&game);
+
+  result << "Game started for room " << room->getRoomId() << "\n";
+
+  return result.str();
 }
 
 // print the available rooms to the user
@@ -545,25 +600,6 @@ processForUser(const Connection& c, const std::string& text){
     return output;
 }
 
-//Takes in one long processed string,
-//Creates a new dequeue of 'Messages' (defined in Server.h).
-//Each Message is as follows: {
-//                              connection =RECIPIENT_ID
-//                              text = RESULT }
-//note that RESULT will be the same string of text as defined in processMessages();
-//The end result is one big list of 'Messages', with a recipient ID, and a line of text to send to that recipient's client.
-// REPLACED WITH POSTOFFICE
-std::deque<Message>
-buildOutgoing(const std::string &log)
-{
-  std::deque<Message> outgoing;
-  for (auto client : clients)
-  {
-    outgoing.push_back({client.connection, log});
-  }
-  return outgoing;
-}
-
 // takes the the messages from processMessages()
 // and creates a deque of output Messages assigned to the appropriate room members
 // returns deque of messages in the form of
@@ -636,13 +672,12 @@ int main(int argc, char *argv[])
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
+  Dispatch dispatch{server, store}; // ignore
 
   // create the main lobby
+  // _store handles this internally
   Room newRoom(0, "Main");
   rooms.push_back(newRoom);
-
-  // _store
-  store.addRoom(newRoom);
 
   while (true)
   {
@@ -657,14 +692,6 @@ int main(int argc, char *argv[])
                 << " " << e.what() << "\n\n";
       errorWhileUpdating = true;
     }
-
-    bool isGameRunning = true;
-    while (isGameRunning) {
-      auto [messages, isRunning] = run();
-      std::cout << messages.at(0) << "\n";
-      sleep(1);
-    }
-
 
     auto incoming = server.receive();
     auto outgoing = processMessages(incoming);
