@@ -179,7 +179,7 @@ tokenizeMessage(const std::string& message)
   return tokens;
 }
 
-std::string command_createRoom(Message message)
+std::deque<Message> command_createRoom(Message message)
 {
   std::ostringstream result;
   std::string targetRoomName;
@@ -195,7 +195,9 @@ std::string command_createRoom(Message message)
     std::cout << "Room name is not provided for /create" << '\n';
     std::cout << e.what() << "\n";
     result << "Please provide a room name.\n";
-    return result.str();
+    auto messages = processForUser(message.c,result.str());
+    output.insert(output.end(),messages.begin(),messages.end());
+    return output;
   }
 
   // check if the room already exists
@@ -205,6 +207,9 @@ std::string command_createRoom(Message message)
   {
     result << "The room " << targetRoomName << " exists. Please use /join " << targetRoomName
            << " to join the room.";
+    auto messages = processForUser(message.c,result.str());
+    output.insert(output.end(),messages.begin(),messages.end());
+    return output;
   }
   else
   {
@@ -243,6 +248,7 @@ std::string command_createRoom(Message message)
         text << "The room " << targetRoomName << "already exists. Please use /join " << targetRoomName << " to join the room.";
         auto messages = processForUser(message.c,text.str());
         output.insert(output.end(),messages.begin(),messages.end());
+        return output;
     }
 
         // leave the user's current room
