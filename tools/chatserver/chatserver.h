@@ -1,4 +1,3 @@
-
 #ifndef WEBSOCKETNETWORKING_CHATSERVER_H
 #define WEBSOCKETNETWORKING_CHATSERVER_H
 using networking::Message;
@@ -16,7 +15,6 @@ std::vector<std::string> tokenizeMessage(std::string& message);
 std::deque<Message> runCommand(const Message& message);
 std::vector<std::string> quoted(std::string& text);
 void printMessageTokens(std::vector<std::string> tokens);
-<<<<<<< tools/chatserver/chatserver.h
 bool isCommand(const std::string& text);
 
 //chatroom commands
@@ -31,20 +29,9 @@ std::deque<Message> command_showCommands(const Message& message);
 //message delivery
 std::deque<Message> processForRoom(const Connection& c, const std::string& text);
 std::deque<Message> processForUser(const Connection& c, const std::string& text);
-=======
-bool isCommand(std::string text);
-std::string command_createRoom(Message message);
-std::string command_joinRoom(Message message);
-std::string command_leaveRoom(Message message);
-std::string command_printRoomList(Message message);
-std::string command_changeName(Message message);
-std::string command_whisper(Message message);
-std::string command_startGame(Message message);
-std::string command_showCommands(Message message);
->>>>>>> tools/chatserver/chatserver.h
 std::deque<Message> processMessages(const std::deque<Message> &incoming);
 std::deque<Message> buildOutgoing(const std::string &log);
 std::deque<Message> postOffice(const std::deque<Message>& processedMessages);
 std::string getHTTPMessage(const char *htmlLocation);
 
-#endif //WEBSOCKETNETWORKING_CHATSERVER_H
+
