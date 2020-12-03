@@ -262,15 +262,12 @@ std::string command_createRoom(Message message)
     return output;
 }
 std::deque<Message> command_joinRoom(const Message& message){
-    std::deque<Message> output;
-    std::string targetRoomName;
-    std::vector<std::string> tokens;
-
-std::string command_joinRoom(Message message)
-{
-  std::ostringstream result;
+  std::deque<Message> output;
   std::string targetRoomName;
   std::vector<std::string> tokens;
+
+  std::ostringstream result;
+
 
   try
   {
@@ -292,7 +289,9 @@ std::string command_joinRoom(Message message)
     if (existingRoom == nullptr)
     {
       result << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.\n";
-      return result.str();
+      auto messages = processForUser(message.c,result.str());
+      output.insert(output.end(),messages.begin(),messages.end());
+      return output;
     }
 
     std::string pin;
