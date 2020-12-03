@@ -5,13 +5,17 @@
 #include <string>
 
 class DiscardRule : public AstNode{
-    public:
+public:
     DiscardRule(string, string);
     void execute(State&) override;
+    void execute(State&, List&, Element&);
+
     void print() override;
     void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
 
-    private:
+
+private:
     string from;
     string count;
 };

@@ -1,11 +1,11 @@
 #include "State.h"
-//#include <bits/stdc++.h>
 
 // constructor
 State::State(vector<Player> playerList, Configuration configuration,
              Constants constants, Variables variables, PerPlayer perPlayer, PerAudience perAudience)
     : playerList(playerList), configuration(configuration), constants(constants), variables(variables),
-    per_player(perPlayer), per_audience(perAudience){}
+    per_player(perPlayer), per_audience(perAudience)
+    {}
 
 // Update State Functions
 void State::UpdateState_Config(Configuration c){
@@ -30,6 +30,8 @@ void State::UpdateState_WinnersList(Player& p){
   this->winnerList.push_back(p);
 }
 
+
+
 // Get from State Functions
 vector<Player> State::getPlayers() {
   return playerList;
@@ -43,6 +45,7 @@ Configuration State::getConfiguration(){
 Constants State::getConstants(){
   return constants;
 }
+
 
 // only handles rockPaperScissors file for now
 // Interpreter will handle the functions and such
@@ -61,6 +64,27 @@ vector<string> splitString(string str, char val){
   substrings.push_back(word);
   return substrings;
 }
+vector<GameVariant> State::getStateList(string input){
+
+  vector<GameVariant> result;
+
+  if( input.find("configuration") != string::npos){
+    size_t pos = input.find(".")+1;
+    string substr_input = input.substr(pos, input.length());
+    size_t nextPos = substr_input.find(".");
+    string config_key = substr_input.substr(0, nextPos);
+    GameVariant value = this->configuration.getAtKey(config_key);
+    
+    for(int i = 1; i <= boost::get<int>(value); i++)
+    {
+      result.push_back(i);
+    }
+  }
+
+  return result;
+
+}
+
 
 // getFromState's job is only to retreive the GameVariant Value from State
 // no lovel of interpretation here
@@ -119,11 +143,11 @@ GameVariant State::getFromState(string input){
 }
 
 // others
-void State::print(){
-  this->configuration.print();
-  this->constants.print();
-  this->variables.print();
-  this->per_player.print();
-  this->per_audience.print();
-  return;
-}
+// void State::print(){
+//   this->configuration.print();
+//   this->constants.print();
+//   this->variables.print();
+//   this->per_player.print();
+//   this->per_audience.print();
+//   return;
+// }

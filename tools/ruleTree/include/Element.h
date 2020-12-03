@@ -25,6 +25,10 @@ public:
     string getValue();
     Player getPlayer();
     void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+    
+    void indexIncrement();
+    int getIndex();
 
 };
 

@@ -53,6 +53,7 @@ int main()
     Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
+<<<<<<< HEAD
 
     //constants
     Constants constant(jsonToMap(constants));
@@ -68,11 +69,33 @@ int main()
 
     // Loop through the rules!
     AstTree astTree;
+=======
+    //configuration.print();
 
+    //constants
+    Constants constant(jsonToMap(constants));
+    //constant.print();
+
+    //variables
+    Variables variable(jsonToMap(variables));
+    //variable.print();
+
+
+    //players
+    PerPlayer perPlayer(jsonToMap(per_player));
+    //perPlayer.print();
+
+    PerAudience perAudience(jsonToMap(per_audience));
+    //perAudience.print();
+>>>>>>> ef749c98d3ae2c6f1b1d97eb5e0fe3efdb96133b
+
+    // Get AstTree
+    AstTree astTree(rules);
 
     AllPlayers allPlayer;
 
     State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
+<<<<<<< HEAD
     //state.print();
     cout << endl << endl;
     // rules!
@@ -95,6 +118,10 @@ int main()
             astTree.pushNode(ruleIndex);
         }
     }
+=======
+    
+    
+>>>>>>> ef749c98d3ae2c6f1b1d97eb5e0fe3efdb96133b
 
     //Start Game
     Game game(astTree,state);

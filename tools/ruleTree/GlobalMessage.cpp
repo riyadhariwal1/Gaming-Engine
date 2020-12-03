@@ -1,12 +1,11 @@
 #include "GlobalMessage.h"
 #include "MessageParser.h"
+
 #include <iostream>
 #include "Interpreter.h"
 
 // template Rule
 
-GlobalMessage::GlobalMessage(string value) : value(value), decipheredMsg("")
-{}
 
 GlobalMessage::GlobalMessage(string value, Element e)
   : value(value), decipheredMsg(""), element(e) {}
@@ -40,4 +39,7 @@ void GlobalMessage::print()
 
 void GlobalMessage::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this, gameState);
+}
+void GlobalMessage::accept(AstVisitor& visitor, State& gameState, List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
 }
