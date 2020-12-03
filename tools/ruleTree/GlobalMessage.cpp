@@ -5,7 +5,7 @@
 #include "Interpreter.h"
 
 // template Rule
-
+GlobalMessage::GlobalMessage(string value) : value(value) {}
 
 GlobalMessage::GlobalMessage(string value, Element e)
   : value(value), decipheredMsg(""), element(e) {}
@@ -23,13 +23,20 @@ string GlobalMessage::getCompleteMessage(){
 }
 
 void GlobalMessage::execute(State& gameState) {
-  // MessageParser msgParser(value, gameState);
-  // decipheredMsg = msgParser.getCompleteString();
-
-  // we need to pass element to interpreter, not the state !
   Element no_element("10");
   decipheredMsg = INTERPRETER::InterpretString(value,no_element, gameState);
 }
+
+void GlobalMessage::execute(State& gameState, List& list, Element& element) {
+  //Todo figure it out what kind of data type is needed
+  //Ex: if the convert = playername this code will not work since convert is a int data type
+  int convert = boost::get<int>(list.getList().at(element.getIndex()));
+  // MessageParser msgParser(value, gameState, to_string(convert));
+  // decipheredMsg = msgParser.getCompleteString();
+  Element no_element("10");
+  decipheredMsg = INTERPRETER::InterpretString(value,no_element, gameState);
+}
+
 
 void GlobalMessage::print()
 {

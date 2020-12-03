@@ -45,6 +45,7 @@ class State
 
       // string manipulations or condition checks
       GameVariant getFromState(string);
+      vector<GameVariant> getStateList(string input);
       bool checkCondition(string);
 
       void print();
