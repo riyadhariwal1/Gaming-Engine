@@ -28,6 +28,8 @@ void GlobalMessage::execute(State& gameState) {
   // decipheredMsg = msgParser.getCompleteString();
 
   // we need to pass element to interpreter, not the state !
+  Element no_element("10");
+  decipheredMsg = INTERPRETER::InterpretString(value,no_element, gameState);
 }
 
 void GlobalMessage::print()

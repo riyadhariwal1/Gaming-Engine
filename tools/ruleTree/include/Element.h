@@ -13,8 +13,7 @@ private:
     int index;
 
 public:
-    GameVariant someVariable;
-    
+
     Element();
     Element(string);
     Element(Player);
