@@ -2,9 +2,10 @@
 
 Case::Case(string condition): stringCondition(condition){}
 
-void Case::addRule (AstNode* rule){
-    ruleList.push_back(rule);
+void Case::addRule (std::unique_ptr<AstNode> rule){
+    ruleList.push_back(std::move(rule));
 }
+
 void Case::print() {
     cout << "Case:" << endl;
     cout << "    " << "condition == " << stringCondition << endl;
@@ -45,8 +46,8 @@ void WhenRule::executeHelper(State& gameState, Case* condition) {
 
 }
 
-void WhenRule::addCase (Case* condition) {
-    caseList.push_back(condition);
+void WhenRule::addCase (std::unique_ptr<Case> condition) {
+    caseList.push_back(std::move(condition));
 }
 
 void WhenRule::print() {

@@ -19,11 +19,15 @@ public:
     void visit(ExtendRule &extend, State& gameState, List& list, Element& element);
 
     void visit(ForEachRule &forEachRule, State& gameState);
+    void visit(ForEachRule &forEachRule, State& gameState, List& list, Element& element);
+
     
     void visit(InputChoiceRule &inputChoice, State &gameState);
     void visit(InputChoiceRule &inputChoice, State& gameState, List& list, Element& element);
 
     void visit(ParallelFor &parallelFor, State& gameState);
+    void visit(ParallelFor &parallelFor, State& gameState, List& list, Element& element);
+
 
     void visit(ScoreRule &scores, State& gameState);
     void visit(ScoreRule &scores, State& gameState, List& list, Element& element);

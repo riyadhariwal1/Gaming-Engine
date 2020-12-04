@@ -8,27 +8,28 @@ using namespace std;
 class Case {
 private:
     string stringCondition;
-    vector<AstNode*> ruleList;
+    std::vector<std::unique_ptr<AstNode>> ruleList;
 public:
     Case(string);
     Case(bool);
-    void addRule(AstNode* );
+    void addRule(std::unique_ptr<AstNode>);
     void print();
 };
 
-class WhenRule : public AstNode {
-public:
-    WhenRule();
-    WhenRule(std::vector<Case*> &caseList);
-    void accept(AstVisitor& visitor, State& gameState) override;
-    void executeHelper(State& gameState, Case* condition);
-    //WhenRule(vector<Case>&);
-    void execute(State&) override;
-    void addCase(Case*);
-    void print();
+class WhenRule :  public AstNode {
+    public:
+        WhenRule ();
+        void accept(AstVisitor& visitor, State& gameState) override;
+        void accept(AstVisitor& visitor, State& , List&, Element&) override;
 
-private:
-    std::vector<Case*> caseList;
+        //WhenRule(vector<Case>&);
+        void execute(State&) override;
+        void execute(State&, List&, Element&);
+        void addCase(std::unique_ptr<Case>);
+        void print();
+    private:
+        std::vector< std::unique_ptr<Case> > caseList;
+
 };
 
 #endif
