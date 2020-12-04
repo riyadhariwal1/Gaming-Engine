@@ -133,7 +133,10 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState, List&
 
     // TODO: Ask for input from chosen one
     atomic_bool cancellation_token= ATOMIC_VAR_INIT(false);
-    int timeout = inputChoice.getTimeOut();
+    //int timeout = inputChoice.getTimeOut();
+    // just to make the code run faster uncomment the upper line to make it run correctly
+    int timeout = 2;
+    // testing
     std::chrono::seconds chronoTimeout(timeout);
     std::future<string> task = std::async(launch::async, getInputFromUser, ref(cancellation_token));
     string result;
@@ -148,6 +151,38 @@ void RuleAstVisitor::visit(InputChoiceRule &inputChoice, State &gameState, List&
         cancellation_token = ATOMIC_VAR_INIT(true);
     }
     //TODO: Map result to variable
+}
+void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState, List& list , Element& element)
+{
+
+    forEachRule.execute(gameState);
+    std::cout << "This is ForEachRule visit function nested version" << std::endl;
+    List nestedList = forEachRule.getList();
+    std::cout << "Numloop in nested == " << forEachRule.getNumLoop() << std:: endl;
+    std::vector<std::unique_ptr<AstNode>> const& ruleList = forEachRule.getRuleList();
+    std::cout << "Rule list in nested == " << ruleList.size() << std:: endl;
+
+    for (int y = 0; y < forEachRule.getNumLoop(); y++) {
+        Element nestedElement = forEachRule.getElement();
+        RuleAstVisitor visitor;
+        for (auto & i : ruleList) {
+            i->accept(visitor, gameState, nestedList, nestedElement);
+        }
+        std::cout << std::endl;
+        forEachRule.getElement().indexIncrement();
+    }
+}
+void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState, List& list, Element& element)
+{
+    //TODO: Same as foreach
+    std::cout << "This is ParallelFor visit function" << std::endl;
+    std::vector<std::unique_ptr<AstNode>> const& ruleList = parallelFor.getRuleList();
+
+    RuleAstVisitor visitor;
+    for (auto & i : ruleList)
+    {
+        i->accept(visitor, gameState, list, element);
+    }
 }
 
 
@@ -168,33 +203,22 @@ void RuleAstVisitor::visit(AddRule &addRule, State& gameState, List& list, Eleme
 // ForEach and ParallelFor Rule
 void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
 {
-    //TODO: turn the "list" and "element" variables into a actual thing we can use
 
     forEachRule.execute(gameState);
-    // this should be done by calling execute funtion in obj Element and List
     std::cout << "This is ForEachRule visit function" << std::endl;
-    //testing
-
     List list = forEachRule.getList();
-
-    // end testing
-    forEachRule.setNumLoop(list.getList().size());
     std::cout << "Numloop == " << forEachRule.getNumLoop() << std:: endl;
-    vector<AstNode *> ruleList = forEachRule.getRuleList();
+    std::vector<std::unique_ptr<AstNode>> const& ruleList = forEachRule.getRuleList();
     std::cout << "Rule list == " << ruleList.size() << std:: endl;
 
-    for (int y = 0; y < forEachRule.getNumLoop(); y++)
-    {
+    for (int y = 0; y < forEachRule.getNumLoop(); y++) {
         Element element = forEachRule.getElement();
         RuleAstVisitor visitor;
-        for (auto i : ruleList)
-        {
+        for (auto & i : ruleList) {
             i->accept(visitor, gameState, list, element);
         }
         std::cout << std::endl;
         forEachRule.getElement().indexIncrement();
-
-
     }
 }
 
@@ -202,10 +226,10 @@ void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
 {
     //TODO: Same as foreach
     std::cout << "This is ParallelFor visit function" << std::endl;
-    vector<AstNode *> ruleList = parallelFor.getRuleList();
+    std::vector<std::unique_ptr<AstNode>> const& ruleList = parallelFor.getRuleList();
 
     RuleAstVisitor visitor;
-    for (auto i : ruleList)
+    for (auto & i : ruleList)
     {
         i->accept(visitor, gameState);
     }

@@ -8,13 +8,14 @@ ForEachRule::ForEachRule(string list, string element)
     this -> numLoop = 0;
 }
 
-void ForEachRule::addRule(AstNode *rule)
-{
-    ruleList.push_back(rule);
+void ForEachRule::addRule(std::unique_ptr<AstNode> rule){
+    ruleList.push_back(std::move(rule));
 }
+
 void ForEachRule::execute(State &gameState)
 {
     list.execute(gameState);
+    setNumLoop(list.getList().size());
 }
 void ForEachRule::print()
 {
@@ -34,12 +35,14 @@ void ForEachRule::print()
 void ForEachRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this,gameState);
 }
-void ForEachRule::accept(AstVisitor& visitor, State& , List&, Element&) {}
+void ForEachRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
+}
 
-vector <AstNode*> ForEachRule ::getRuleList()
-{
+vector<std::unique_ptr<AstNode>> const& ForEachRule::getRuleList() {
     return ruleList;
 }
+
 int ForEachRule::getNumLoop()
 {
     return numLoop;
