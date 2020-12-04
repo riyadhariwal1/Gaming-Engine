@@ -35,7 +35,8 @@ void WhenRule::execute(State& gameState) {
     for (Case* condition : caseList) {
         outcome = isConditionTrue(condition);
         if (outcome == Outcome::Success) {
-            executeHelper(gameState, condition);
+            //executeHelper(gameState, condition);
+            //call the rule here ?
         }
     }
 }
