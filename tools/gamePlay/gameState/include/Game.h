@@ -12,10 +12,10 @@
 
 class Game {
 private:
-    AstTree astTree;
-    State state;
+    AstTree& astTree;
+    State& state;
 public:
-    Game (AstTree, State);
+    Game (AstTree&, State&);
     void print();
     void execute(State& gameState);
 };

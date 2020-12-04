@@ -54,7 +54,6 @@ struct Message {
     Connection whisperID;
 };
 
-
 /** A compilation firewall for the server. */
 class ServerImpl;
 

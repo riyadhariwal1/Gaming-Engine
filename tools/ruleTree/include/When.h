@@ -8,11 +8,11 @@ using namespace std;
 class Case {
 private:
     string stringCondition;
-    vector<AstNode*> ruleList;
+    std::vector<std::unique_ptr<AstNode>> ruleList;
 public:
     Case(string);
     Case(bool);
-    void addRule(AstNode* );
+    void addRule(std::unique_ptr<AstNode>);
     void print();
 };
 
@@ -25,10 +25,10 @@ class WhenRule :  public AstNode {
         //WhenRule(vector<Case>&);
         void execute(State&) override;
         void execute(State&, List&, Element&);
-        void addCase(Case*);
+        void addCase(std::unique_ptr<Case>);
         void print();
     private:
-        vector<Case*> caseList;
+        std::vector< std::unique_ptr<Case> > caseList;
 
 };
 #endif
