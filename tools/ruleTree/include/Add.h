@@ -17,6 +17,8 @@ public:
     void execute(State&) override;
     void print() override;
     void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+
 
 private:
 //    Player& player;

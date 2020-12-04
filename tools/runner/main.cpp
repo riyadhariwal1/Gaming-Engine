@@ -53,52 +53,32 @@ int main()
     Settings game_settings(jsonToMap(config["setup"]));
     Configuration configuration = Configuration(config["name"], config["player count"]["min"],
                                                 config["player count"]["max"], config["audience"], game_settings);
-    configuration.print();
+    //configuration.print();
 
     //constants
     Constants constant(jsonToMap(constants));
-    constant.print();
+    //constant.print();
 
     //variables
     Variables variable(jsonToMap(variables));
-    variable.print();
+    //variable.print();
 
 
     //players
     PerPlayer perPlayer(jsonToMap(per_player));
-    perPlayer.print();
+    //perPlayer.print();
 
     PerAudience perAudience(jsonToMap(per_audience));
-    perAudience.print();
+    //perAudience.print();
 
-    // Loop through the rules!
-    AstTree astTree;
-
+    // Get AstTree
+    AstTree astTree(rules);
 
     AllPlayers allPlayer;
 
     State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
-
-    // rules!
-    // change this up using AST
-    Loader loader;
-    for (const json element : rules)
-    {
-        //cout << i++ << endl;
-        auto rulesName = element.at("rule").get<string>();
-        //cout << rulesName << endl;
-        if (rulesName == "foreach")
-        {
-            ForEachRule *ruleIndex = loader.forEachRule(element);
-            astTree.pushNode(ruleIndex);
-        }
-
-        else if (rulesName == "scores")
-        {
-            ScoreRule *ruleIndex = loader.scoreRule(element);
-            astTree.pushNode(ruleIndex);
-        }
-    }
+    
+    
 
     //Start Game
     Game game(astTree,state);

@@ -5,7 +5,6 @@ add_executable(test
   TEST_interpreter.cpp
   TEST_State.cpp
 )
-
 target_link_libraries(test
   gmock gtest gtest_main jsonParsing gameState ruleTree Players
 )

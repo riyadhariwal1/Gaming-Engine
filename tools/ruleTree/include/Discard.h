@@ -8,8 +8,12 @@ class DiscardRule : public AstNode{
 public:
     DiscardRule(string, string);
     void execute(State&) override;
+    void execute(State&, List&, Element&);
+
     void print() override;
     void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+
 
 private:
     string from;

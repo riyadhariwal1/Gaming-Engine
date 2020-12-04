@@ -10,11 +10,14 @@ private:
 
 public:
     Element();
-    AstNode* getTarget();
     Element(string);
     void execute(State&);
     void print();
     void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+    
+    void indexIncrement();
+    int getIndex();
 
 };
 
