@@ -6,6 +6,19 @@
 #include "Loader.h"
 #include "Parser.h"
 
+string replaceInString(string input, string value){
+
+  size_t open = input.find("{");
+  size_t close = input.find("}");
+
+// shift through every boost type case;
+  input.replace(open, close-open+1, value);
+
+  // element.someVar
+
+  return input;
+}
+
 class StateTest : public ::testing::Test {
 protected:
 
@@ -65,6 +78,7 @@ protected:
 };
 
 TEST_F(StateTest, test_print) {
+  //mock_state->print();
 }
 
 TEST_F(StateTest, get_configuration_rounds_01) {
@@ -127,14 +141,6 @@ TEST_F(StateTest, get_weapons_list_04){
 
   VARIATION test = boost::apply_visitor( check_type() , result);
   EXPECT_TRUE(test == VARIATION::VECTOR);
-
-  // conversion helps us test the type of gameVariant
-  // and also use the original type
-  GameVariant_Types values = boost::apply_visitor( conversion(), result );
-  EXPECT_TRUE(3 == values.type_vector.size());
-
-  EXPECT_TRUE(values.type_vector[0]["name"]=="Rock");
-  EXPECT_TRUE(values.type_vector[1]["name"]=="Paper");
 
 
 }

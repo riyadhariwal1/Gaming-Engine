@@ -1,73 +1,62 @@
 #include "Parser.h"
 
+
+GameVariant
+convertJson(json::value_t jsonType, json value){
+  GameVariant newValue;
+  switch (jsonType) {
+    case json::value_t::boolean:
+      newValue = value.get<bool>();
+      break;
+    case json::value_t::number_integer:
+    case json::value_t::number_unsigned:
+      newValue = value.get<int>();
+      break;
+    case json::value_t::number_float:
+      newValue= value.get<float>();
+      break;
+    case json::value_t::object:
+      newValue = value.get<unordered_map<string,string>>();
+      break;
+    default:
+      newValue = value.get<string>();
+  }
+
+  return newValue;
+}
+
+
 unordered_map<string,GameVariant>
 jsonToMap(json jsonMap){
 
-  // GameMap is a map of setup || constants || variables...
   unordered_map<string,GameVariant> GameMap;
-
   for ( auto& itrr : jsonMap.items())
   {
     string key = itrr.key();
 
-    switch (jsonMap[key].type()) {
-      // type=bool
-      case json::value_t::boolean:
-        GameMap[key] = jsonMap[key].get<bool>();
-        break;
-      //type=integer
-      case json::value_t::number_integer:
-      case json::value_t::number_unsigned:
-        GameMap[key] = jsonMap[key].get<int>();
-        break;
-      //type=double
-      case json::value_t::number_float:
-        GameMap[key] = jsonMap[key].get<double>();
-        break;
-      //type=string
-      case json::value_t::string:
-        GameMap[key] = jsonMap[key].get<string>();
-        break;
-      //type=map
-      case json::value_t::object:
-        GameMap[key] = jsonMap[key].get<unordered_map<string,string>>();
-        break;
-      //type=list
-      // need to handle all types when extracting values
-      case json::value_t::array:
-      {
-        vector<unordered_map<string,string>> vec;
-        for(auto val : jsonMap[key]){
-          switch(val.type()) {
-            case json::value_t::object:
-              vec.push_back(val.get<unordered_map<string,string>>());
-              break;
-            // needs more cases 
-            default:
-              cout << "";
-          }
+    if(jsonMap[key].type()==json::value_t::array){
+      // extracting a vector from json
+      vector<unordered_map<string,string>> vec;
+      for(auto val : jsonMap[key]){
+
+        switch(val.type()) {
+          case json::value_t::object:
+            vec.push_back(val.get<unordered_map<string,string>>());
+            break;
+          default:
+            cout << "[ error ]: Json Vector is not type map<string,string>";
         }
-        GameMap[key] = vec;
+
       }
-        break;
-      default:
-        cout << "";
-    }
+      GameMap[key] = vec;
+
+    } else {
+
+      GameMap[key] = convertJson(jsonMap[key].type(),jsonMap[key] );
+
+      }
   }
 
   return GameMap;
 
-}
-
-string replaceInString(string input, string value){
-
-  size_t open = input.find("{");
-  size_t close = input.find("}");
-
-// shift through every boost type case;
-  input.replace(open, close-open+1, value);
-
-  // element.someVar
-
-  return input;
 }
