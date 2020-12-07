@@ -17,7 +17,7 @@ using GameVariant = boost::variant<unordered_map<string,string>,
                       vector<unordered_map<string,string>>>;
 
 // check type
-enum class VARIATION { INTEGER, STRING, DOUBLE, BOOL, MAP, VECTOR };
+enum class VARIATION { INTEGER, STRING, DOUBLE, BOOL, MAP, VECTOR, UNKNOWN };
 class check_type
   : public boost::static_visitor<VARIATION> {
     public:
@@ -27,6 +27,9 @@ class check_type
       VARIATION operator()(string& op) const {return VARIATION::STRING;}
       VARIATION operator()(unordered_map<string,string>& op) const {return VARIATION::MAP;}
       VARIATION operator()(vector<unordered_map<string,string>>& op) const {return VARIATION::VECTOR;}
+
+      template<typename T>
+      VARIATION operator()(T op) const { return VARIATION::UNKNOWN; }
 };
 
 

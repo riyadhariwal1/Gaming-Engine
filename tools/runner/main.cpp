@@ -71,6 +71,8 @@ int main()
     AllPlayers allPlayer;
 
     State state(allPlayer.getList(), configuration, constant, variable, perPlayer, perAudience);
+    state.print();
+    cout << endl;
 
     //Start Game
     Game game(astTree,state);

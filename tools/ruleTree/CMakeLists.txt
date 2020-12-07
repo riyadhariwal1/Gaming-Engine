@@ -15,6 +15,7 @@ target_sources(ruleTree PRIVATE
         RuleAstVisitor.cpp
         MessageParser.cpp
         Interpreter.cpp
+        Stack.cpp
         )
 target_include_directories(ruleTree
         PUBLIC

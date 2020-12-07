@@ -6,6 +6,19 @@
 #include "Loader.h"
 #include "Parser.h"
 
+string replaceInString(string input, string value){
+
+  size_t open = input.find("{");
+  size_t close = input.find("}");
+
+// shift through every boost type case;
+  input.replace(open, close-open+1, value);
+
+  // element.someVar
+
+  return input;
+}
+
 class StateTest : public ::testing::Test {
 protected:
 

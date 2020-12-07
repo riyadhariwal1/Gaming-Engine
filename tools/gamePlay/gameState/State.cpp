@@ -74,7 +74,7 @@ vector<GameVariant> State::getStateList(string input){
     size_t nextPos = substr_input.find(".");
     string config_key = substr_input.substr(0, nextPos);
     GameVariant value = this->configuration.getAtKey(config_key);
-    
+
     for(int i = 1; i <= boost::get<int>(value); i++)
     {
       result.push_back(i);
@@ -87,7 +87,7 @@ vector<GameVariant> State::getStateList(string input){
 
 
 // getFromState's job is only to retreive the GameVariant Value from State
-// no lovel of interpretation here
+// no level of interpretation here
 GameVariant State::getFromState(string input){
 
   GameVariant result;
@@ -143,11 +143,11 @@ GameVariant State::getFromState(string input){
 }
 
 // others
-// void State::print(){
-//   this->configuration.print();
-//   this->constants.print();
-//   this->variables.print();
-//   this->per_player.print();
-//   this->per_audience.print();
-//   return;
-// }
+void State::print(){
+  this->configuration.print();
+  this->constants.print();
+  this->variables.print();
+  this->per_player.print();
+  this->per_audience.print();
+  return;
+}

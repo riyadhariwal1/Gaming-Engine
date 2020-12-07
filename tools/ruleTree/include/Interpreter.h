@@ -1,18 +1,12 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-#include "State.h"
-#include "Element.h"
-
+#include "Stack.h"
 
 namespace INTERPRETER {
 
-  vector<Player> InterpretListOfPlayers(string&, State&);
-
+  // re-write InterpretList to include
   vector<unordered_map<string,string>> InterpretList(string&, State&);
-
-  // like rounds.upfrom(1); ??
-  // vector<int> InterpretFunction(string&, State&);
 
   string InterpretString(string&, Element&, State&);
 
