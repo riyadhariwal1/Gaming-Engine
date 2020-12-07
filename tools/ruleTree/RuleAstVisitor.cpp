@@ -170,7 +170,7 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState, List& lis
         }
         std::cout << std::endl;
         forEachRule.getElement().indexIncrement();
-    }    
+    }
 }
 void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState, List& list, Element& element)
 {
@@ -219,7 +219,7 @@ void RuleAstVisitor::visit(ForEachRule &forEachRule, State &gameState)
         }
         std::cout << std::endl;
         forEachRule.getElement().indexIncrement();
-    }    
+    }
 }
 
 void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
@@ -234,4 +234,3 @@ void RuleAstVisitor::visit(ParallelFor &parallelFor, State &gameState)
         i->accept(visitor, gameState);
     }
 }
-

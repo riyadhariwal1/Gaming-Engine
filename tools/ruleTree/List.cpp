@@ -22,6 +22,7 @@ void List::accept(AstVisitor& visitor, State& , List&, Element&) {}
 
 vector<GameVariant> List:: getList()
 {
+  // how would I define a list of multiple types as an ASTNode???
     return list;
 }
 string List::getValue()

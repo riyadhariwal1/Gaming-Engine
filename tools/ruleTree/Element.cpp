@@ -11,6 +11,9 @@ Element :: Element (string value){
     index = 0;
 }
 
+Element::Element( Player player)
+  : player(player){}
+
 void Element :: accept(AstVisitor& visitor, State& gameState)
 {
     visitor.visit(*this,gameState);
@@ -28,6 +31,15 @@ int Element::getIndex()
 {
     return index;
 }
+
+Player Element::getPlayer(){
+  return this->player;
+}
+
+string Element::getValue() {
+  return value;
+}
+
 void Element::print() {
     cout << index;
 }
