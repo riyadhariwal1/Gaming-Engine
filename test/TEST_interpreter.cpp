@@ -147,24 +147,24 @@ TEST_F(InterpreterTest, condition_simple_equality) {
   EXPECT_TRUE(result==true);
 
 }
-//
-// TEST_F(InterpreterTest, condition_equality_with0) {
-//   // here (weapon.name) is actually a weapons element
-//   Element no_element("");
-//   string value = "winners.size == 0";
-//
-//   bool result = INTERPRETER::InterpretCondition(value,no_element, *mock_state);
-//
-//   EXPECT_TRUE(result==true);
-//
-//   Player new_player("Kamala");
-//   mock_state->UpdateState_WinnersList(new_player);
-//
-//   result = INTERPRETER::InterpretCondition(value,no_element, *mock_state);
-//   EXPECT_TRUE(result==false);
-//
-// }
-//
+
+TEST_F(InterpreterTest, condition_equality_with0) {
+  // here (weapon.name) is actually a weapons element
+  Element no_element("");
+  string value = "winners.size == 0";
+
+  bool result = INTERPRETER::InterpretCondition(value,no_element, *mock_state);
+
+  EXPECT_TRUE(result==true);
+
+  Player new_player("Kamala");
+  mock_state->UpdateState_WinnersList(new_player);
+
+  result = INTERPRETER::InterpretCondition(value,no_element, *mock_state);
+  EXPECT_TRUE(result==false);
+
+}
+
 // // test for shunting yard algorithm
 // TEST_F(InterpreterTest, element_player_list_function) {
 //   Player new_player("Kamala");
@@ -177,16 +177,16 @@ TEST_F(InterpreterTest, condition_simple_equality) {
 //   EXPECT_TRUE(result == "Kamala, choose your weapon!");
 //
 // }
-//
-// TEST_F(InterpreterTest, condition_weapon_element) {
-//   // does none of the players have a weapon==Rock ?
-//   Element weapon("Rock");
-//   string value = "!players.elements.weapon.contains(weapon.name)";
-//
-//   Player new_player("Kamala");
-//   mock_state->UpdateState_WinnersList(new_player);
-//
-//   bool result = INTERPRETER::InterpretCondition(value, weapon, *mock_state);
-//   EXPECT_TRUE(result==true);
-//
-// }
+
+TEST_F(InterpreterTest, condition_weapon_element) {
+  // does none of the players have a weapon==Rock ?
+  Element weapon("Rock");
+  string value = "!players.elements.weapon.contains(weapon.name)";
+
+  Player new_player("Kamala");
+  mock_state->UpdateState_WinnersList(new_player);
+
+  bool result = INTERPRETER::InterpretCondition(value, weapon, *mock_state);
+  EXPECT_TRUE(result==true);
+
+}

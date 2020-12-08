@@ -2,7 +2,7 @@
 #include <regex>
 #include <sstream>
 
-void TRANSLATOR::printStack(TRANSLATOR::InterpreterStack& input_stack){
+void TRANSLATOR::printStack(InterpreterStack& input_stack){
   cout << "STACK:" << endl;
   while( input_stack.size() >0 ){
     cout << input_stack.top() << endl;
@@ -13,29 +13,33 @@ void TRANSLATOR::printStack(TRANSLATOR::InterpreterStack& input_stack){
 
 // does not keep the first variable in stack
 // like "player" or "winner"
-TRANSLATOR::InterpreterStack
+InterpreterStack
 TRANSLATOR::Tokenizer(string& rawInput){
-  TRANSLATOR::InterpreterStack newStack;
+  InterpreterStack newStack;
 
-  string word="";
-  auto it = rawInput.rend();
+  stack_value word="";
+  auto it = rawInput.begin();
   int SKIP = 2;
 
-  while ( it != rawInput.rbegin() ){
-    word+=*it;
-    cout << *it << endl;
+  while ( it != rawInput.end() ){
+
     if(*it == ' '){
-      it+=SKIP;
+      // ignore spaces
     } else if(*it == '='){
       newStack.push(word);
       newStack.push(OPERATOR::EQUALS);
+      word="";
       it+=SKIP;
     } else if(*it == '.'){
       newStack.push(word);
       newStack.push(OPERATOR::DOT);
+      word="";
+    } else {
+      word+=*it;
     }
     ++it;
   }
+  newStack.push(word);
 
   return newStack;
 }
@@ -44,12 +48,26 @@ TRANSLATOR::Tokenizer(string& rawInput){
 bool
 TRANSLATOR::evaluateCondition(string& rawInput, Element& currentElement, State& state){
   InterpreterStack tokens = Tokenizer(rawInput);
-  //printStack(tokens);
+  printStack(tokens);
 
   bool result=true;
 
-  // while(tokens.size()>0){
-  //   result = tokens.pop();
-  // }
+  InterpreterStack output;
+  InterpreterStack operatorStack;
+
+  while (tokens.size() > 0)
+  {
+    stack_value& currentval =  tokens.top();
+    tokens.pop();
+
+    if ( currentval == OPERATOR::EQUALS)
+    {
+        operatorStack.push(currentval);
+    } else {
+        output.push(currentval);
+    }
+  }
+
+
   return result;
 }

@@ -45,15 +45,13 @@ namespace EVALUATOR {
     vector<string> tokens = splitString(stringToExtract, '.');
 
     if(tokens[0]=="player" || tokens[0]=="winner"){
-      //evaluate
-      //result = TRANSLATOR::evaluate(msg, element.getPlayer());
+
       Player current_player = element.getPlayer();
       result = current_player.getWithKey(tokens[1]);
 
     } else if ((tokens[0]=="players" || tokens[0]=="winners") &&
                 tokens.size() > 2) {
-        //evaluate
-        //result = TRANSLATOR::evaluate(msg, state);
+
         if(tokens[1]=="elements"){
           result="";
           vector<Player> list = InterpretPlayers(tokens[0], state);
@@ -65,7 +63,7 @@ namespace EVALUATOR {
         }
     }
     else{
-      //result = TRANSLATOR::evaluate(msg, state);
+
       result = element.getValue();
     }
     string var = "{" + stringToExtract + "}";
@@ -186,11 +184,12 @@ INTERPRETER::InterpretString(string& msg, Element& element, State& state){
   std::size_t start = msg.find('{');
   std::size_t end = msg.find('}');
 
-  bool curly_brackets_exist = (start != std::string::npos)
+  bool requires_element = (start != std::string::npos)
                               && (end != std::string::npos)
                               && (start < end);
 
-  if (curly_brackets_exist){
+  if (requires_element){
+
     result = EVALUATOR::InterpretString(msg, element, state);
   }
   else {
@@ -200,70 +199,61 @@ INTERPRETER::InterpretString(string& msg, Element& element, State& state){
 }
 
 /*
-Use Shunting Yard algorithm
+  Use Shunting Yard algorithm
   ideally we should be able to handle multiple types of conditions:
   1. Equality types:  == , > , < , <=, >= ( 2 arguments)
   - Functions on lists: contains .. (1 vector argument)
   - equality AND functions in same condition
 */
-// bool
-// INTERPRETER::OLDInterpretCondition(string& input, Element& element, State& state){
-//   bool condition=false;
-//
-//   size_t find_equal_sign = input.find("==");
-//   if(find_equal_sign!=string::npos){
-//     // condition is an equality check
-//     vector<string> arguments = splitString(input, '=');
-//     for(auto& token : arguments){
-//       boost::erase_all(token, "=");
-//       boost::erase_all(token, " ");
-//     }
-//     cout << arguments[0] << " and " << arguments.back() << endl;
-//     string first = EVALUATOR::InterpretString(arguments[0], state);
-//     string second = EVALUATOR::InterpretString(arguments.back(), state);
-//     cout << first << " and " << second << endl;
-//
-//     if(first.compare(second)==0){
-//       condition=!condition;
-//       return condition;
-//     }
-//   }
-//   else {
-//     // condition is a function
-//     vector<string> tokens = EVALUATOR::SplitOutFunction(input);
-//     string function = tokens.back();
-//     tokens.pop_back(); // remove function from tokens
-//
-//     if(tokens[0].at(0)=='!'){ // handle not
-//       condition = !condition;
-//       tokens[0] = tokens[0].substr(1, tokens[0].length());
-//     }
-//
-//     if(tokens[0]=="players" || tokens[0]=="winners"){
-//
-//       vector<Player> list = InterpretListOfPlayers(tokens[0], state);
-//       if(tokens.size() > 2 && list.size() > 0){
-//         condition = EVALUATOR::ApplyFunction(state, function, list, tokens, element.getValue());
-//       }
-//
-//     }
-//     else {
-//       // none in RPS
-//       // vector<unordered_map<string,string>> list = InterpretList(string ,state );
-//       // if(tokens.size() > 2 && list.size()>0){
-//       //   condition = HELPER::ApplyFunction(function, list, tokens, element.getValue());
-//       // }
-//
-//     }
-//   }
-//     return condition;
-// }
-
 bool
 INTERPRETER::InterpretCondition(string& input, Element& element, State& state){
   bool condition=false;
 
-  condition = TRANSLATOR::evaluateCondition(input, element, state);
+  size_t find_equal_sign = input.find("==");
+  if(find_equal_sign!=string::npos){
+    // condition is an equality check
+    vector<string> arguments = splitString(input, '=');
+    for(auto& token : arguments){
+      boost::erase_all(token, "=");
+      boost::erase_all(token, " ");
+    }
+    cout << arguments[0] << " and " << arguments.back() << endl;
+    string first = EVALUATOR::InterpretString(arguments[0], state);
+    string second = EVALUATOR::InterpretString(arguments.back(), state);
+    cout << first << " and " << second << endl;
 
-  return condition;
+    if(first.compare(second)==0){
+      condition=!condition;
+      return condition;
+    }
+  }
+  else {
+    // condition is a function
+    vector<string> tokens = EVALUATOR::SplitOutFunction(input);
+    string function = tokens.back();
+    tokens.pop_back(); // remove function from tokens
+
+    if(tokens[0].at(0)=='!'){ // handle not
+      condition = !condition;
+      tokens[0] = tokens[0].substr(1, tokens[0].length());
+    }
+
+    if(tokens[0]=="players" || tokens[0]=="winners"){
+
+      vector<Player> list = EVALUATOR::InterpretPlayers(tokens[0], state);
+      if(tokens.size() > 2 && list.size() > 0){
+        condition = EVALUATOR::ApplyFunction(state, function, list, tokens, element.getValue());
+      }
+    }
+  }
+    return condition;
 }
+
+// bool
+// INTERPRETER::InterpretCondition(string& input, Element& element, State& state){
+//   bool condition=false;
+//
+//   condition = TRANSLATOR::evaluateCondition(input, element, state);
+//
+//   return condition;
+// }
