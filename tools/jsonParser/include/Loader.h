@@ -27,15 +27,13 @@ public:
 
     std::unique_ptr<ForEachRule> forEachRule(json element);
     std::unique_ptr<GlobalMessage> globalMessageRule (json rule);
-    void addRule (json rule);
+    std::unique_ptr<AddRule> addRule(json rule);
     std::unique_ptr<InputChoiceRule> inputChoiceRule(json rule);
     std::unique_ptr<DiscardRule> discardRule (json rule);
     std::unique_ptr<WhenRule> whenRule (json rule);
     std::unique_ptr<ParallelFor> parallelForRule (json rule);
     std::unique_ptr<ExtendRule> extendRule (json rule);
     std::unique_ptr<ScoreRule> scoreRule(json rule);
-
-
 };
 
 #endif //SOCIAL_GAMING_LOADER_H

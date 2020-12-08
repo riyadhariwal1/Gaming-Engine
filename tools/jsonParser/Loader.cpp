@@ -1,4 +1,5 @@
 #include "Loader.h"
+#include "Element.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -8,19 +9,10 @@ Loader::globalMessageRule(json rule) {
     return std::make_unique<GlobalMessage>(rule.at("value").get<string>());
 }
 
-//TODO: this
-void Loader::addRule(json rule) {
-    //   cout << " im in add" << endl;
-    //   // example player to be removed with
-    //   // rule["to"] when real players are used
-    //   string exampleName = "Jason";
-    //   Player sample_player(exampleName);
-    //   sample_player.printPlayer();
-
-    //   AddRule newWinForPlayer(sample_player, rule["value"]);
-    //   sample_player.printPlayer();
-
-    //   cout << "\n";
+std::unique_ptr<AddRule>
+Loader::addRule(json rule) {
+    return std::make_unique<AddRule>(rule.at("to").get<string>(),
+                                     rule.at("value").get<int>());
 }
 
 std::unique_ptr<InputChoiceRule>
@@ -71,10 +63,7 @@ Loader::whenRule(json rule) {
         }
         cout << endl;
         whenRule->addCase(std::move(condition));
-        //parse the given condition
-        //if condition is true: extract element["rules"]
     }
-    //whenRule->print();
     return whenRule;
 }
 
@@ -85,7 +74,6 @@ Loader::scoreRule(json rule) {
 
 std::unique_ptr<ParallelFor>
 Loader::parallelForRule(json rule) {
-    //cout << " im in parrallel" << endl;
     std::unique_ptr<ParallelFor> parallelFor = std::make_unique<ParallelFor>(rule.at("list").get<string>(),
                                                                              rule.at("element").get<string>());
     json rules = rule["rules"];
@@ -157,7 +145,10 @@ Loader::forEachRule(json element) {
             std::unique_ptr<InputChoiceRule> ruleIndex = inputChoiceRule(rule);
             forEach->addRule(std::move(ruleIndex));
         }
+        else if (ruleName == "add") {
+            std::unique_ptr<AddRule> ruleIndex = addRule(rule);
+            forEach->addRule(std::move(ruleIndex));
+        }
     }
-    //forEach->print();
     return forEach;
 }

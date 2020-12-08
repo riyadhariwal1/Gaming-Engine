@@ -16,18 +16,11 @@ void Case::print() {
 
 WhenRule::WhenRule(){}
 
-//WhenRule::WhenRule(vector<Case*> &caseList)
-//: caseList(caseList)
-//{}
-
-
 enum Outcome { Success, Failure };
 
-Outcome isConditionTrue(Case* condition) {
-    //not working: if (condition.condition)
-    // just to make it compile
-    if(true)
-    {
+Outcome isConditionTrue(std::shared_ptr<Case> condition) {
+    bool conditionParsed = true; // TODO: interpreter
+    if (conditionParsed){
         return Outcome::Success;
     } else {
         return Outcome::Failure;
@@ -36,20 +29,15 @@ Outcome isConditionTrue(Case* condition) {
 
 void WhenRule::execute(State& gameState) {
     Outcome outcome;
-    // Comment to make the code compile
+    for (auto condition : caseList) {
+        outcome = isConditionTrue(condition);
+        if (outcome == Outcome::Success) {
 
-    // for (Case condition : caseList) {
-    //     outcome = isConditionTrue(condition);
-    //     if (outcome == Outcome::Success) {
-    //         executeHelper(gameState, condition);
-    //     }
-    // }
+        }
+    }
 }
-void WhenRule::execute(State& gameState, List& list, Element& element)
-{}
 
-
-void WhenRule::addCase (std::unique_ptr<Case> condition) {
+void WhenRule::addCase (std::shared_ptr<Case> condition) {
     caseList.push_back(std::move(condition));
 }
 
@@ -62,7 +50,7 @@ void WhenRule::print() {
 void WhenRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this,gameState);
 }
+
 void WhenRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
     visitor.visit(*this, gameState, list, element);
 }
-

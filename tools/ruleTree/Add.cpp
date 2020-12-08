@@ -1,7 +1,8 @@
 #include "include/Add.h"
 
-AddRule::AddRule(string to, string value, Player& player)
-        : to(to), value(value), player(player)
+
+AddRule::AddRule(string to, int value)
+: to(to), value(value)
 { }
 
 void AddRule::accept(AstVisitor& visitor, State& gameState) {
@@ -11,11 +12,9 @@ void AddRule::accept(AstVisitor& visitor, State& gameState , List& list, Element
     visitor.visit(*this, gameState, list, element);
 }
 
-
 void AddRule::execute(State& gameState) {
-    //todo: parse "to". format is "elementName.field". we have the current element, just need Field
-    //todo: maybe have an editField function
-    this->player.incrementWinsBy(std::stoi(value));
+    Player player = gameState.getPlayers().at(0);
+    player.incrementWinsBy(value);
 }
 
 void AddRule::print() {
