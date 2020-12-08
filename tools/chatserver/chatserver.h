@@ -3,7 +3,7 @@
 using networking::Message;
 void onConnect(Connection c);
 void onDisconnect(Connection c);
-User* getUser(Connection& c);
+User *getUser(const Connection &c);
 User* getUserByName(const std::string& name);
 Room* getRoomByName(const std::string& roomName);
 Room* getRoomById(const int& roomId);
@@ -23,6 +23,7 @@ std::deque<Message> command_joinRoom(const Message& message);
 std::deque<Message> command_leaveRoom(const Message& message);
 std::deque<Message> command_printRoomList(const Message& message);
 std::deque<Message> command_changeName(const Message& message);
+std::deque<Message> command_startGame(const Message& message);
 std::deque<Message> command_whisper(const Message& message);
 std::deque<Message> command_showCommands(const Message& message);
 
@@ -34,4 +35,4 @@ std::deque<Message> buildOutgoing(const std::string &log);
 std::deque<Message> postOffice(const std::deque<Message>& processedMessages);
 std::string getHTTPMessage(const char *htmlLocation);
 
-
+#endif
