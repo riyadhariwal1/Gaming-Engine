@@ -16,13 +16,13 @@ void Case::print() {
 
 WhenRule::WhenRule(){}
 
-WhenRule::WhenRule(std::vector<Case*> &caseList)
-: caseList(caseList)
-{}
+//WhenRule::WhenRule(std::vector< std::unique_ptr<Case> > &caseList)
+//: caseList(caseList)
+//{}
 
 enum Outcome { Success, Failure };
 
-Outcome isConditionTrue(Case* condition) {
+Outcome isConditionTrue(std::shared_ptr<Case> condition) {
     bool conditionParsed = true; // TODO: interpreter
     if (conditionParsed){
         return Outcome::Success;
@@ -33,7 +33,7 @@ Outcome isConditionTrue(Case* condition) {
 
 void WhenRule::execute(State& gameState) {
     Outcome outcome;
-    for (Case* condition : caseList) {
+    for (auto condition : caseList) {
         outcome = isConditionTrue(condition);
         if (outcome == Outcome::Success) {
             //executeHelper(gameState, condition);
@@ -42,11 +42,7 @@ void WhenRule::execute(State& gameState) {
     }
 }
 
-void WhenRule::executeHelper(State& gameState, Case* condition) {
-
-}
-
-void WhenRule::addCase (std::unique_ptr<Case> condition) {
+void WhenRule::addCase (std::shared_ptr<Case> condition) {
     caseList.push_back(std::move(condition));
 }
 
