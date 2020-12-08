@@ -11,24 +11,24 @@ private:
     std::vector<std::unique_ptr<AstNode>> ruleList;
 public:
     Case(string);
-    Case(bool);
+    Case(const Case&) = delete;
     void addRule(std::unique_ptr<AstNode>);
     void print();
 };
 
 class WhenRule :  public AstNode {
-    public:
-        WhenRule ();
-        void accept(AstVisitor& visitor, State& gameState) override;
-        void accept(AstVisitor& visitor, State& , List&, Element&) override;
-
-        //WhenRule(vector<Case>&);
-        void execute(State&) override;
-        void execute(State&, List&, Element&);
-        void addCase(std::unique_ptr<Case>);
-        void print();
-    private:
-        std::vector< std::unique_ptr<Case> > caseList;
+public:
+    WhenRule();
+    WhenRule(const WhenRule&) = delete;
+    void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+    void execute(State&) override;
+    void execute(State&, List&, Element&);
+    void addCase(std::shared_ptr<Case>);
+    void print();
+private:
+    std::vector< std::shared_ptr<Case> > caseList;
 
 };
+
 #endif
