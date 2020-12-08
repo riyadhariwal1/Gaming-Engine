@@ -13,10 +13,8 @@ void AddRule::accept(AstVisitor& visitor, State& gameState , List& list, Element
 }
 
 void AddRule::execute(State& gameState) {
-    //todo: parse "to". format is "elementName.field". we have the current element, just need Field
-    //todo: maybe have an editField function
-    Player* player; //TODO: interpreter
-    player->incrementWinsBy(value);
+    Player player = gameState.getPlayers().at(0);
+    player.incrementWinsBy(value);
 }
 
 void AddRule::print() {

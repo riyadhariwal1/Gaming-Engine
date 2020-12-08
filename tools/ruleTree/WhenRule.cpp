@@ -16,10 +16,6 @@ void Case::print() {
 
 WhenRule::WhenRule(){}
 
-//WhenRule::WhenRule(std::vector< std::unique_ptr<Case> > &caseList)
-//: caseList(caseList)
-//{}
-
 enum Outcome { Success, Failure };
 
 Outcome isConditionTrue(std::shared_ptr<Case> condition) {
@@ -36,8 +32,7 @@ void WhenRule::execute(State& gameState) {
     for (auto condition : caseList) {
         outcome = isConditionTrue(condition);
         if (outcome == Outcome::Success) {
-            //executeHelper(gameState, condition);
-            //call the rule here ?
+
         }
     }
 }
@@ -55,6 +50,7 @@ void WhenRule::print() {
 void WhenRule::accept(AstVisitor& visitor, State& gameState) {
     visitor.visit(*this,gameState);
 }
+
 void WhenRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
     visitor.visit(*this, gameState, list, element);
 }
