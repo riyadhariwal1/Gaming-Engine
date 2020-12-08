@@ -1,8 +1,5 @@
 #include "include/Add.h"
 
-//AddRule::AddRule(string to, string value, Player& player)
-//        : to(to), value(value), player(player)
-//{ }
 
 AddRule::AddRule(string to, int value)
 : to(to), value(value)

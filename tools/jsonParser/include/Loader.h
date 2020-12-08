@@ -33,7 +33,6 @@ public:
     std::unique_ptr<ParallelFor> parallelForRule (json rule);
     std::unique_ptr<ExtendRule> extendRule (json rule);
     std::unique_ptr<ScoreRule> scoreRule(json rule);
-//    void addRule (json rule);
     std::unique_ptr<AddRule> addRule(json rule);
 };
 

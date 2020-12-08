@@ -20,11 +20,9 @@ class WhenRule :  public AstNode {
     public:
         WhenRule();
         WhenRule(const WhenRule&) = delete;
-//        WhenRule(WhenRule(std::vector< std::unique_ptr<Case> > &caseList));
         void accept(AstVisitor& visitor, State& gameState) override;
         void accept(AstVisitor& visitor, State& , List&, Element&) override;
 
-        //WhenRule(vector<Case>&);
         void execute(State&) override;
         void execute(State&, List&, Element&);
         void addCase(std::shared_ptr<Case>);

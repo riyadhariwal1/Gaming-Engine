@@ -9,10 +9,6 @@ Loader::globalMessageRule(json rule) {
     return std::make_unique<GlobalMessage>(rule.at("value").get<string>());
 }
 
-//void Loader::addRule(json rule) {
-//
-//}
-
 std::unique_ptr<AddRule>
 Loader::addRule(json rule) {
     return std::make_unique<AddRule>(rule.at("to").get<string>(),

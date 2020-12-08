@@ -4,9 +4,7 @@
 AstTree::AstTree(json rules){
     for (const json & element : rules) {
         Loader loader;
-        //cout << i++ << endl;
         auto rulesName = element.at("rule").get<string>();
-        //cout << rulesName << endl;
         if (rulesName == "foreach") {
             std::unique_ptr<ForEachRule> ruleIndex = loader.forEachRule(element);
             this->pushNode(std::move(ruleIndex));
