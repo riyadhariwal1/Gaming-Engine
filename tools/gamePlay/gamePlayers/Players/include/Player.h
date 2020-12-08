@@ -15,6 +15,7 @@ public:
     void printPlayer();
     void AddVariable(string givenKey, GameVariant givenValue);
     int getGameWins();
+    string getWithKey(string key);
     void incrementWinsBy(int num);
     string getPlayerName();
     // define player "Type"? -- game-player or audience-player
