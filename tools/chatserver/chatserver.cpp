@@ -32,14 +32,15 @@ std::vector<User> clients;
 std::vector<Room> rooms;
 
 std::map<std::string, std::string (*)(Message)> commands = {
-    {"join", command_joinRoom},
-    {"create", command_createRoom},
-    {"leave", command_leaveRoom},
-    {"roomlist", command_printRoomList},
-    {"name", command_changeName},
-    {"whisper", command_whisper},
-    {"start", command_startGame},
-    {"cmds", command_showCommands}};
+  {"join", command_joinRoom},
+  {"create", command_createRoom},
+  {"leave", command_leaveRoom},
+  {"roomlist", command_printRoomList},
+  {"name", command_changeName},
+  {"whisper", command_whisper},
+  {"start", command_startGame},
+  {"cmds", command_showCommands}
+};
 
 Store store;
 
@@ -84,8 +85,8 @@ struct MessageResult
 
 //given a Connection, return that user;
 // in store.h
-User*
-getUser(Connection c)
+User *
+getUser(const Connection &c)
 {
   for (auto &client : clients)
   {
@@ -100,8 +101,9 @@ getUser(Connection c)
 
 // given a string of a user name, return a user
 // in store.h
-User*
-getUserByName(std::string name){
+User *
+getUserByName(const std::string &name)
+{
   std::cout<<"you are whisper to "<<"\""<<name<<"\""<<"\n";
   for (auto& client : clients)
   {
@@ -134,8 +136,8 @@ getRoomByName(const std::string& roomName)
 
 // given a room id, return a pointer to that Room otherwise return nullptr
 // in store.h
-Room*
-getRoomById(int roomId)
+Room *
+getRoomById(const int &roomId)
 {
   for (auto &room : rooms)
   {
@@ -179,8 +181,9 @@ tokenizeMessage(const std::string& message)
   return tokens;
 }
 
-std::deque<Message> command_createRoom(Message message)
+std::deque<Message> command_createRoom(const Message &message)
 {
+  std::deque<Message> output;
   std::ostringstream result;
   std::string targetRoomName;
   std::string roomPin = "";
@@ -231,7 +234,6 @@ std::deque<Message> command_createRoom(Message message)
     if (!roomPin.empty())
     {
         std::cout << "DEV DEBUG: Room name is not provided for /create" << '\n';
-        std::cout << e.what() << "\n";
         std::ostringstream text;
         text << "Please include a room name.";
         auto messages = processForUser(message.c,text.str());
@@ -242,38 +244,27 @@ std::deque<Message> command_createRoom(Message message)
     // leave the user's current room
     Room *currentRoom = getRoomById(user->getRoom());
 
-    if (currentRoom != nullptr)
-    {
-        std::ostringstream text;
-        text << "The room " << targetRoomName << "already exists. Please use /join " << targetRoomName << " to join the room.";
-        auto messages = processForUser(message.c,text.str());
-        output.insert(output.end(),messages.begin(),messages.end());
-        return output;
+    // leave the user's current room
+    if (currentRoom != nullptr) {
+        currentRoom->removeUser(*user);
     }
 
-        // leave the user's current room
-        Room* currentRoom = getRoomById(user->getRoom());
-
-        if (currentRoom != nullptr) {
-            currentRoom->removeUser(*user);
-        }
-
-        newRoom.addUser(*user);
-        rooms.push_back(newRoom);
-        std::ostringstream text;
-        text << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").";
-        auto messages = processForUser(message.c,text.str());
-        output.insert(output.end(),messages.begin(),messages.end());
-    }
-    return output;
+    newRoom.addUser(*user);
+    rooms.push_back(newRoom);
+    std::ostringstream text;
+    text << "Created and joined room " << targetRoomName << " (" << newRoom.getRoomId() << ").";
+    auto messages = processForUser(message.c,text.str());
+    output.insert(output.end(),messages.begin(),messages.end());
+  }
+  return output;
 }
+
 std::deque<Message> command_joinRoom(const Message& message){
   std::deque<Message> output;
   std::string targetRoomName;
   std::vector<std::string> tokens;
 
   std::ostringstream result;
-
 
   try
   {
@@ -304,45 +295,57 @@ std::deque<Message> command_joinRoom(const Message& message){
     // check if the room is private and user provided a pin
     if (existingRoom->isPrivate())
     {
-        std::cout << e.what() << "\n";
-        std::ostringstream text;
-        text << "Please include a room name.";
-        auto messages = processForUser(message.c,text.str());
-        output.insert(output.end(),messages.begin(),messages.end());
+      try
+      {
+        pin = tokens.at(2);
+      }
+      catch (std::exception &e)
+      {
+        result << "This room is private. Please provide a valid pin.\n";
+        auto messages = processForUser(message.c, result.str());
+        output.insert(output.end(), messages.begin(), messages.end());
         return output;
-    }
+      }
 
+      const auto doesPinMatch = existingRoom->verifyPin(pin);
 
-    targetRoomName = tokens.at(1);
-    User* user = getUser(message.c);
-    Room* existingRoom = getRoomByName(targetRoomName);
-
-    // We check the target room exists before kicking the user out of their room
-    if (existingRoom == nullptr)
-    {
-        std::ostringstream text;
-        text << "Room " << targetRoomName << " does not exist. Type \"/create " << targetRoomName << "\" to make the room.";
-        auto messages = processForUser(message.c,text.str());
-        output.insert(output.end(),messages.begin(),messages.end());
+      if (doesPinMatch)
+      {
+        existingRoom->addUser(*user);
+      }
+      else
+      {
+        result << "The pin does not match.\n";
+        auto messages = processForUser(message.c, result.str());
+        output.insert(output.end(), messages.begin(), messages.end());
+        return output;
+      }
     }
     else
     {
-        Room *currentRoom = getRoomById(user->getRoom());
-
-        if (currentRoom != nullptr)
-        {
-            // remove the user from their current room
-            currentRoom->removeUser(*user);
-        }
-
-        existingRoom->addUser(*user);
-        std::ostringstream text;
-        text << "Sending you to room: " << existingRoom->getRoomName();
-        auto messages = processForUser(message.c,text.str());
-        output.insert(output.end(),messages.begin(),messages.end());
+      // no password required
+      existingRoom->addUser(*user);
     }
-    return output;
+
+    Room *currentRoom = getRoomById(user->getRoom());
+
+    if (currentRoom != nullptr)
+    {
+      // remove the user from their current room
+      currentRoom->removeUser(*user);
+    }
+
+    result << "Sending you to room: " << existingRoom->getRoomName();
+    auto messages = processForUser(message.c, result.str());
+    output.insert(output.end(), messages.begin(), messages.end());
+  }
+  catch (const std::exception &e)
+  {
+    std::cout << e.what() << "\n";
+  }
+  return output;
 }
+
 std::deque<Message> command_leaveRoom(const Message& message){
     std::deque<Message> output;
     User* user = getUser(message.c);
@@ -365,18 +368,22 @@ std::deque<Message> command_leaveRoom(const Message& message){
     return output;
 }
 
-std::string command_startGame(Message message)
+std::deque<Message> command_startGame(const Message &message)
 {
-  std::ostringstream result;
+  std::deque<Message> output;
+  std::ostringstream text;
   User *user = getUser(message.c);
-  Room* room = getRoomById(message.sendersRoomId);
+  Room* room = getRoomById(user->roomId);
 
   Game& game = createGame();
   room->setGame(&game);
 
-  result << "Game started for room " << room->getRoomId() << "\n";
+  text << "Game started for room " << room->getRoomId() << "\n";
 
-  return result.str();
+  auto messages = processForUser(message.c, text.str());
+  output.insert(output.end(), messages.begin(), messages.end());
+
+  return output;
 }
 
 // print the available rooms to the user
@@ -515,7 +522,7 @@ runCommand(const Message& message)
     std::cout << "DEV DEBUG: Attempting to call command:" << commandName << "\n";
     auto search = commands.find(commandName);
     if (search != commands.end()) {
-      return search->second(message);
+      return processForUser(message.c, search->second(message));
     } else {
          std::cout << "DEV DEBUG: Tried to run command: " << commandPrefix << commandName << " but it was not an actual command"
               << "\n";
