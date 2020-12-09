@@ -1,10 +1,11 @@
 #include "include/When.h"
 
-Case :: Case(string condition): stringCondition(condition){}
+Case::Case(string condition): stringCondition(condition){}
 
-void Case::addRule (AstNode* rule){
-    ruleList.push_back(rule);
+void Case::addRule (std::unique_ptr<AstNode> rule){
+    ruleList.push_back(std::move(rule));
 }
+
 void Case::print() {
     cout << "Case:" << endl;
     cout << "    " << "condition == " << stringCondition << endl;
@@ -15,12 +16,29 @@ void Case::print() {
 
 WhenRule::WhenRule(){}
 
-void WhenRule::execute(State& gameState) {
+enum Outcome { Success, Failure };
 
+Outcome isConditionTrue(std::shared_ptr<Case> condition) {
+    bool conditionParsed = true; // TODO: interpreter
+    if (conditionParsed){
+        return Outcome::Success;
+    } else {
+        return Outcome::Failure;
+    }
 }
 
-void WhenRule::addCase (Case* condition) {
-    caseList.push_back(condition);
+void WhenRule::execute(State& gameState) {
+    Outcome outcome;
+    for (auto condition : caseList) {
+        outcome = isConditionTrue(condition);
+        if (outcome == Outcome::Success) {
+
+        }
+    }
+}
+
+void WhenRule::addCase (std::shared_ptr<Case> condition) {
+    caseList.push_back(std::move(condition));
 }
 
 void WhenRule::print() {
@@ -29,6 +47,10 @@ void WhenRule::print() {
     }
 }
 
-void WhenRule::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void WhenRule::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this,gameState);
+}
+
+void WhenRule::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
 }

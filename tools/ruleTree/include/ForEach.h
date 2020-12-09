@@ -7,17 +7,25 @@
 using namespace std;
 
 
-class ForEachRule : public AstNode
-{
-    public:
-        ForEachRule(string, string);
-        void execute(State&) override ;
-        void addRule(AstNode*);
-        void print() override;
-        void accept(AstVisitor& visitor) override;
-    private:
-        vector <AstNode*> ruleList;
-        List list;
-        Element element;
+class ForEachRule : public AstNode {
+public:
+    ForEachRule(string, string);
+    void execute(State&) override ;
+    void addRule(std::unique_ptr<AstNode>);
+    void print() override;
+    void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+
+    vector<std::unique_ptr<AstNode>> const& getRuleList();
+    List getList();
+    int getNumLoop();
+    void setNumLoop(int);
+    Element& getElement();
+private:
+    std::vector<std::unique_ptr<AstNode>> ruleList;
+    List list;
+    Element element;
+    int numLoop;
 };
+
 #endif

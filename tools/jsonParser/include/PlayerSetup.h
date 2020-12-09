@@ -18,6 +18,9 @@ class PerPlayer{
   public:
       PerPlayer(unordered_map<string,GameVariant> playerMap);
       void print();
+
+      GameVariant getAtKey(string);
+      bool checkIfKeyExists(string);
 };
 
 class PerAudience {
@@ -27,6 +30,9 @@ class PerAudience {
   public:
       PerAudience(unordered_map<string,GameVariant> audienceMap);
       void print();
+
+      GameVariant getAtKey(string);
+      bool checkIfKeyExists(string);
   };
 
 #endif

@@ -1,5 +1,5 @@
 add_executable(runner main.cpp)
-target_link_libraries(runner jsonParsing gameState ruleTree Players)
+target_link_libraries(runner jsonParsing gameState ruleTree Players runGame)
 
 
 install(TARGETS runner
@@ -18,5 +18,5 @@ install(TARGETS runner
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
         DESTINATION ${CMAKE_BINARY_DIR}/bin)
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rockPaperScissors.json
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/players.json
         DESTINATION ${CMAKE_BINARY_DIR})

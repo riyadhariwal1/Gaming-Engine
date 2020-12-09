@@ -6,16 +6,18 @@ ParallelFor::ParallelFor(string list, string element)
     this -> element = Element(element);
 }
 
-void ParallelFor::addRule(AstNode *astNode)
-{
-    ruleList.push_back(astNode);
-}
-void ParallelFor::execute(State &gameState)
-{
+void ParallelFor::addRule(std::unique_ptr<AstNode> rule){
+    ruleList.push_back(std::move(rule));
 }
 
-void ParallelFor::print()
-{
+void ParallelFor::execute(State &gameState) {
+}
+
+vector<std::unique_ptr<AstNode>> const& ParallelFor::getRuleList() {
+    return ruleList;
+}
+
+void ParallelFor::print() {
     cout << "ParallelFor: " << endl;
     cout << "    list == ";
     list.print();
@@ -23,12 +25,15 @@ void ParallelFor::print()
     cout << "    element == " ;
     element.print();
     cout << endl;
-    for (int i = 0; i < ruleList.size(); i++)
-    {
+    for (int i = 0; i < ruleList.size(); i++) {
         ruleList[i]->print();
     }
 }
 
-void ParallelFor::accept(AstVisitor& visitor) {
-    visitor.visit(*this);
+void ParallelFor::accept(AstVisitor& visitor, State& gameState) {
+    visitor.visit(*this, gameState);
 }
+void ParallelFor::accept(AstVisitor& visitor, State& gameState , List& list, Element& element) {
+    visitor.visit(*this, gameState, list, element);
+}
+

@@ -27,6 +27,7 @@ class Settings {
     // update a setting
     void UpdateSetting(string keyToUpdate, GameVariant valueToUpdate);
     GameVariant getAtKey(string);
+    bool checkIfKeyExists(string);
 };
 
 class Configuration {
@@ -48,6 +49,7 @@ class Configuration {
       Settings getSetUp();
 
       GameVariant getAtKey(string);
+      bool checkIfKeyExists(string);
       void print();
 };
 
