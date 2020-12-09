@@ -7,6 +7,9 @@
 #include "Variables.h"
 #include "PlayerSetup.h"
 
+// helper function
+vector<string> splitString(string str, char val);
+
 class State
 {
   private:
@@ -38,9 +41,11 @@ class State
       void UpdateState_PerPlayer(PerPlayer);
       void UpdateState_PerAudience(PerAudience);
       void UpdateState_PlayersList(Player&);
+      void UpdateState_WinnersList(Player& p);
 
       // string manipulations or condition checks
-      vector<GameVariant> getStateList(string);
+      GameVariant getFromState(string);
+      vector<GameVariant> getStateList(string input);
       bool checkCondition(string);
 
       void print();

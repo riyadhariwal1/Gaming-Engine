@@ -8,18 +8,19 @@ using namespace std;
 class List;
 class Element;
 
-class ParallelFor : public AstNode
-{
-    public:
-        ParallelFor(string, string);
-        void execute(State&) override;
-        void addRule(AstNode*);
-        void print() override;
-        void accept(AstVisitor& visitor) override;
+class ParallelFor : public AstNode {
+public:
+    ParallelFor(string, string);
+    void execute(State&) override;
+    void addRule(std::unique_ptr<AstNode>);
+    void print() override;
+    void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+    vector<std::unique_ptr<AstNode>> const& getRuleList();
 
-    private:
-        vector<AstNode*> ruleList;
-        List list;
-        Element element;
+private:
+    std::vector<std::unique_ptr<AstNode>> ruleList;
+    List list;
+    Element element;
 };
 #endif

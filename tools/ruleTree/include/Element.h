@@ -2,18 +2,33 @@
 #define ELEMENT_H
 #include "AstNode.h"
 
+
 class Element: public AstNode{
 private:
+  //element is ETIHER element
     string value;
+    Player player;
+
     AstNode* target;
+    int index;
 
 public:
+
     Element();
-    AstNode* getTarget();
     Element(string);
-    void execute(State&);
+    Element(Player);
+
     void print();
-    void accept(AstVisitor& visitor) override;
+    void execute(State&);
+
+    AstNode* getTarget();
+    string getValue();
+    Player getPlayer();
+    void accept(AstVisitor& visitor, State& gameState) override;
+    void accept(AstVisitor& visitor, State& , List&, Element&) override;
+
+    void indexIncrement();
+    int getIndex();
 
 };
 

@@ -6,13 +6,15 @@
 #include<vector>
 #include "AstVisitor.h"
 #include "State.h"
+#include "Player.h"
 //visitable interface
 //class List;
 //class Element;
 
 class AstNode {
 public:
-    virtual void accept(AstVisitor& visitor) = 0;
+    virtual void accept(AstVisitor& visitor, State& ) = 0;
+    virtual void accept(AstVisitor& visitor, State& , List&, Element&) = 0;
     virtual void execute(State&) = 0;
     virtual void print () = 0;
 };
